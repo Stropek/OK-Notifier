@@ -52,12 +52,13 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:exifinterface:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.jakewharton.timber:timber:4.7.1'
-    implementation 'com.github.jkcclemens:khttp:0.1.0'
+    implementation 'com.mashape.unirest:unirest-java:1.4.9'
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
