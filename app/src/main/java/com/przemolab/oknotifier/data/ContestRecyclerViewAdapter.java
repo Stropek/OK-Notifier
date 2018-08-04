@@ -38,8 +38,6 @@ public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onContestClicked(holder.contest);
                 }
             }

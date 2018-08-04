@@ -75,7 +75,7 @@ public class ContestsListFragment extends Fragment {
             onContestClickedListener = (OnContestClickedListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnContestClickedListener");
         }
     }
 
