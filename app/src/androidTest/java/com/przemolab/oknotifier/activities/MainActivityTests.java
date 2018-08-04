@@ -1,4 +1,4 @@
-package com.przemolab.oknotifier;
+package com.przemolab.oknotifier.activities;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
+public class MainActivityTests {
 
     @Test
     public void useAppContext() {
