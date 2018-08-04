@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
+    android:layout_marginTop="@dimen/margin_small"
+    android:elevation="@dimen/cardview_default_elevation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/lightGreen">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/contestName_tv"
+                    android:layout_marginTop="@dimen/margin_small"
+                    style="@style/BigTextView"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="Super April - 2018"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/contestDates_tv"
+                    style="@style/SmallTextView"
+                    android:text="4/16/18 4:00PM - 5/16/18 4:00PM" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/contestants_iv"
+                        style="@style/SmallIcon"
+                        android:background="@drawable/ic_einstein" />
+
+                    <TextView
+                        android:id="@+id/contestants_tv"
+                        style="@style/BigTextView"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="-5dp"
+                        android:text="8" />
+
+                    <ImageView
+                        android:id="@+id/problems_iv"
+                        style="@style/SmallIcon"
+                        android:background="@drawable/ic_problems" />
+
+                    <TextView
+                        android:id="@+id/problems_tv"
+                        style="@style/BigTextView"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="-5dp"
+                        android:text="8" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/subscribe_ib"
+            style="@style/SmallImageButton"
+            android:layout_gravity="center"
+            android:background="@color/lightGreen"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_remove" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

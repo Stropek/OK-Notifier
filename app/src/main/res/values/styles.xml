@@ -7,5 +7,38 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="BigTextView" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:layout_marginStart">@dimen/margin_large</item>
+        <item name="android:layout_marginEnd">@dimen/margin_large</item>
+    </style>
+
+    <style name="MediumTextView" parent="BigTextView">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="SmallTextView" parent="BigTextView">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="SmallIcon">
+        <item name="android:layout_marginStart">@dimen/margin_large</item>
+        <item name="android:layout_marginEnd">@dimen/margin_large</item>
+        <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:layout_marginBottom">@dimen/margin_large</item>
+        <item name="android:layout_width">@dimen/icon_size_small</item>
+        <item name="android:layout_height">@dimen/icon_size_small</item>
+    </style>
+
+    <style name="SmallImageButton">
+        <item name="android:layout_margin">@dimen/margin_large</item>
+        <item name="android:layout_width">@dimen/image_button_size_small</item>
+        <item name="android:layout_height">@dimen/image_button_size_small</item>
+    </style>
 
 </resources>
