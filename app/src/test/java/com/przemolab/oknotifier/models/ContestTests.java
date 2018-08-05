@@ -18,8 +18,36 @@ public class ContestTests {
         // then
         assertEquals("abc", contest.getId());
         assertEquals("name", contest.getName());
+        assertEquals("6/10/15 4:00PM", contest.getStartDateFormatted());
+        assertEquals("6/15/15 5:00PM", contest.getEndDateFormatted());
+        assertEquals(5, contest.getNumberOfContestants());
+        assertEquals(10, contest.getNumberOfProblems());
     }
 
+    @Test
+    public void getStartDateFormatted_returnsStartDateInExpectedFormat() {
+        // given
+        Contest contest = createContest();
+
+        // when
+        String result = contest.getStartDateFormatted();
+
+        // then
+        assertEquals("6/10/15 4:00PM", result);
+    }
+
+    @Test
+    public void getEndDateFormatted_returnsEndDateInExpectedFormat() {
+        // given
+        Contest contest = createContest();
+
+        // when
+        String result = contest.getEndDateFormatted();
+
+        // then
+        assertEquals("6/15/15 5:00PM", result);
+    }
+    
     @Test
     public void setId_setsId() {
         // given
@@ -98,7 +126,7 @@ public class ContestTests {
         String id = "abc";
         String name = "name";
         Date startDate = DateUtils.getDate(2015, 6, 10, 16, 0);
-        Date endDate = DateUtils.getDate(2015, 6, 15, 16, 0);
+        Date endDate = DateUtils.getDate(2015, 6, 15, 17, 0);
         int numberOfContestants = 5;
         int numberOfProblems = 10;
 
