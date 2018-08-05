@@ -3,8 +3,12 @@ package com.przemolab.oknotifier.models;
 import android.os.Parcel;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.przemolab.oknotifier.utils.DateUtils;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -14,7 +18,9 @@ public class ContestTests {
     @Test
     public void createFromParcel_returnsParceledContest() {
         // given
-        Contest contest = new Contest("abc", "name");
+        Date startDate = DateUtils.getDate(2015, 6, 10, 16, 0);
+        Date endDate = DateUtils.getDate(2015, 6, 15, 16, 0);
+        Contest contest = new Contest("abc", "name", startDate, endDate, 5, 10);
 
         // when
         Parcel parcel = Parcel.obtain();
