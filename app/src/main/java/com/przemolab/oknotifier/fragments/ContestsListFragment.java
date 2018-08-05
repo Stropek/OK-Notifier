@@ -10,41 +10,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.data.ContestRecyclerViewAdapter;
 import com.przemolab.oknotifier.models.Contest;
+import com.przemolab.oknotifier.services.OpenKattisService;
+
+import java.util.Objects;
+
+import javax.inject.Inject;
 
 public class ContestsListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+    @Inject
+    public OpenKattisService openKattisService;
+
+    private int columnCount = 1;
     private OnContestClickedListener onContestClickedListener;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public ContestsListFragment() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ContestsListFragment newInstance(int columnCount) {
-        ContestsListFragment fragment = new ContestsListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        NotifierApp app = (NotifierApp) Objects.requireNonNull(getActivity()).getApplication();
+        app.appComponent.inject(this);
+
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+
         }
     }
 
@@ -57,16 +52,15 @@ public class ContestsListFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
+            if (columnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
             }
-            recyclerView.setAdapter(new ContestRecyclerViewAdapter(Contest.DUMMY_ITEMS, onContestClickedListener));
+            recyclerView.setAdapter(new ContestRecyclerViewAdapter(openKattisService.getOngoingContests(), onContestClickedListener));
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
