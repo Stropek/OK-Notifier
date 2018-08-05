@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.przemolab.oknotifier.services.OpenKattisServiceModule;
 
+import timber.log.Timber;
+
 public class NotifierApp extends Application {
 
     public AppComponent appComponent;
@@ -15,7 +17,10 @@ public class NotifierApp extends Application {
         appComponent = DaggerAppComponent.builder()
                 .openKattisServiceModule(new OpenKattisServiceModule())
                 .build();
-
         appComponent.inject(this);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 }

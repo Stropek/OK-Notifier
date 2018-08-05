@@ -1,6 +1,7 @@
 package com.przemolab.oknotifier.activities;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
@@ -32,7 +33,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -67,6 +67,39 @@ public class MainActivityTests {
 
         // when
         testRule.launchActivity(null);
+
+        // then
+        onView(withId(R.id.contests_list_rv)).perform(RecyclerViewActions.scrollToPosition(contests.size() - 1));
+        onView(withText("id 10")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void toggleOrientation_displaysOngoingContests() {
+        // given
+        List<Contest> contests = createContests(10);
+        when(openKattisService.getOngoingContests()).thenReturn(contests);
+
+        testRule.launchActivity(null);
+
+        // when
+        testRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        // then
+        onView(withId(R.id.contests_list_rv)).perform(RecyclerViewActions.scrollToPosition(contests.size() - 1));
+        onView(withText("id 10")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void toggleOrientationTwice_displaysOngoingContests() {
+        // given
+        List<Contest> contests = createContests(10);
+        when(openKattisService.getOngoingContests()).thenReturn(contests);
+
+        testRule.launchActivity(null);
+
+        // when
+        testRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        testRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // then
         onView(withId(R.id.contests_list_rv)).perform(RecyclerViewActions.scrollToPosition(contests.size() - 1));

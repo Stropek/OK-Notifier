@@ -11,6 +11,7 @@ import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.fragments.ContestsListFragment.OnContestClickedListener;
 import com.przemolab.oknotifier.models.Contest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -18,11 +19,11 @@ import butterknife.ButterKnife;
 
 public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Contest> contests;
     private final OnContestClickedListener onContestClickedListener;
 
-    public ContestRecyclerViewAdapter(List<Contest> items, OnContestClickedListener listener) {
-        contests = items;
+    private List<Contest> contests;
+
+    public ContestRecyclerViewAdapter(OnContestClickedListener listener) {
         onContestClickedListener = listener;
     }
 
@@ -55,7 +56,19 @@ public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecy
 
     @Override
     public int getItemCount() {
+        if (contests == null) {
+            return 0;
+        }
         return contests.size();
+    }
+
+    public void swapData(List<Contest> data) {
+        if (data == null)
+            contests = new ArrayList<>();
+        else {
+            contests = data;
+            notifyDataSetChanged();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
