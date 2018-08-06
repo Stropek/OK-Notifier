@@ -18,8 +18,8 @@ public class ContestTests {
     @Test
     public void createFromParcel_returnsParceledContest() {
         // given
-        Date startDate = DateUtils.getDate(2015, 6, 10, 16, 0);
-        Date endDate = DateUtils.getDate(2015, 6, 15, 16, 0);
+        Date startDate = DateUtils.getDate(2015, 6, 10, 16, 0, 0);
+        Date endDate = DateUtils.getDate(2015, 6, 15, 16, 0, 0);
         Contest contest = new Contest("abc", "name", startDate, endDate, 5, 10);
 
         // when
