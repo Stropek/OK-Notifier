@@ -109,8 +109,8 @@ public class MainActivityTests {
     private Contest createContest(int id) {
         String idString = String.format("id %s", id);
         String name = String.format("id %s", id);
-        Date startDate = DateUtils.getDate(2000 + id, id, id, id, id);
-        Date endDate = DateUtils.getDate(2001 + id, id + 1, id + 1, id + 1, id + 1);
+        Date startDate = DateUtils.getDate(2000 + id, id, id, id, id, 0);
+        Date endDate = DateUtils.getDate(2001 + id, id + 1, id + 1, id + 1, id + 1, 0);
 
         return new Contest(idString, name, startDate, endDate, id, id);
     }
