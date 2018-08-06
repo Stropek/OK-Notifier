@@ -122,6 +122,18 @@ public class ContestTests {
         assertEquals(100, contest.getNumberOfProblems());
     }
 
+    @Test
+    public void setSubscribed_setsSubscribed() {
+        // given
+        Contest contest = createContest();
+
+        // when
+        contest.setSubscribed(true);
+
+        // then
+        assertEquals(true, contest.isSubscribed());
+    }
+
     private Contest createContest() {
         String id = "abc";
         String name = "name";

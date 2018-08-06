@@ -15,9 +15,7 @@ public class Contest implements Parcelable {
     private Date endDate;
     private int numberOfContestants;
     private int numberOfProblems;
-
-    // TODO: add isFollowed flag when persisting to database
-    //    private boolean _isFollowed;
+    private boolean isSubscribed = false;
 
     public Contest(String id, String name, Date startDate, Date endDate, int numberOfContestants, int numberOfProblems) {
         this.id = id;
@@ -110,5 +108,13 @@ public class Contest implements Parcelable {
 
     public void setNumberOfProblems(int numberOfProblems) {
         this.numberOfProblems = numberOfProblems;
+    }
+
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(boolean subscribed) {
+        this.isSubscribed = subscribed;
     }
 }

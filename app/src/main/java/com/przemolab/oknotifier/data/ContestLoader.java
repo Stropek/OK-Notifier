@@ -23,7 +23,7 @@ public class ContestLoader extends AsyncTaskLoader<List<Contest>> {
     @Override
     public List<Contest> loadInBackground() {
         try {
-            Timber.d("Loading contests...");
+            Timber.d("Loading contests from SQLite");
             return openKattisService.getOngoingContests();
         } catch (Exception ex) {
             Timber.e(ex);
