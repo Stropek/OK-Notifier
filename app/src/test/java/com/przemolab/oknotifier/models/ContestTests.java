@@ -76,7 +76,7 @@ public class ContestTests {
     public void setStartDate_setsStartDate() {
         // given
         Contest contest = createContest();
-        Date newDate = DateUtils.getDate(2000, 1, 1, 10, 30);
+        Date newDate = DateUtils.getDate(2000, 1, 1, 10, 30, 0);
 
         // when
         contest.setStartDate(newDate);
@@ -89,7 +89,7 @@ public class ContestTests {
     public void setEndDate_setsEndDate() {
         // given
         Contest contest = createContest();
-        Date newDate = DateUtils.getDate(2000, 1, 1, 10, 30);
+        Date newDate = DateUtils.getDate(2000, 1, 1, 10, 30, 0);
 
         // when
         contest.setEndDate(newDate);
@@ -125,8 +125,8 @@ public class ContestTests {
     private Contest createContest() {
         String id = "abc";
         String name = "name";
-        Date startDate = DateUtils.getDate(2015, 6, 10, 16, 0);
-        Date endDate = DateUtils.getDate(2015, 6, 15, 17, 0);
+        Date startDate = DateUtils.getDate(2015, 6, 10, 16, 0, 0);
+        Date endDate = DateUtils.getDate(2015, 6, 15, 17, 0, 0);
         int numberOfContestants = 5;
         int numberOfProblems = 10;
 

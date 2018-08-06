@@ -3,20 +3,67 @@ package com.przemolab.oknotifier.services;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.utils.DateUtils;
 
-import java.util.Arrays;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class OpenKattisService {
 
+    private final String BaseKattisUrl = "https://open.kattis.com";
+
     public List<Contest> getOngoingContests() {
-        return Arrays.asList(
-                new Contest("abc", "From Mock Service 1", DateUtils.getDate(2000,1,11, 16, 0), DateUtils.getDate(2000, 1, 11, 17,30), 1, 10),
-                new Contest("def", "From Mock Service 2", DateUtils.getDate(2001,2,12, 16, 0), DateUtils.getDate(2001, 2, 12, 17,30), 2, 11),
-                new Contest("ghi", "From Mock Service 3", DateUtils.getDate(2002,3,13, 16, 0), DateUtils.getDate(2002, 3, 13, 17,30), 3, 12),
-                new Contest("jkl", "From Mock Service 4", DateUtils.getDate(2003,4,14, 16, 0), DateUtils.getDate(2003, 4, 14, 17,30), 4, 13),
-                new Contest("mno", "From Mock Service 5", DateUtils.getDate(2004,5,15, 16, 0), DateUtils.getDate(2004, 5, 15, 17,30), 5, 14),
-                new Contest("prs", "From Mock Service 6", DateUtils.getDate(2005,6,16, 16, 0), DateUtils.getDate(2005, 6, 16, 17,30), 6, 15)
-        );
+
+        try {
+            List<Contest> contests = new ArrayList<>();
+            String url = String.format("%s/contests", BaseKattisUrl);
+            Document contestsPageDocument = Jsoup.connect(url).timeout(0).get();
+            Elements elements = contestsPageDocument.select(".main-content table:first-of-type tbody tr");
+
+            for (Element row : elements) {
+                Contest contest = getContest(row);
+                if (contest != null) {
+                    contests.add(contest);
+                }
+            }
+
+            return contests;
+        } catch (Exception ex) {
+            Timber.e(ex);
+            return null;
+        }
+    }
+
+    private Contest getContest(Element row) {
+        try {
+            Elements cells = row.select("td");
+
+            String name = cells.get(0).select("a").text();
+            String contestUrl = String.format("%s%s", BaseKattisUrl, cells.get(0).select("a").attr("href"));
+            String[] parts = contestUrl.split("/");
+            String id = parts[parts.length - 1];
+
+            String startDateText = cells.get(3).text().replace(" CEST", "");
+            Date startDate = DateUtils.getDate(startDateText);
+
+            String lengthText = cells.get(2).text();
+            Date endDate = DateUtils.addTimeToDate(startDate, lengthText);
+
+            Document standingsPageDocument = Jsoup.connect(contestUrl).timeout(0).get();
+            int numberOfContestants = standingsPageDocument.select("#standings tbody tr").size() - 4;
+            int numberOfProblems = standingsPageDocument.select("#standings thead th.problemcolheader-standings").size();
+
+            return new Contest(id, name, startDate, endDate, numberOfContestants, numberOfProblems);
+        } catch (Exception ex) {
+            Timber.e(ex);
+            return null;
+        }
     }
 }
 

@@ -5,9 +5,7 @@ import android.os.Parcelable;
 
 import com.przemolab.oknotifier.utils.DateUtils;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class Contest implements Parcelable {
 
