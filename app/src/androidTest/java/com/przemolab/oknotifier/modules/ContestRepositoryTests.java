@@ -3,25 +3,24 @@ package com.przemolab.oknotifier.modules;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.przemolab.oknotifier.data.ContestContract;
-import com.przemolab.oknotifier.data.ContestDbHelper;
 import com.przemolab.oknotifier.models.Contest;
-import com.przemolab.oknotifier.utils.DataCreator;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static com.przemolab.oknotifier.utils.DataCreator.insertContest;
-import static com.przemolab.oknotifier.utils.DataCreator.setObservedUriOnContentResolver;
+import static com.przemolab.oknotifier.utils.DataHelper.deleteTablesData;
+import static com.przemolab.oknotifier.utils.DataHelper.insertContest;
+import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
@@ -31,11 +30,12 @@ public class ContestRepositoryTests {
 
     @BeforeClass
     public static void setUp() {
-        ContestDbHelper dbHelper = new ContestDbHelper(context);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        deleteTablesData(context);
+    }
 
-        // cleanup contests before tests start
-        database.delete(ContestContract.ContestEntry.TABLE_NAME, null, null);
+    @AfterClass
+    public static void cleanUp() {
+        deleteTablesData(context);
     }
 
     @Test

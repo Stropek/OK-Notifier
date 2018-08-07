@@ -15,27 +15,30 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.przemolab.oknotifier.utils.DataCreator.insertContest;
-import static com.przemolab.oknotifier.utils.DataCreator.setObservedUriOnContentResolver;
+import static com.przemolab.oknotifier.utils.DataHelper.deleteTablesData;
+import static com.przemolab.oknotifier.utils.DataHelper.insertContest;
+import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)
 public class ContestDataProviderTests {
 
-    private final Context context = InstrumentationRegistry.getTargetContext();
+    private static final Context context = InstrumentationRegistry.getTargetContext();
 
     @Before
     public void setUp() {
-        ContestDbHelper dbHelper = new ContestDbHelper(context);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        deleteTablesData(context);
+    }
 
-        // cleanup contests before tests start
-        database.delete(ContestContract.ContestEntry.TABLE_NAME, null, null);
+    @AfterClass
+    public static void cleanUp() {
+        deleteTablesData(context);
     }
 
     @Test

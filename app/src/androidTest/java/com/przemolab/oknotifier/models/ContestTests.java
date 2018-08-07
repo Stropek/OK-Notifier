@@ -5,17 +5,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Parcel;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.przemolab.oknotifier.data.ContestContract;
-import com.przemolab.oknotifier.data.ContestDbHelper;
 import com.przemolab.oknotifier.utils.DateUtils;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +22,8 @@ import org.junit.runner.RunWith;
 import java.text.ParseException;
 import java.util.Date;
 
-import static com.przemolab.oknotifier.utils.DataCreator.setObservedUriOnContentResolver;
+import static com.przemolab.oknotifier.utils.DataHelper.deleteTablesData;
+import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -34,11 +34,12 @@ public class ContestTests {
 
     @BeforeClass
     public static void setUp() {
-        ContestDbHelper dbHelper = new ContestDbHelper(context);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        deleteTablesData(context);
+    }
 
-        // cleanup contests before tests start
-        database.delete(ContestContract.ContestEntry.TABLE_NAME, null, null);
+    @AfterClass
+    public static void cleanUp() {
+        deleteTablesData(context);
     }
 
     @Test
