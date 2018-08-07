@@ -1,7 +1,4 @@
-package com.przemolab.oknotifier;
-
-import com.przemolab.oknotifier.services.OpenKattisService;
-import com.przemolab.oknotifier.services.OpenKattisServiceModule;
+package com.przemolab.oknotifier.modules;
 
 import org.mockito.Mockito;
 

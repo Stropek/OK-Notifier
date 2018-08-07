@@ -18,8 +18,9 @@ import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.data.ContestLoader;
 import com.przemolab.oknotifier.data.ContestRecyclerViewAdapter;
+import com.przemolab.oknotifier.modules.ContestRepository;
 import com.przemolab.oknotifier.models.Contest;
-import com.przemolab.oknotifier.services.OpenKattisService;
+import com.przemolab.oknotifier.modules.OpenKattisService;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,8 +30,10 @@ import javax.inject.Inject;
 public class ContestsListFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<List<Contest>> {
 
+//    @Inject
+//    public OpenKattisService openKattisService;
     @Inject
-    public OpenKattisService openKattisService;
+    public ContestRepository contestRepository;
 
     private ContestRecyclerViewAdapter contestRecyclerViewAdapter = null;
 
@@ -97,7 +100,7 @@ public class ContestsListFragment extends Fragment
     @NonNull
     @Override
     public Loader<List<Contest>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new ContestLoader(getActivity(), openKattisService);
+        return new ContestLoader(getActivity(), contestRepository);
     }
 
     @Override

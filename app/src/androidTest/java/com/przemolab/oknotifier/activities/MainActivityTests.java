@@ -11,9 +11,11 @@ import com.przemolab.oknotifier.DaggerTestAppComponent;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
-import com.przemolab.oknotifier.TestOpenKattisServiceModule;
+import com.przemolab.oknotifier.modules.ContestRepository;
+import com.przemolab.oknotifier.modules.TestContestRepositoryModule;
+import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
 import com.przemolab.oknotifier.models.Contest;
-import com.przemolab.oknotifier.services.OpenKattisService;
+import com.przemolab.oknotifier.modules.OpenKattisService;
 import com.przemolab.oknotifier.utils.DateUtils;
 
 import org.junit.Before;
@@ -43,8 +45,10 @@ public class MainActivityTests {
     @Rule
     public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<>(MainActivity.class, false, false);
 
+//    @Inject
+//    OpenKattisService openKattisService;
     @Inject
-    OpenKattisService openKattisService;
+    ContestRepository contestRepository;
 
     @Before
     public void setUp() {
@@ -52,7 +56,7 @@ public class MainActivityTests {
         NotifierApp app = (NotifierApp) context.getApplicationContext();
 
         TestAppComponent testAppComponent = DaggerTestAppComponent.builder()
-                .openKattisServiceModule(new TestOpenKattisServiceModule())
+                .contestRepositoryModule(new TestContestRepositoryModule(app))
                 .build();
 
         app.appComponent = testAppComponent;
@@ -63,7 +67,7 @@ public class MainActivityTests {
     public void default_displaysOngoingContests() {
         // given
         List<Contest> contests = createContests(10);
-        when(openKattisService.getOngoingContests()).thenReturn(contests);
+        when(contestRepository.getAll()).thenReturn(contests);
 
         // when
         testRule.launchActivity(null);
@@ -77,7 +81,7 @@ public class MainActivityTests {
     public void toggleOrientation_displaysOngoingContests() {
         // given
         List<Contest> contests = createContests(10);
-        when(openKattisService.getOngoingContests()).thenReturn(contests);
+        when(contestRepository.getAll()).thenReturn(contests);
 
         testRule.launchActivity(null);
 
@@ -93,7 +97,7 @@ public class MainActivityTests {
     public void toggleOrientationTwice_displaysOngoingContests() {
         // given
         List<Contest> contests = createContests(10);
-        when(openKattisService.getOngoingContests()).thenReturn(contests);
+        when(contestRepository.getAll()).thenReturn(contests);
 
         testRule.launchActivity(null);
 

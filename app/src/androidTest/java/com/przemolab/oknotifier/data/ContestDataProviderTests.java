@@ -19,17 +19,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static com.przemolab.oknotifier.utils.DataCreator.insertContest;
+import static com.przemolab.oknotifier.utils.DataCreator.setObservedUriOnContentResolver;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)
 public class ContestDataProviderTests {
 
-    private final Context _context = InstrumentationRegistry.getTargetContext();
+    private final Context context = InstrumentationRegistry.getTargetContext();
 
     @Before
     public void setUp() {
-        ContestDbHelper dbHelper = new ContestDbHelper(_context);
+        ContestDbHelper dbHelper = new ContestDbHelper(context);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         // cleanup contests before tests start
@@ -39,12 +41,12 @@ public class ContestDataProviderTests {
     @Test
     public void verifyProviderIsRegistered() throws PackageManager.NameNotFoundException {
         // given
-        String packageName = _context.getPackageName();
+        String packageName = context.getPackageName();
         String contestProviderClassName = ContestDataProvider.class.getName();
         ComponentName componentName = new ComponentName(packageName, contestProviderClassName );
 
         // when
-        ProviderInfo providerInfo = _context.getPackageManager().getProviderInfo(componentName, 0);
+        ProviderInfo providerInfo = context.getPackageManager().getProviderInfo(componentName, 0);
         String actualAuthority = providerInfo.authority;
 
         // then
@@ -55,15 +57,15 @@ public class ContestDataProviderTests {
     public void insert_unknownUri_shouldThrowUnsupportedOperationException() {
         // given
         Uri unknownUri = ContestContract.BASE_CONTENT_URI.buildUpon().appendPath("unknown").build();
-        setObservedUriOnContentResolver(_context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
+        setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
 
         // when
-        _context.getContentResolver().insert(unknownUri, new ContentValues());
+        context.getContentResolver().insert(unknownUri, new ContentValues());
     }
     @Test
     public void insert_withValidParameters_shouldSucceed() {
         // given
-        ContentResolver contentResolver = _context.getContentResolver();
+        ContentResolver contentResolver = context.getContentResolver();
         TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = ContestContract.ContestEntry.CONTENT_URI;
 
@@ -85,15 +87,15 @@ public class ContestDataProviderTests {
     public void query_unknownUri_shouldThrowUnsupportedOperationException() {
         // given
         Uri unknownUri = ContestContract.BASE_CONTENT_URI.buildUpon().appendPath("unknown").build();
-        setObservedUriOnContentResolver(_context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
+        setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
 
         // when
-        _context.getContentResolver().query(unknownUri, null, null, null, null);
+        context.getContentResolver().query(unknownUri, null, null, null, null);
     }
     @Test
     public void query_withContestsContentUri_returnsAllContests() {
         // given
-        ContentResolver contentResolver = _context.getContentResolver();
+        ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = ContestContract.ContestEntry.CONTENT_URI;
 
@@ -110,29 +112,5 @@ public class ContestDataProviderTests {
         // then
         assertNotNull(contests);
         assertEquals(contests.getCount(), 10);
-    }
-
-    private Uri insertContest(ContentResolver contentResolver, Uri uri, String name, String id,
-                              String startDate, String endDate, int numOfContestants, int numOfProblems) {
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(ContestContract.ContestEntry.COLUMN_NAME, name);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_CONTEST_ID, id);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_START_DATE, startDate);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_END_DATE, endDate);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, numOfContestants);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, numOfProblems);
-
-        return contentResolver.insert(uri, contentValues);
-    }
-
-    private void setObservedUriOnContentResolver(ContentResolver contentResolver, Uri uri, ContentObserver contentObserver) {
-        contentResolver.registerContentObserver(
-                /* URI that we would like to observe changes to */
-                uri,
-                /* Whether or not to notify us if descendants of this URI change */
-                true,
-                /* The observer to register (that will receive notifyChange callbacks) */
-                contentObserver);
     }
 }

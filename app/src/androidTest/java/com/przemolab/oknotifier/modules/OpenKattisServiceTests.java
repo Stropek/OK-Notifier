@@ -1,4 +1,4 @@
-package com.przemolab.oknotifier.services;
+package com.przemolab.oknotifier.modules;
 
 import android.support.test.runner.AndroidJUnit4;
 

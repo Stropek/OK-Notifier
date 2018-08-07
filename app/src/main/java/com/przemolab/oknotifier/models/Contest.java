@@ -1,10 +1,13 @@
 package com.przemolab.oknotifier.models;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.przemolab.oknotifier.utils.DateUtils;
+import com.przemolab.oknotifier.data.ContestContract;
 
+import java.text.ParseException;
 import java.util.Date;
 
 public class Contest implements Parcelable {
@@ -16,6 +19,8 @@ public class Contest implements Parcelable {
     private int numberOfContestants;
     private int numberOfProblems;
     private boolean isSubscribed = false;
+
+    private Contest() { }
 
     public Contest(String id, String name, Date startDate, Date endDate, int numberOfContestants, int numberOfProblems) {
         this.id = id;
@@ -42,6 +47,20 @@ public class Contest implements Parcelable {
             return new Contest[size];
         }
     };
+
+    public static Contest getFromCursor(Cursor cursor) throws ParseException {
+        Contest contest = new Contest();
+
+        contest.setId(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_CONTEST_ID)));
+        contest.setName(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_NAME)));
+        contest.setStartDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_START_DATE))));
+        contest.setEndDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_END_DATE))));
+        contest.setNumberOfContestants(cursor.getInt(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS)));
+        contest.setNumberOfProblems(cursor.getInt(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS)));
+        contest.setSubscribed(cursor.getInt(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED)) == 1);
+
+        return contest;
+    }
 
     @Override
     public int describeContents() {

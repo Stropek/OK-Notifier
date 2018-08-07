@@ -9,7 +9,7 @@ public class ContestDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "contests.db";
     private static final int DATABASE_VERSION = 1;
 
-    ContestDbHelper(Context context) {
+    public ContestDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -26,7 +26,7 @@ public class ContestDbHelper extends SQLiteOpenHelper {
                 ContestContract.ContestEntry.COLUMN_END_DATE + " TEXT NOT NULL," +
                 ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS + " INT NOT NULL," +
                 ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS + " INT NOT NULL," +
-                ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED + "BOOLEAN NOT NULL DEFAULT 0" +
+                ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED + " BOOLEAN NOT NULL DEFAULT 0" +
                 ");";
 
         db.execSQL(CREATE_CONTESTS_TABLE);

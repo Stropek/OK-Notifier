@@ -1,4 +1,4 @@
-package com.przemolab.oknotifier.services;
+package com.przemolab.oknotifier.modules;
 
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.utils.DateUtils;

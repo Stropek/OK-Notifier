@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.przemolab.oknotifier.models.Contest;
-import com.przemolab.oknotifier.services.OpenKattisService;
+import com.przemolab.oknotifier.modules.ContestRepository;
 
 import java.util.List;
 
@@ -13,18 +13,18 @@ import timber.log.Timber;
 public class ContestLoader extends AsyncTaskLoader<List<Contest>> {
 
     private List<Contest> contests = null;
-    private OpenKattisService openKattisService;
+    private ContestRepository contestRepository;
 
-    public ContestLoader(Context context, OpenKattisService openKattisService) {
+    public ContestLoader(Context context, ContestRepository contestRepository) {
         super(context);
-        this.openKattisService = openKattisService;
+        this.contestRepository = contestRepository;
     }
 
     @Override
     public List<Contest> loadInBackground() {
         try {
             Timber.d("Loading contests from SQLite");
-            return openKattisService.getOngoingContests();
+            return contestRepository.getAll();
         } catch (Exception ex) {
             Timber.e(ex);
             return null;
