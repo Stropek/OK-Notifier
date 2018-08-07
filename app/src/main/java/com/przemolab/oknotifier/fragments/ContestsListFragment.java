@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -27,8 +28,14 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ContestsListFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<List<Contest>> {
+
+    @BindView(R.id.contests_list_rv) public RecyclerView contestsRecyclerView;
+    @BindView(R.id.empty_cl) public ConstraintLayout emptyLayout;
 
 //    @Inject
 //    public OpenKattisService openKattisService;
@@ -66,16 +73,17 @@ public class ContestsListFragment extends Fragment
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_contest_list, container, false);
+        ButterKnife.bind(this, view);
+
         Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view;
 
         if (columnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            contestsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
+            contestsRecyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         }
 
-        recyclerView.setAdapter(contestRecyclerViewAdapter);
+        contestsRecyclerView.setAdapter(contestRecyclerViewAdapter);
 
         return view;
     }
@@ -106,6 +114,14 @@ public class ContestsListFragment extends Fragment
     @Override
     public void onLoadFinished(@NonNull Loader<List<Contest>> loader, List<Contest> data) {
         contestRecyclerViewAdapter.swapData(data);
+
+        if (data.isEmpty()) {
+            contestsRecyclerView.setVisibility(View.GONE);
+            emptyLayout.setVisibility(View.VISIBLE);
+        } else {
+            emptyLayout.setVisibility(View.GONE);
+            contestsRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

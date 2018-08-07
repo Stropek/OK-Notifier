@@ -62,9 +62,22 @@ public class MainActivityTests {
         app.appComponent = testAppComponent;
         testAppComponent.inject(this);
     }
-    
+
     @Test
-    public void default_displaysOngoingContests() {
+    public void default_noContests_displaysEmptyView() {
+        // given
+        List<Contest> contests = new ArrayList<>();
+        when(contestRepository.getAll()).thenReturn(contests);
+
+        // when
+        testRule.launchActivity(null);
+
+        // then
+        onView(withId(R.id.empty_cl)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void default_contests_displaysOngoingContests() {
         // given
         List<Contest> contests = createContests(10);
         when(contestRepository.getAll()).thenReturn(contests);

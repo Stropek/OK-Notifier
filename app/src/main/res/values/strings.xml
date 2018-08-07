@@ -10,4 +10,5 @@
     <string name="design_string_contest_name">Super Contest 2018</string>
     <string name="design_string_date_range">4/16/18 4:00PM - 5/16/18 4:00PM</string>
     <string name="design_string_number">8</string>
+    <string name="sync_contest">Sync contests</string>
 </resources>

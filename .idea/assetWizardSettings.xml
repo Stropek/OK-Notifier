@@ -14,8 +14,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_remove" />
-                            <entry key="sourceFile" value="C:\Users\p.s.curzytek\Downloads\if_minus_button_286161.svg" />
+                            <entry key="height" value="64" />
+                            <entry key="outputName" value="ic_sync" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="C:\Users\p.s.curzytek\Downloads\if_sync-01_186384.svg" />
+                            <entry key="width" value="64" />
                           </map>
                         </option>
                       </PersistentState>
