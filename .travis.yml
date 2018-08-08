@@ -9,9 +9,6 @@ android:
     - android-26
     - android-27
     
-    - sdkmanager tools
-    - sdkmanager "system-images;android-26;google_apis;x86"
-
 
   licenses:
     - 'android-sdk-preview-license-.+'
@@ -19,7 +16,11 @@ android:
     - 'google-gdk-license-.+'
 before_install:
  - chmod +x gradlew
- - yes | sdkmanager "platforms;android-26"
+ 
+ - sdkmanager tools
+ - sdkmanager "system-images;android-26;google_apis;x86"
+
+
 script:
  - android list targets
  - android list sdk --extended --no-ui --all
