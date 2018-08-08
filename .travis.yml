@@ -17,8 +17,8 @@ android:
 before_install:
  - chmod +x gradlew
  
- - sdkmanager tools
- - sdkmanager "system-images;android-26;google_apis;x86"
+ - yes | sdkmanager tools
+ - yes | sdkmanager "system-images;android-26;google_apis;x86"
 
 
 script:
