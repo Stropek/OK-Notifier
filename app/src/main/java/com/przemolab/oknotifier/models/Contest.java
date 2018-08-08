@@ -1,5 +1,6 @@
 package com.przemolab.oknotifier.models;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,6 +10,8 @@ import com.przemolab.oknotifier.data.ContestContract;
 
 import java.text.ParseException;
 import java.util.Date;
+
+import static junit.framework.Assert.assertEquals;
 
 public class Contest implements Parcelable {
 
@@ -47,6 +50,20 @@ public class Contest implements Parcelable {
             return new Contest[size];
         }
     };
+
+    public ContentValues toContentValues() {
+        ContentValues values = new ContentValues();
+
+        values.put(ContestContract.ContestEntry.COLUMN_NAME, this.name);
+        values.put(ContestContract.ContestEntry.COLUMN_CONTEST_ID, this.id);
+        values.put(ContestContract.ContestEntry.COLUMN_START_DATE, this.getStartDateFormatted());
+        values.put(ContestContract.ContestEntry.COLUMN_END_DATE, this.getEndDateFormatted());
+        values.put(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, this.numberOfContestants);
+        values.put(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, this.numberOfProblems);
+        values.put(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED, this.isSubscribed);
+
+        return values;
+    }
 
     public static Contest getFromCursor(Cursor cursor) throws ParseException {
         Contest contest = new Contest();

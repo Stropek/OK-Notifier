@@ -105,4 +105,34 @@ public class ContestTests {
         assertEquals(result.getNumberOfProblems(), 5);
         assertEquals(result.isSubscribed(), true);
     }
+
+    @Test
+    public void toContentValues_convertsObjectToContentValuesCollection() {
+        // given
+        Contest contest = createContest();
+
+        // when
+        ContentValues result = contest.toContentValues();
+
+        // then
+        assertEquals(7, result.size());
+        assertEquals("name", result.get(ContestContract.ContestEntry.COLUMN_NAME));
+        assertEquals("abc", result.get(ContestContract.ContestEntry.COLUMN_CONTEST_ID));
+        assertEquals("6/10/15 4:00PM", result.get(ContestContract.ContestEntry.COLUMN_START_DATE));
+        assertEquals("6/15/15 5:00PM", result.get(ContestContract.ContestEntry.COLUMN_END_DATE));
+        assertEquals(5, result.get(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS));
+        assertEquals(10, result.get(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS));
+        assertEquals(false, result.get(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED));
+    }
+
+    private Contest createContest() {
+        String id = "abc";
+        String name = "name";
+        Date startDate = DateUtils.getDate(2015, 6, 10, 16, 0, 0);
+        Date endDate = DateUtils.getDate(2015, 6, 15, 17, 0, 0);
+        int numberOfContestants = 5;
+        int numberOfProblems = 10;
+
+        return new Contest(id, name, startDate, endDate, numberOfContestants, numberOfProblems);
+    }
 }
