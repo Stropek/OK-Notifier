@@ -11,21 +11,21 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import timber.log.Timber;
-
 public class ContestDataProvider extends ContentProvider {
 
     private Context _context;
 
-    private static ContestDbHelper _db;
-    private static UriMatcher _uriMatcher = buildUriMatcher();
+    private static ContestDbHelper db;
+    private static UriMatcher uriMatcher = buildUriMatcher();
 
     private static final int CONTEST_ENTRIES = 100;
+    private static final int CONTEST_ENTRIES_BY_IDS = 101;
 
     private static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(ContestContract.AUTHORITY, ContestContract.PATH_CONTESTS, CONTEST_ENTRIES);
+        uriMatcher.addURI(ContestContract.AUTHORITY, ContestContract.PATH_CONTESTS + "/byContestIds", CONTEST_ENTRIES_BY_IDS);
 
         return uriMatcher;
     }
@@ -33,7 +33,7 @@ public class ContestDataProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         _context = getContext();
-        _db = new ContestDbHelper(_context);
+        db = new ContestDbHelper(_context);
 
         return true;
     }
@@ -41,10 +41,10 @@ public class ContestDataProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        SQLiteDatabase db = _db.getReadableDatabase();
+        SQLiteDatabase db = ContestDataProvider.db.getReadableDatabase();
         Cursor cursor;
 
-        switch (_uriMatcher.match(uri)) {
+        switch (uriMatcher.match(uri)) {
             case CONTEST_ENTRIES:
                 cursor = db.query(ContestContract.ContestEntry.TABLE_NAME,
                         projection,
@@ -70,9 +70,9 @@ public class ContestDataProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         Uri returnUri;
-        SQLiteDatabase db = _db.getWritableDatabase();
+        SQLiteDatabase db = ContestDataProvider.db.getWritableDatabase();
 
-        switch (_uriMatcher.match(uri)) {
+        switch (uriMatcher.match(uri)) {
             case CONTEST_ENTRIES:
                 long id = db.insert(ContestContract.ContestEntry.TABLE_NAME, null, values);
                 if (id > -1) {
@@ -91,12 +91,36 @@ public class ContestDataProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int deleted;
+        SQLiteDatabase db = ContestDataProvider.db.getWritableDatabase();
+
+        switch (uriMatcher.match(uri)) {
+            case CONTEST_ENTRIES_BY_IDS:
+                 deleted = db.delete(ContestContract.ContestEntry.TABLE_NAME,
+                        ContestContract.ContestEntry.COLUMN_CONTEST_ID + " IN ('" + String.join("','", selectionArgs) + "')",
+                         null);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown operation URI: " + uri);
+        }
+
+        return deleted;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int updated;
+        SQLiteDatabase db = ContestDataProvider.db.getWritableDatabase();
+
+        switch (uriMatcher.match(uri)) {
+            case CONTEST_ENTRIES:
+                updated = db.update(ContestContract.ContestEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown operation URI: " + uri);
+        }
+
+        return updated;
     }
 
     @Nullable

@@ -18,7 +18,7 @@ public class ContestDbHelper extends SQLiteOpenHelper {
         final String CREATE_CONTESTS_TABLE = "CREATE TABLE " +
                 ContestContract.ContestEntry.TABLE_NAME + "(" +
                 ContestContract.ContestEntry._ID + " INTEGER PRIMARY KEY," +
-                ContestContract.ContestEntry.COLUMN_CONTEST_ID + " VARCHAR(20) NOT NULL," +
+                ContestContract.ContestEntry.COLUMN_CONTEST_ID + " VARCHAR(20) UNIQUE NOT NULL," +
                 ContestContract.ContestEntry.COLUMN_CREATED_DATE + " TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 ContestContract.ContestEntry.COLUMN_LAST_MODIFIED_DATE + " TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 ContestContract.ContestEntry.COLUMN_NAME + " VARCHAR(255) NOT NULL," +
