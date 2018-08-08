@@ -14,13 +14,16 @@ android:
     - 'google-gdk-license-.+'
 before_install:
  - chmod +x gradlew
+install:
  - yes | sdkmanager tools
  - yes | sdkmanager "system-images;android-26;google_apis;x86"
-script:
  - echo no | avdmanager create avd --force -n test -k "system-images;android-26;google_apis;x86"
- - emulator -avd test -no-window &
+ - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
+before_script:
+ - ./gradlew clean assemble --stacktrace
+script:
  - android-wait-for-emulator
  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
- - ./gradlew clean jacocoTestReport
+ - ./gradlew clean jacocoTestReport --stacktrace
 after_success:
  - bash <(curl -s https://codecov.io/bash)
