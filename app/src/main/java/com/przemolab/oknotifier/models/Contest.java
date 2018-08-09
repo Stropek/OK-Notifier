@@ -11,8 +11,6 @@ import com.przemolab.oknotifier.data.ContestContract;
 import java.text.ParseException;
 import java.util.Date;
 
-import static junit.framework.Assert.assertEquals;
-
 public class Contest implements Parcelable {
 
     private String id;
@@ -56,8 +54,8 @@ public class Contest implements Parcelable {
 
         values.put(ContestContract.ContestEntry.COLUMN_NAME, this.name);
         values.put(ContestContract.ContestEntry.COLUMN_CONTEST_ID, this.id);
-        values.put(ContestContract.ContestEntry.COLUMN_START_DATE, this.getStartDateFormatted());
-        values.put(ContestContract.ContestEntry.COLUMN_END_DATE, this.getEndDateFormatted());
+        values.put(ContestContract.ContestEntry.COLUMN_START_DATE, DateUtils.formatDate(this.startDate, DateUtils.SQLiteDateTimeFormat));
+        values.put(ContestContract.ContestEntry.COLUMN_END_DATE, DateUtils.formatDate(this.endDate, DateUtils.SQLiteDateTimeFormat));
         values.put(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, this.numberOfContestants);
         values.put(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, this.numberOfProblems);
         values.put(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED, this.isSubscribed);
@@ -70,8 +68,8 @@ public class Contest implements Parcelable {
 
         contest.setId(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_CONTEST_ID)));
         contest.setName(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_NAME)));
-        contest.setStartDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_START_DATE))));
-        contest.setEndDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_END_DATE))));
+        contest.setStartDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_START_DATE)), DateUtils.SQLiteDateTimeFormat));
+        contest.setEndDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_END_DATE)), DateUtils.SQLiteDateTimeFormat));
         contest.setNumberOfContestants(cursor.getInt(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS)));
         contest.setNumberOfProblems(cursor.getInt(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS)));
         contest.setSubscribed(cursor.getInt(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED)) == 1);
@@ -111,7 +109,7 @@ public class Contest implements Parcelable {
     }
 
     public String getStartDateFormatted() {
-        return DateUtils.formatDate(startDate);
+        return DateUtils.formatDate(startDate, DateUtils.DisplayFormat);
     }
 
     public void setStartDate(Date startDate) {
@@ -123,7 +121,7 @@ public class Contest implements Parcelable {
     }
 
     public String getEndDateFormatted() {
-        return DateUtils.formatDate(endDate);
+        return DateUtils.formatDate(endDate, DateUtils.DisplayFormat);
     }
 
     public void setEndDate(Date endDate) {

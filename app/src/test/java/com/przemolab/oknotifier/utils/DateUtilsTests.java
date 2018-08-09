@@ -16,7 +16,7 @@ public class DateUtilsTests {
         String dateTime = "2018-07-30 18:45:30";
 
         // when
-        Date result = DateUtils.getDate(dateTime);
+        Date result = DateUtils.getDate(dateTime, "yyyy-MM-dd HH:mm:ss");
 
         // then
         Calendar cal = Calendar.getInstance();
@@ -35,7 +35,7 @@ public class DateUtilsTests {
         String dateTime = "18:45:30";
 
         // when
-        Date result = DateUtils.getDate(dateTime);
+        Date result = DateUtils.getDate(dateTime, "HH:mm:ss");
 
         // then
         Calendar cal = Calendar.getInstance();
@@ -51,7 +51,7 @@ public class DateUtilsTests {
         String dateTime = "INVALID_DATE";
 
         // when
-        DateUtils.getDate(dateTime);
+        DateUtils.getDate(dateTime, "");
     }
 
     @Test
@@ -80,7 +80,7 @@ public class DateUtilsTests {
         Date date = DateUtils.getDate(2014, 8, 1, 14, 8, 0);
 
         // when
-        String result = DateUtils.formatDate(date);
+        String result = DateUtils.formatDate(date, DateUtils.DisplayFormat);
 
         // then
         assertEquals("8/1/14 2:08PM", result);

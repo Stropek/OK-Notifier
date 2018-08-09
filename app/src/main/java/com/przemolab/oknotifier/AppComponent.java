@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { ContestRepositoryModule.class})
+@Component(modules = { OpenKattisServiceModule.class, ContestRepositoryModule.class})
 public interface AppComponent {
 
     void inject(NotifierApp app);

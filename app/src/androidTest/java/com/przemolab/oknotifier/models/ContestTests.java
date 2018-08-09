@@ -118,8 +118,8 @@ public class ContestTests {
         assertEquals(7, result.size());
         assertEquals("name", result.get(ContestContract.ContestEntry.COLUMN_NAME));
         assertEquals("abc", result.get(ContestContract.ContestEntry.COLUMN_CONTEST_ID));
-        assertEquals("6/10/15 4:00PM", result.get(ContestContract.ContestEntry.COLUMN_START_DATE));
-        assertEquals("6/15/15 5:00PM", result.get(ContestContract.ContestEntry.COLUMN_END_DATE));
+        assertEquals("2015-06-10 16:00:00", result.get(ContestContract.ContestEntry.COLUMN_START_DATE));
+        assertEquals("2015-06-15 17:00:00", result.get(ContestContract.ContestEntry.COLUMN_END_DATE));
         assertEquals(5, result.get(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS));
         assertEquals(10, result.get(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS));
         assertEquals(false, result.get(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED));

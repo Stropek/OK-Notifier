@@ -9,8 +9,19 @@ import android.net.Uri;
 
 import com.przemolab.oknotifier.data.ContestContract;
 import com.przemolab.oknotifier.data.ContestDbHelper;
+import com.przemolab.oknotifier.models.Contest;
 
 public abstract class DataHelper {
+
+    public static Uri insertContest(ContentResolver contentResolver, Uri uri, Contest contest) {
+        return insertContest(contentResolver, uri,
+                contest.getName(),
+                contest.getId(),
+                DateUtils.formatDate(contest.getStartDate(), DateUtils.SQLiteDateTimeFormat),
+                DateUtils.formatDate(contest.getEndDate(), DateUtils.SQLiteDateTimeFormat),
+                contest.getNumberOfContestants(),
+                contest.getNumberOfProblems());
+    }
 
     public static Uri insertContest(ContentResolver contentResolver, Uri uri, String name, String id,
                               String startDate, String endDate, int numOfContestants, int numOfProblems) {

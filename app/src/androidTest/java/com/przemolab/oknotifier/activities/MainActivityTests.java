@@ -1,7 +1,9 @@
 package com.przemolab.oknotifier.activities;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
@@ -11,13 +13,16 @@ import com.przemolab.oknotifier.DaggerTestAppComponent;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
+import com.przemolab.oknotifier.data.ContestContract;
 import com.przemolab.oknotifier.modules.ContestRepository;
 import com.przemolab.oknotifier.modules.TestContestRepositoryModule;
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.modules.OpenKattisService;
 import com.przemolab.oknotifier.utils.DateUtils;
+import com.przemolab.oknotifier.utils.TestContentObserver;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,10 +36,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.przemolab.oknotifier.utils.DataHelper.deleteTablesData;
+import static com.przemolab.oknotifier.utils.DataHelper.insertContest;
+import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -45,8 +54,8 @@ public class MainActivityTests {
     @Rule
     public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<>(MainActivity.class, false, false);
 
-//    @Inject
-//    OpenKattisService openKattisService;
+    @Inject
+    OpenKattisService openKattisService;
     @Inject
     ContestRepository contestRepository;
 
@@ -56,6 +65,7 @@ public class MainActivityTests {
         NotifierApp app = (NotifierApp) context.getApplicationContext();
 
         TestAppComponent testAppComponent = DaggerTestAppComponent.builder()
+                .openKattisServiceModule(new TestOpenKattisServiceModule())
                 .contestRepositoryModule(new TestContestRepositoryModule(app))
                 .build();
 

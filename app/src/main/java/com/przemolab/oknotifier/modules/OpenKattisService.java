@@ -50,7 +50,12 @@ public class OpenKattisService {
             String id = parts[parts.length - 1];
 
             String startDateText = cells.get(3).text().replace(" CEST", "");
-            Date startDate = DateUtils.getDate(startDateText);
+
+            String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            if (startDateText.length() == 8) {
+                dateTimeFormat = "HH:mm:ss";
+            }
+            Date startDate = DateUtils.getDate(startDateText, dateTimeFormat);
 
             String lengthText = cells.get(2).text();
             Date endDate = DateUtils.addTimeToDate(startDate, lengthText);

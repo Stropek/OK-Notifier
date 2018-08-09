@@ -17,7 +17,8 @@ import android.view.ViewGroup;
 
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
-import com.przemolab.oknotifier.data.ContestLoader;
+import com.przemolab.oknotifier.asyncTasks.RetrieveContestTask;
+import com.przemolab.oknotifier.asyncTasks.SqliteContestLoader;
 import com.przemolab.oknotifier.data.ContestRecyclerViewAdapter;
 import com.przemolab.oknotifier.modules.ContestRepository;
 import com.przemolab.oknotifier.models.Contest;
@@ -30,6 +31,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import timber.log.Timber;
 
 public class ContestsListFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<List<Contest>> {
@@ -37,8 +40,8 @@ public class ContestsListFragment extends Fragment
     @BindView(R.id.contests_list_rv) public RecyclerView contestsRecyclerView;
     @BindView(R.id.empty_cl) public ConstraintLayout emptyLayout;
 
-//    @Inject
-//    public OpenKattisService openKattisService;
+    @Inject
+    public OpenKattisService openKattisService;
     @Inject
     public ContestRepository contestRepository;
 
@@ -50,6 +53,19 @@ public class ContestsListFragment extends Fragment
     private OnContestClickedListener onContestClickedListener;
 
     public ContestsListFragment() {
+    }
+
+    @OnClick(R.id.sync_ib)
+    public void onSyncClicked() {
+        try {
+            List<Contest> ongoingContests = new RetrieveContestTask(openKattisService).execute().get();
+
+            contestRepository.persist(ongoingContests);
+        } catch (Exception ex) {
+            Timber.e(ex);
+        }
+
+        getLoaderManager().restartLoader(CONTEST_LOADER_ID, null, this);
     }
 
     @Override
@@ -108,7 +124,7 @@ public class ContestsListFragment extends Fragment
     @NonNull
     @Override
     public Loader<List<Contest>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new ContestLoader(getActivity(), contestRepository);
+        return new SqliteContestLoader(getActivity(), contestRepository);
     }
 
     @Override

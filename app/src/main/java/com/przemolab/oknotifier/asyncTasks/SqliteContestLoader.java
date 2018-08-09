@@ -1,4 +1,4 @@
-package com.przemolab.oknotifier.data;
+package com.przemolab.oknotifier.asyncTasks;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
@@ -10,12 +10,12 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class ContestLoader extends AsyncTaskLoader<List<Contest>> {
+public class SqliteContestLoader extends AsyncTaskLoader<List<Contest>> {
 
     private List<Contest> contests = null;
     private ContestRepository contestRepository;
 
-    public ContestLoader(Context context, ContestRepository contestRepository) {
+    public SqliteContestLoader(Context context, ContestRepository contestRepository) {
         super(context);
         this.contestRepository = contestRepository;
     }

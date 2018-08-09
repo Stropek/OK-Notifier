@@ -16,6 +16,7 @@ public class NotifierApp extends Application {
         super.onCreate();
 
         appComponent = DaggerAppComponent.builder()
+                .openKattisServiceModule(new OpenKattisServiceModule())
                 .contestRepositoryModule(new ContestRepositoryModule(this))
                 .build();
         appComponent.inject(this);
