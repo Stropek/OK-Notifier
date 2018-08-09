@@ -91,14 +91,24 @@ public class ContestDataProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        int deleted;
+        int deleted = 0;
         SQLiteDatabase db = ContestDataProvider.db.getWritableDatabase();
 
         switch (uriMatcher.match(uri)) {
             case CONTEST_ENTRIES_BY_IDS:
-                 deleted = db.delete(ContestContract.ContestEntry.TABLE_NAME,
-                        ContestContract.ContestEntry.COLUMN_CONTEST_ID + " IN ('" + String.join("','", selectionArgs) + "')",
-                         null);
+                StringBuilder inCondition = new StringBuilder();
+
+                if (selectionArgs != null && selectionArgs.length > 0) {
+                    for (String arg : selectionArgs) {
+                        inCondition.append("'").append(arg).append("',");
+                    }
+                    inCondition.deleteCharAt(inCondition.lastIndexOf(","));
+
+                    deleted = db.delete(ContestContract.ContestEntry.TABLE_NAME,
+                            ContestContract.ContestEntry.COLUMN_CONTEST_ID + " IN (" + inCondition.toString() + ")",
+                            null);
+                }
+
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown operation URI: " + uri);
