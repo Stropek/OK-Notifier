@@ -1,10 +1,13 @@
 package com.przemolab.oknotifier.data;
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.przemolab.oknotifier.R;
@@ -38,6 +41,17 @@ public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecy
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         Contest contest = contests.get(position);
+        Resources resources = holder.view.getResources();
+
+        if (contest.isSubscribed()) {
+            holder.item.setBackgroundColor(resources.getColor(R.color.lightGreen));
+            holder.subscribeButton.setBackgroundColor(resources.getColor(R.color.lightGreen));
+            holder.subscribeButton.setImageDrawable(resources.getDrawable(R.drawable.ic_remove));
+        } else {
+            holder.item.setBackgroundColor(resources.getColor(R.color.lightGrey));
+            holder.subscribeButton.setBackgroundColor(resources.getColor(R.color.lightGrey));
+            holder.subscribeButton.setImageDrawable(resources.getDrawable(R.drawable.ic_add));
+        }
 
         holder.name.setText(contest.getName());
         holder.dates.setText(String.format("%s - %s", contest.getStartDateFormatted(), contest.getEndDateFormatted()));
@@ -75,10 +89,12 @@ public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecy
         Contest contest;
         View view;
 
+        @BindView(R.id.contestItem_fl) FrameLayout item;
         @BindView(R.id.contestName_tv) TextView name;
         @BindView(R.id.contestDates_tv) TextView dates;
         @BindView(R.id.contestants_tv) TextView contestantsNumber;
         @BindView(R.id.problems_tv) TextView problemsNumber;
+        @BindView(R.id.subscribe_ib) ImageButton subscribeButton;
 
         ViewHolder(View view) {
             super(view);

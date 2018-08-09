@@ -10,6 +10,7 @@
     android:elevation="@dimen/cardview_default_elevation">
 
     <FrameLayout
+        android:id="@+id/contestItem_fl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lightGreen">
@@ -71,12 +72,12 @@
         <ImageButton
             android:id="@+id/subscribe_ib"
             style="@style/SmallImageButton"
-            android:layout_gravity="center_vertical|right"
-            android:minWidth="@dimen/image_button_size_small"
+            android:layout_gravity="center_vertical|end"
             android:background="@color/lightGreen"
+            android:contentDescription="@string/toggle_subscribtion_to_contest"
+            android:minWidth="@dimen/image_button_size_small"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_remove"
-            android:contentDescription="@string/toggle_subscribtion_to_contest" />
+            android:src="@drawable/ic_remove" />
 
     </FrameLayout>
 
