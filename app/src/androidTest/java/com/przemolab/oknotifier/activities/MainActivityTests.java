@@ -31,6 +31,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -108,6 +109,23 @@ public class MainActivityTests {
         // then
         onView(withText("id 1"))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.contestItem_fl))
+                .check(matches(hasBackgroundColor(context.getResources().getColor(R.color.lightGreen))));
+    }
+
+    @Test
+    public void toggleSubscription_contestNotSubscribed_displaysContestWithAlternateColor() {
+        // given
+        List<Contest> contests = new ArrayList<>();
+        contests.add(createContest(1));
+        when(contestRepository.getAll()).thenReturn(contests);
+
+        testRule.launchActivity(null);
+
+        // when
+        onView(withId(R.id.subscribe_ib)).perform(click());
+
+        // then
         onView(withId(R.id.contestItem_fl))
                 .check(matches(hasBackgroundColor(context.getResources().getColor(R.color.lightGreen))));
     }

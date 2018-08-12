@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -15,9 +14,10 @@ import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.fragments.ContestsListFragment;
 import com.przemolab.oknotifier.models.Contest;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
         implements ContestsListFragment.OnContestsListEventsListener {
@@ -86,8 +86,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSyncFinished() {
+    public void onSyncFinished(List<Contest> contests) {
         contestsListFrameLayout.setVisibility(View.VISIBLE);
         syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
+
+        getSupportLoaderManager().restartLoader(ContestsListFragment.CONTEST_LOADER_ID, null, contestsListFragment);
     }
 }

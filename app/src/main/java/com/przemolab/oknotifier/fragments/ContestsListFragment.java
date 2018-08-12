@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
-import com.przemolab.oknotifier.asyncTasks.RetrieveContestTask;
+import com.przemolab.oknotifier.asyncTasks.RetrieveContestsTask;
 import com.przemolab.oknotifier.asyncTasks.SqliteContestLoader;
 import com.przemolab.oknotifier.data.ContestRecyclerViewAdapter;
 import com.przemolab.oknotifier.modules.ContestRepository;
@@ -32,10 +32,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 public class ContestsListFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<List<Contest>> {
+
+    public static final int CONTEST_LOADER_ID = 1;
 
     @BindView(R.id.contestsList_rv) public RecyclerView contestsRecyclerView;
     @BindView(R.id.empty_cl) public ConstraintLayout emptyLayout;
@@ -47,7 +48,6 @@ public class ContestsListFragment extends Fragment
 
     private ContestRecyclerViewAdapter contestRecyclerViewAdapter = null;
 
-    private static final int CONTEST_LOADER_ID = 1;
     private int columnCount = 1;
 
     private OnContestsListEventsListener onContestListEventsListener;
@@ -57,21 +57,7 @@ public class ContestsListFragment extends Fragment
 
     @OnClick(R.id.sync_ib)
     public void onSyncClicked() {
-        onContestListEventsListener.onSyncStarted();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<Contest> ongoingContests = new RetrieveContestTask(openKattisService).execute().get();
-                    contestRepository.persist(ongoingContests);
-                } catch (Exception ex) {
-                    Timber.e(ex);
-                }
-            }
-        });
-
-        getLoaderManager().restartLoader(CONTEST_LOADER_ID, null, this);
+        new RetrieveContestsTask(openKattisService, contestRepository, onContestListEventsListener).execute();
     }
 
     @Override
@@ -144,8 +130,6 @@ public class ContestsListFragment extends Fragment
             emptyLayout.setVisibility(View.GONE);
             contestsRecyclerView.setVisibility(View.VISIBLE);
         }
-
-        onContestListEventsListener.onSyncFinished();
     }
 
     @Override
@@ -166,6 +150,6 @@ public class ContestsListFragment extends Fragment
 
         void onSyncStarted();
 
-        void onSyncFinished();
+        void onSyncFinished(List<Contest> contests);
     }
 }
