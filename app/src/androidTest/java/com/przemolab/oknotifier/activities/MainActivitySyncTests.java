@@ -40,6 +40,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.przemolab.oknotifier.Matchers.hasBackgroundColor;
 import static com.przemolab.oknotifier.utils.DataHelper.deleteTablesData;
 import static com.przemolab.oknotifier.utils.DataHelper.insertContest;
 import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
@@ -153,6 +154,36 @@ public class MainActivitySyncTests {
         // then
         onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition(4));
         onView(withText("id 5 modified")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void syncClicked_contestSubscribed_contestStaysSubscribed() {
+        // given
+        ContentResolver contentResolver = context.getContentResolver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+
+        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+
+        Contest subscribedContest = createContest(1);
+        subscribedContest.setSubscribed(true);
+        insertContest(contentResolver, uri, subscribedContest);
+
+        subscribedContest.setName(subscribedContest.getName() + " modified");
+        List<Contest> ongoingContests = new ArrayList<>();
+        ongoingContests.add(subscribedContest);
+
+        when(openKattisService.getOngoingContests()).thenReturn(ongoingContests);
+
+        testRule.launchActivity(null);
+
+        // when
+        onView(withId(R.id.sync_menu_item)).perform(click());
+
+        // then
+        onView(withText("id 1 modified")).check(matches(isDisplayed()));
+        onView(withId(R.id.contestItem_fl))
+                .check(matches(hasBackgroundColor(context.getResources().getColor(R.color.lightGreen))));
     }
 
     private Contest createContest(int id) {

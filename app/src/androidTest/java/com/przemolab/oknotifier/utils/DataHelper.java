@@ -20,11 +20,18 @@ public abstract class DataHelper {
                 DateUtils.formatDate(contest.getStartDate(), DateUtils.SQLiteDateTimeFormat),
                 DateUtils.formatDate(contest.getEndDate(), DateUtils.SQLiteDateTimeFormat),
                 contest.getNumberOfContestants(),
-                contest.getNumberOfProblems());
+                contest.getNumberOfProblems(),
+                contest.isSubscribed());
     }
 
     public static Uri insertContest(ContentResolver contentResolver, Uri uri, String name, String id,
-                              String startDate, String endDate, int numOfContestants, int numOfProblems) {
+                                    String startDate, String endDate, int numOfContestants, int numOfProblems) {
+        return insertContest(contentResolver, uri, name, id, startDate, endDate, numOfContestants, numOfProblems, false);
+    }
+
+    public static Uri insertContest(ContentResolver contentResolver, Uri uri, String name, String id,
+                              String startDate, String endDate, int numOfContestants, int numOfProblems,
+                                    boolean isSubscribed) {
 
         ContentValues contentValues = new ContentValues();
 
@@ -34,6 +41,7 @@ public abstract class DataHelper {
         contentValues.put(ContestContract.ContestEntry.COLUMN_END_DATE, endDate);
         contentValues.put(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, numOfContestants);
         contentValues.put(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, numOfProblems);
+        contentValues.put(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED, isSubscribed);
 
         return contentResolver.insert(uri, contentValues);
     }
