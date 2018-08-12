@@ -37,7 +37,7 @@ import timber.log.Timber;
 public class ContestsListFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<List<Contest>> {
 
-    @BindView(R.id.contests_list_rv) public RecyclerView contestsRecyclerView;
+    @BindView(R.id.contestsList_rv) public RecyclerView contestsRecyclerView;
     @BindView(R.id.empty_cl) public ConstraintLayout emptyLayout;
 
     @Inject
@@ -50,20 +50,26 @@ public class ContestsListFragment extends Fragment
     private static final int CONTEST_LOADER_ID = 1;
     private int columnCount = 1;
 
-    private OnContestClickedListener onContestClickedListener;
+    private OnContestsListEventsListener onContestListEventsListener;
 
     public ContestsListFragment() {
     }
 
     @OnClick(R.id.sync_ib)
     public void onSyncClicked() {
-        try {
-            List<Contest> ongoingContests = new RetrieveContestTask(openKattisService).execute().get();
+        onContestListEventsListener.onSyncStarted();
 
-            contestRepository.persist(ongoingContests);
-        } catch (Exception ex) {
-            Timber.e(ex);
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Contest> ongoingContests = new RetrieveContestTask(openKattisService).execute().get();
+                    contestRepository.persist(ongoingContests);
+                } catch (Exception ex) {
+                    Timber.e(ex);
+                }
+            }
+        });
 
         getLoaderManager().restartLoader(CONTEST_LOADER_ID, null, this);
     }
@@ -79,7 +85,7 @@ public class ContestsListFragment extends Fragment
 
         }
 
-        contestRecyclerViewAdapter = new ContestRecyclerViewAdapter(onContestClickedListener);
+        contestRecyclerViewAdapter = new ContestRecyclerViewAdapter(onContestListEventsListener);
 
         getLoaderManager().initLoader(CONTEST_LOADER_ID, null, this);
     }
@@ -107,18 +113,18 @@ public class ContestsListFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnContestClickedListener) {
-            onContestClickedListener = (OnContestClickedListener) context;
+        if (context instanceof OnContestsListEventsListener) {
+            onContestListEventsListener = (OnContestsListEventsListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnContestClickedListener");
+                    + " must implement OnContestsListEventsListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        onContestClickedListener = null;
+        onContestListEventsListener = null;
     }
 
     @NonNull
@@ -138,6 +144,8 @@ public class ContestsListFragment extends Fragment
             emptyLayout.setVisibility(View.GONE);
             contestsRecyclerView.setVisibility(View.VISIBLE);
         }
+
+        onContestListEventsListener.onSyncFinished();
     }
 
     @Override
@@ -145,7 +153,19 @@ public class ContestsListFragment extends Fragment
         contestRecyclerViewAdapter.swapData(null);
     }
 
-    public interface OnContestClickedListener {
+    public void toggleSubscription(Contest contest) {
+        contestRepository.updateContest(contest);
+        getLoaderManager().restartLoader(CONTEST_LOADER_ID, null, this);
+    }
+
+    public interface OnContestsListEventsListener {
+
+        void onSubscribedClicked(Contest contest);
+
         void onContestClicked(Contest contest);
+
+        void onSyncStarted();
+
+        void onSyncFinished();
     }
 }

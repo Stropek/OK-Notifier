@@ -124,7 +124,7 @@ public class MainActivityTests {
         testRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // then
-        onView(withId(R.id.contests_list_rv)).perform(RecyclerViewActions.scrollToPosition(contests.size() - 1));
+        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition(contests.size() - 1));
         onView(withText("id 10")).check(matches(isDisplayed()));
     }
 
@@ -141,7 +141,7 @@ public class MainActivityTests {
         testRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // then
-        onView(withId(R.id.contests_list_rv)).perform(RecyclerViewActions.scrollToPosition(contests.size() - 1));
+        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition(contests.size() - 1));
         onView(withText("id 10")).check(matches(isDisplayed()));
     }
 

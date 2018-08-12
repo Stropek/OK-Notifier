@@ -95,7 +95,7 @@ public class MainActivitySyncTests {
         onView(withId(R.id.sync_ib)).perform(click());
 
         // then
-        onView(withId(R.id.contests_list_rv)).perform(RecyclerViewActions.scrollToPosition(ongoingContests.size() - 1));
+        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition(ongoingContests.size() - 1));
         onView(withText("id 5")).check(matches(isDisplayed()));
     }
 
@@ -121,7 +121,7 @@ public class MainActivitySyncTests {
         onView(withId(R.id.sync_menu_item)).perform(click());
 
         // then
-        onView(withId(R.id.contests_list_rv)).perform(RecyclerViewActions.scrollToPosition(4));
+        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition(4));
         onView(withText("id 10")).check(matches(isDisplayed()));
     }
 
@@ -151,7 +151,7 @@ public class MainActivitySyncTests {
         onView(withId(R.id.sync_menu_item)).perform(click());
 
         // then
-        onView(withId(R.id.contests_list_rv)).perform(RecyclerViewActions.scrollToPosition(4));
+        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition(4));
         onView(withText("id 5 modified")).check(matches(isDisplayed()));
     }
 

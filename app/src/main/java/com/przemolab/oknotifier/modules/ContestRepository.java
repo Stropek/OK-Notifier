@@ -53,6 +53,7 @@ public class ContestRepository {
 
                 for (Contest persistedContest : persistedContests) {
                     if (persistedContest.getId().equals(contest.getId())) {
+                        contest.setSubscribed(persistedContest.isSubscribed());
                         exists = true;
                         break;
                     }
@@ -91,6 +92,15 @@ public class ContestRepository {
         }
     }
 
+    public void updateContest(Contest contest) {
+        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+
+        Timber.i("Updating contest: %s [%s]", contest.getName(), contest.getId());
+        context.getContentResolver().update(uri, contest.toContentValues(),
+                ContestContract.ContestEntry.COLUMN_CONTEST_ID + "=?",
+                new String[] {contest.getId()});
+    }
+
     private void deleteContests(List<Contest> contestsToDelete) {
         Uri deleteUri = ContestContract.ContestEntry.CONTENT_URI
                 .buildUpon().appendPath("byContestIds").build();
@@ -109,14 +119,5 @@ public class ContestRepository {
 
         Timber.i("Creating contest: %s [%s]", contest.getName(), contest.getId());
         context.getContentResolver().insert(uri, contest.toContentValues());
-    }
-
-    private void updateContest(Contest contest) {
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
-
-        Timber.i("Updating contest: %s [%s]", contest.getName(), contest.getId());
-        context.getContentResolver().update(uri, contest.toContentValues(),
-                ContestContract.ContestEntry.COLUMN_CONTEST_ID + "=?",
-                new String[] {contest.getId()});
     }
 }

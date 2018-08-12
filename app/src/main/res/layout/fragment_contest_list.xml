@@ -3,11 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contestsList_fl"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/contests_list_rv"
+        android:id="@+id/contestsList_rv"
         android:name="com.przemolab.oknotifier.fragments.ContestsListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -11,7 +11,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.przemolab.oknotifier.R;
-import com.przemolab.oknotifier.fragments.ContestsListFragment.OnContestClickedListener;
+import com.przemolab.oknotifier.fragments.ContestsListFragment;
+import com.przemolab.oknotifier.fragments.ContestsListFragment.OnContestsListEventsListener;
 import com.przemolab.oknotifier.models.Contest;
 
 import java.util.ArrayList;
@@ -22,12 +23,12 @@ import butterknife.ButterKnife;
 
 public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecyclerViewAdapter.ViewHolder> {
 
-    private final OnContestClickedListener onContestClickedListener;
+    private final OnContestsListEventsListener onContestClickedListener;
 
     private List<Contest> contests;
 
-    public ContestRecyclerViewAdapter(OnContestClickedListener listener) {
-        onContestClickedListener = listener;
+    public ContestRecyclerViewAdapter(ContestsListFragment.OnContestsListEventsListener listener) {
+        this.onContestClickedListener = listener;
     }
 
     @NonNull
@@ -40,8 +41,9 @@ public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecy
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        Contest contest = contests.get(position);
         Resources resources = holder.view.getResources();
+
+        final Contest contest = contests.get(position);
 
         if (contest.isSubscribed()) {
             holder.item.setBackgroundColor(resources.getColor(R.color.lightGreen));
@@ -61,8 +63,16 @@ public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecy
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != onContestClickedListener) {
-                    onContestClickedListener.onContestClicked(holder.contest);
+                if (onContestClickedListener != null) {
+                    onContestClickedListener.onContestClicked(contest);
+                }
+            }
+        });
+        holder.subscribeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onContestClickedListener != null) {
+                    onContestClickedListener.onSubscribedClicked(contest);
                 }
             }
         });
@@ -86,7 +96,6 @@ public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        Contest contest;
         View view;
 
         @BindView(R.id.contestItem_fl) FrameLayout item;

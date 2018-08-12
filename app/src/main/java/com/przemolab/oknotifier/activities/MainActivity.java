@@ -5,15 +5,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.fragments.ContestsListFragment;
 import com.przemolab.oknotifier.models.Contest;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import timber.log.Timber;
+
 public class MainActivity extends AppCompatActivity
-        implements ContestsListFragment.OnContestClickedListener {
+        implements ContestsListFragment.OnContestsListEventsListener {
 
     private ContestsListFragment contestsListFragment;
+
+    @BindView(R.id.sync_pb) ProgressBar syncProgressBar;
+    @BindView(R.id.contestsList_fl) FrameLayout contestsListFrameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +37,8 @@ public class MainActivity extends AppCompatActivity
         } else {
             // TODO: retrieve saved instance state
         }
+
+        ButterKnife.bind(this);
     }
 
     private void loadContestsListFragment() {
@@ -55,7 +69,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onSubscribedClicked(Contest contest) {
+        contest.setSubscribed(!contest.isSubscribed());
+        contestsListFragment.toggleSubscription(contest);
+    }
+
+    @Override
     public void onContestClicked(Contest contest) {
-        //
+        Toast.makeText(this, "Contest from main activity", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onSyncStarted() {
+        syncProgressBar.setVisibility(ProgressBar.VISIBLE);
+        contestsListFrameLayout.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onSyncFinished() {
+        contestsListFrameLayout.setVisibility(View.VISIBLE);
+        syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 }
