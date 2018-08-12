@@ -15,11 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.asyncTasks.RetrieveContestsTask;
 import com.przemolab.oknotifier.asyncTasks.SqliteContestLoader;
 import com.przemolab.oknotifier.data.ContestRecyclerViewAdapter;
+import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.modules.ContestRepository;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.modules.OpenKattisService;
@@ -37,6 +39,8 @@ public class ContestsListFragment extends Fragment
     implements LoaderManager.LoaderCallbacks<List<Contest>> {
 
     public static final int CONTEST_LOADER_ID = 1;
+    private SortOrder sortOrder = SortOrder.SubscribedFirst;
+    private int columnCount = 1;
 
     @BindView(R.id.contestsList_rv) public RecyclerView contestsRecyclerView;
     @BindView(R.id.empty_cl) public ConstraintLayout emptyLayout;
@@ -47,8 +51,6 @@ public class ContestsListFragment extends Fragment
     public ContestRepository contestRepository;
 
     private ContestRecyclerViewAdapter contestRecyclerViewAdapter = null;
-
-    private int columnCount = 1;
 
     private OnContestsListEventsListener onContestListEventsListener;
 
@@ -67,8 +69,12 @@ public class ContestsListFragment extends Fragment
         NotifierApp app = (NotifierApp) Objects.requireNonNull(getActivity()).getApplication();
         app.appComponent.inject(this);
 
-        if (getArguments() != null) {
-
+        Bundle arguments = getArguments();
+        if (savedInstanceState == null) {
+            assert arguments != null;
+            sortOrder = (SortOrder) arguments.get(Constants.BundleKeys.SortOrder);
+        } else {
+            sortOrder = (SortOrder) savedInstanceState.get(Constants.BundleKeys.SortOrder);
         }
 
         contestRecyclerViewAdapter = new ContestRecyclerViewAdapter(onContestListEventsListener);
@@ -116,7 +122,7 @@ public class ContestsListFragment extends Fragment
     @NonNull
     @Override
     public Loader<List<Contest>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new SqliteContestLoader(getActivity(), contestRepository);
+        return new SqliteContestLoader(getActivity(), contestRepository, sortOrder);
     }
 
     @Override

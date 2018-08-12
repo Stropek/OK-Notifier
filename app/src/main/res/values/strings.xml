@@ -4,11 +4,19 @@
     <!-- Content descriptions -->
     <string name="number_of_contestants">Number of contestants</string>
     <string name="number_of_problems">Number of problems</string>
-    <string name="toggle_subscribtion_to_contest">Subscribe / unsubscribe to contest</string>
+    <string name="toggle_subscription_to_contest">Subscribe / unsubscribe to contest</string>
 
     <!-- Design values -->
     <string name="design_string_contest_name">Super Contest 2018</string>
     <string name="design_string_date_range">4/16/18 4:00PM - 5/16/18 4:00PM</string>
     <string name="design_string_number">8</string>
+
+    <!-- Menu -->
     <string name="sync_contest">Sync contests</string>
+    <string name="sort">Sort</string>
+    <string name="sort_by_subscription">Subscribed first</string>
+    <string name="sort_by_name">By name</string>
+    <string name="sort_by_start_date">By start date</string>
+    <string name="sort_by_number_of_contestants">By # of contestants</string>
+    <string name="sort_by_number_of_problems">By # of problems</string>
 </resources>

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.przemolab.oknotifier.data.ContestContract;
+import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.models.Contest;
 
 import java.util.ArrayList;
@@ -21,12 +22,12 @@ public class ContestRepository {
         this.context = context;
     }
 
-    public List<Contest> getAll() {
+    public List<Contest> getAll(SortOrder sortOrder) {
         try {
             List<Contest> contests = new ArrayList<>();
             Uri contestsUri = ContestContract.ContestEntry.CONTENT_URI;
             Cursor cursor = context.getContentResolver()
-                    .query(contestsUri, null, null, null, null);
+                    .query(contestsUri, null, null, null, getSortOrder(sortOrder));
 
             if (cursor != null) {
                 while (cursor.moveToNext()) {
@@ -45,7 +46,7 @@ public class ContestRepository {
 
     public void persist(List<Contest> contests) {
         try {
-            List<Contest> persistedContests = getAll();
+            List<Contest> persistedContests = getAll(SortOrder.SubscribedFirst);
             List<Contest> updatedContests = new ArrayList<>();
 
             for (Contest contest : contests) {
@@ -119,5 +120,25 @@ public class ContestRepository {
 
         Timber.i("Creating contest: %s [%s]", contest.getName(), contest.getId());
         context.getContentResolver().insert(uri, contest.toContentValues());
+    }
+
+    private String getSortOrder(SortOrder sortOrder) {
+        String orderBy = ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED + " DESC";
+        switch (sortOrder) {
+            case ByName:
+                orderBy = ContestContract.ContestEntry.COLUMN_NAME;
+                break;
+            case ByStartDate:
+                orderBy = ContestContract.ContestEntry.COLUMN_START_DATE;
+                break;
+            case ByNumberOfProblems:
+                orderBy = ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS + " DESC";
+                break;
+            case ByNumberOfContestants:
+                orderBy = ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS + " DESC";
+                break;
+        }
+
+        return orderBy;
     }
 }

@@ -74,7 +74,7 @@
             style="@style/SmallImageButton"
             android:layout_gravity="center_vertical|end"
             android:background="@color/lightGreen"
-            android:contentDescription="@string/toggle_subscribtion_to_contest"
+            android:contentDescription="@string/toggle_subscription_to_contest"
             android:minWidth="@dimen/image_button_size_small"
             android:scaleType="fitXY"
             android:src="@drawable/ic_remove" />

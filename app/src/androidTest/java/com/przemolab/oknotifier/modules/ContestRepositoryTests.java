@@ -8,6 +8,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.przemolab.oknotifier.data.ContestContract;
+import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
@@ -55,7 +56,7 @@ public class ContestRepositoryTests {
         ContestRepository contestRepository = new ContestRepository(context);
 
         // when
-        List<Contest> result = contestRepository.getAll();
+        List<Contest> result = contestRepository.getAll(SortOrder.SubscribedFirst);
 
         // then
         assertEquals(10, result.size());

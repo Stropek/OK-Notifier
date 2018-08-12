@@ -11,12 +11,12 @@ import com.przemolab.oknotifier.DaggerTestAppComponent;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
+import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.modules.ContestRepository;
 import com.przemolab.oknotifier.modules.TestContestRepositoryModule;
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.modules.OpenKattisService;
-import com.przemolab.oknotifier.utils.DateUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,7 +25,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,7 +35,10 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.przemolab.oknotifier.Matchers.hasBackgroundColor;
+import static com.przemolab.oknotifier.matchers.Matchers.isNotSubscribed;
+import static com.przemolab.oknotifier.matchers.Matchers.isSubscribed;
+import static com.przemolab.oknotifier.utils.DataHelper.createContest;
+import static com.przemolab.oknotifier.utils.DataHelper.createContests;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -70,7 +72,7 @@ public class MainActivityTests {
     public void default_noContests_displaysEmptyView() {
         // given
         List<Contest> contests = new ArrayList<>();
-        when(contestRepository.getAll()).thenReturn(contests);
+        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         // when
         testRule.launchActivity(null);
@@ -84,33 +86,29 @@ public class MainActivityTests {
         // given
         List<Contest> contests = new ArrayList<>();
         contests.add(createContest(1));
-        when(contestRepository.getAll()).thenReturn(contests);
+        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         // when
         testRule.launchActivity(null);
 
         // then
-        onView(withText("id 1"))
-                .check(matches(isDisplayed()));
-        onView(withId(R.id.contestItem_fl))
-                .check(matches(hasBackgroundColor(context.getResources().getColor(R.color.lightGrey))));
-    }
+        onView(withText("id 1")).check(matches(isDisplayed()));
+        onView(withId(R.id.contestItem_fl)).check(matches(isNotSubscribed(context.getResources())));
+        }
 
     @Test
     public void default_contestsSubscribed_displaysContestWithAlternateColor() {
         // given
         List<Contest> contests = new ArrayList<>();
         contests.add(createContest(1, true));
-        when(contestRepository.getAll()).thenReturn(contests);
+        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         // when
         testRule.launchActivity(null);
 
         // then
-        onView(withText("id 1"))
-                .check(matches(isDisplayed()));
-        onView(withId(R.id.contestItem_fl))
-                .check(matches(hasBackgroundColor(context.getResources().getColor(R.color.lightGreen))));
+        onView(withText("id 1")).check(matches(isDisplayed()));
+        onView(withId(R.id.contestItem_fl)).check(matches(isSubscribed(context.getResources())));
     }
 
     @Test
@@ -118,7 +116,7 @@ public class MainActivityTests {
         // given
         List<Contest> contests = new ArrayList<>();
         contests.add(createContest(1));
-        when(contestRepository.getAll()).thenReturn(contests);
+        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         testRule.launchActivity(null);
 
@@ -126,15 +124,14 @@ public class MainActivityTests {
         onView(withId(R.id.subscribe_ib)).perform(click());
 
         // then
-        onView(withId(R.id.contestItem_fl))
-                .check(matches(hasBackgroundColor(context.getResources().getColor(R.color.lightGreen))));
+        onView(withId(R.id.contestItem_fl)).check(matches(isSubscribed(context.getResources())));
     }
 
     @Test
     public void toggleOrientation_displaysOngoingContests() {
         // given
         List<Contest> contests = createContests(10);
-        when(contestRepository.getAll()).thenReturn(contests);
+        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         testRule.launchActivity(null);
 
@@ -150,7 +147,7 @@ public class MainActivityTests {
     public void toggleOrientationTwice_displaysOngoingContests() {
         // given
         List<Contest> contests = createContests(10);
-        when(contestRepository.getAll()).thenReturn(contests);
+        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         testRule.launchActivity(null);
 
@@ -161,31 +158,5 @@ public class MainActivityTests {
         // then
         onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition(contests.size() - 1));
         onView(withText("id 10")).check(matches(isDisplayed()));
-    }
-
-    private Contest createContest(int id) {
-        return createContest(id, false);
-    }
-
-    private Contest createContest(int id, boolean subscribed) {
-        String idString = String.format("id %s", id);
-        String name = String.format("id %s", id);
-        Date startDate = DateUtils.getDate(2000 + id, id, id, id, id, 0);
-        Date endDate = DateUtils.getDate(2001 + id, id + 1, id + 1, id + 1, id + 1, 0);
-
-        Contest contest = new Contest(idString, name, startDate, endDate, id, id);
-        contest.setSubscribed(subscribed);
-
-        return contest;
-    }
-    
-    private List<Contest> createContests(int count) {
-        List<Contest> contests = new ArrayList<>();
-
-        for (int i = 1; i < count + 1; i++) {
-            contests.add(createContest(i));
-        }
-
-        return contests;
     }
 }

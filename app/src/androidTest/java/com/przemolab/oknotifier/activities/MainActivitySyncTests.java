@@ -18,7 +18,6 @@ import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.modules.ContestRepositoryModule;
 import com.przemolab.oknotifier.modules.OpenKattisService;
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
-import com.przemolab.oknotifier.utils.DateUtils;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
 import org.junit.After;
@@ -29,7 +28,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,7 +38,9 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.przemolab.oknotifier.Matchers.hasBackgroundColor;
+import static com.przemolab.oknotifier.matchers.Matchers.isSubscribed;
+import static com.przemolab.oknotifier.utils.DataHelper.createContest;
+import static com.przemolab.oknotifier.utils.DataHelper.createContests;
 import static com.przemolab.oknotifier.utils.DataHelper.deleteTablesData;
 import static com.przemolab.oknotifier.utils.DataHelper.insertContest;
 import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
@@ -182,26 +182,6 @@ public class MainActivitySyncTests {
 
         // then
         onView(withText("id 1 modified")).check(matches(isDisplayed()));
-        onView(withId(R.id.contestItem_fl))
-                .check(matches(hasBackgroundColor(context.getResources().getColor(R.color.lightGreen))));
-    }
-
-    private Contest createContest(int id) {
-        String idString = String.format("id %s", id);
-        String name = String.format("id %s", id);
-        Date startDate = DateUtils.getDate(2000 + id, id, id, id, id, 0);
-        Date endDate = DateUtils.getDate(2001 + id, id + 1, id + 1, id + 1, id + 1, 0);
-
-        return new Contest(idString, name, startDate, endDate, id, id);
-    }
-
-    private List<Contest> createContests(int count) {
-        List<Contest> contests = new ArrayList<>();
-
-        for (int i = 1; i < count + 1; i++) {
-            contests.add(createContest(i));
-        }
-
-        return contests;
+        onView(withId(R.id.contestItem_fl)).check(matches(isSubscribed(context.getResources())));
     }
 }

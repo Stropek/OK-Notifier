@@ -10,7 +10,9 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.R;
+import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.fragments.ContestsListFragment;
 import com.przemolab.oknotifier.models.Contest;
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity
         implements ContestsListFragment.OnContestsListEventsListener {
 
     private ContestsListFragment contestsListFragment;
+    private SortOrder sortOrder = SortOrder.SubscribedFirst;
 
     @BindView(R.id.sync_pb) ProgressBar syncProgressBar;
     @BindView(R.id.contestsList_fl) FrameLayout contestsListFrameLayout;
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadContestsListFragment() {
-        contestsListFragment = new ContestsListFragment();
+        contestsListFragment = getContestsListFragment();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -59,10 +62,32 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.sync_menu_item:
-                contestsListFragment.onSyncClicked();
-                break;
+        if (item.getItemId() == R.id.sync_menu_item) {
+            contestsListFragment.onSyncClicked();
+        } else {
+            SortOrder current = sortOrder;
+
+            switch (item.getItemId()) {
+                case R.id.sort_subscribed_first:
+                    sortOrder = SortOrder.SubscribedFirst;
+                    break;
+                case R.id.sort_by_name:
+                    sortOrder = SortOrder.ByName;
+                    break;
+                case R.id.sort_by_start_date:
+                    sortOrder = SortOrder.ByStartDate;
+                    break;
+                case R.id.sort_by_number_of_contestants:
+                    sortOrder = SortOrder.ByNumberOfContestants;
+                    break;
+                case R.id.sort_by_number_of_problems:
+                    sortOrder = SortOrder.ByNumberOfProblems;
+                    break;
+            }
+
+            if (current != sortOrder) {
+                loadContestsListFragment();
+            }
         }
 
         return true;
@@ -91,5 +116,15 @@ public class MainActivity extends AppCompatActivity
         syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         getSupportLoaderManager().restartLoader(ContestsListFragment.CONTEST_LOADER_ID, null, contestsListFragment);
+    }
+
+    public ContestsListFragment getContestsListFragment() {
+        ContestsListFragment fragment = new ContestsListFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BundleKeys.SortOrder, sortOrder);
+
+        fragment.setArguments(bundle);
+        return fragment;
     }
 }

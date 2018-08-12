@@ -11,7 +11,37 @@ import com.przemolab.oknotifier.data.ContestContract;
 import com.przemolab.oknotifier.data.ContestDbHelper;
 import com.przemolab.oknotifier.models.Contest;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public abstract class DataHelper {
+
+    public static Contest createContest(int id) {
+        return createContest(id, false);
+    }
+
+    public static Contest createContest(int id, boolean subscribed) {
+        String idString = String.format("id %s", id);
+        String name = String.format("id %s", id);
+        Date startDate = DateUtils.getDate(2000 + id, id, id, id, id, 0);
+        Date endDate = DateUtils.getDate(2001 + id, id + 1, id + 1, id + 1, id + 1, 0);
+
+        Contest contest = new Contest(idString, name, startDate, endDate, id, id);
+        contest.setSubscribed(subscribed);
+
+        return contest;
+    }
+
+    public static List<Contest> createContests(int count) {
+        List<Contest> contests = new ArrayList<>();
+
+        for (int i = 1; i < count + 1; i++) {
+            contests.add(createContest(i));
+        }
+
+        return contests;
+    }
 
     public static Uri insertContest(ContentResolver contentResolver, Uri uri, Contest contest) {
         return insertContest(contentResolver, uri,

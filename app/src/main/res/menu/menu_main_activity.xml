@@ -8,4 +8,25 @@
         android:title="@string/sync_contest"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/sort_menu_item"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        app:showAsAction="always"
+        android:title="@string/sort">
+
+        <menu>
+            <item android:id="@+id/sort_subscribed_first"
+                android:title="@string/sort_by_subscription" />
+            <item android:id="@+id/sort_by_name"
+                android:title="@string/sort_by_name" />
+            <item android:id="@+id/sort_by_start_date"
+                android:title="@string/sort_by_start_date" />
+            <item android:id="@+id/sort_by_number_of_contestants"
+                android:title="@string/sort_by_number_of_contestants" />
+            <item android:id="@+id/sort_by_number_of_problems"
+                android:title="@string/sort_by_number_of_problems" />
+        </menu>
+
+    </item>
+
 </menu>
