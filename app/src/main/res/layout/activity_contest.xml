@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.ContestActivity">
 
     <ProgressBar
         android:id="@+id/sync_pb"
@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <FrameLayout
-        android:id="@+id/contestsList_fl"
+        android:id="@+id/contestantsList_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contestsList_fl"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/contestantsList_rv"
+        android:name="com.przemolab.oknotifier.fragments.ContestantsListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.ContestantsListFragment"
+        tools:listitem="@layout/item_contestant" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/empty_cl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/sync_ib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_small"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/sync_contest"
+            android:src="@drawable/ic_sync"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.45" />
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/BigTextView"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/sync_contestants"
+            app:layout_constraintEnd_toEndOf="@+id/sync_ib"
+            app:layout_constraintStart_toStartOf="@+id/sync_ib"
+            app:layout_constraintTop_toBottomOf="@+id/sync_ib" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>

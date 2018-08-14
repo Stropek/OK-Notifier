@@ -1,5 +1,6 @@
 package com.przemolab.oknotifier;
 
+import com.przemolab.oknotifier.fragments.ContestantsListFragment;
 import com.przemolab.oknotifier.fragments.ContestsListFragment;
 import com.przemolab.oknotifier.modules.ContestRepository;
 import com.przemolab.oknotifier.modules.ContestRepositoryModule;
@@ -15,4 +16,6 @@ public interface AppComponent {
     void inject(NotifierApp app);
 
     void inject(ContestsListFragment contestsListFragment);
+
+    void inject(ContestantsListFragment contestantsListFragment);
 }

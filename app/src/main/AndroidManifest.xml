@@ -21,11 +21,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activities.ContestActivity"
+            android:parentActivityName=".activities.MainActivity" />
+
         <provider
-            android:authorities="com.przemolab.oknotifier"
             android:name=".data.ContestDataProvider"
+            android:authorities="com.przemolab.oknotifier"
             android:exported="false" />
-        
+
     </application>
-    
+
 </manifest>

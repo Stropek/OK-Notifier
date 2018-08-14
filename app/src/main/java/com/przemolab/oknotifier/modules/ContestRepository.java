@@ -7,6 +7,7 @@ import android.net.Uri;
 import com.przemolab.oknotifier.data.ContestContract;
 import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.models.Contest;
+import com.przemolab.oknotifier.models.Contestant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +43,10 @@ public class ContestRepository {
             Timber.e(ex);
             return null;
         }
+    }
+
+    public List<Contestant> getAllContestants(String contestId) {
+        return new ArrayList<>();
     }
 
     public void persist(List<Contest> contests) {
