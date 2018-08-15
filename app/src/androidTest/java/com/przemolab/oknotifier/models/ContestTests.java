@@ -58,6 +58,11 @@ public class ContestTests {
         // then
         assertEquals(fromParcel.getId(), contest.getId());
         assertEquals(fromParcel.getName(), contest.getName());
+        assertEquals(fromParcel.getStartDate(), contest.getStartDate());
+        assertEquals(fromParcel.getEndDate(), contest.getEndDate());
+        assertEquals(fromParcel.getNumberOfProblems(), contest.getNumberOfProblems());
+        assertEquals(fromParcel.getNumberOfContestants(), contest.getNumberOfContestants());
+        assertEquals(fromParcel.isSubscribed(), contest.isSubscribed());
     }
 
     @Test

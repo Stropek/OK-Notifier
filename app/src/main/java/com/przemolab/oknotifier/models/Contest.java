@@ -35,6 +35,11 @@ public class Contest implements Parcelable {
     private Contest(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
+        this.startDate = new Date(in.readLong());
+        this.endDate = new Date(in.readLong());
+        this.numberOfContestants = in.readInt();
+        this.numberOfProblems = in.readInt();
+        this.isSubscribed = in.readByte() == 1;
     }
 
     public static final Creator<Contest> CREATOR = new Creator<Contest>() {
@@ -86,6 +91,11 @@ public class Contest implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
+        dest.writeLong(startDate.getTime());
+        dest.writeLong(endDate.getTime());
+        dest.writeInt(numberOfContestants);
+        dest.writeInt(numberOfProblems);
+        dest.writeByte((byte) (isSubscribed ? 1 : 0));
     }
 
     public String getId() {
