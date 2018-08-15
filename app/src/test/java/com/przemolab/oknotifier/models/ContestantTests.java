@@ -12,7 +12,7 @@ public class ContestantTests {
         Contestant contestant = createContestant();
 
         // then
-        assertEquals("1", contestant.getId());
+        assertEquals(1, contestant.getId());
         assertEquals("abc", contestant.getContestId());
         assertEquals(1, contestant.getProblemsSolved());
         assertEquals(2, contestant.getProblemsSubmitted());
@@ -27,10 +27,10 @@ public class ContestantTests {
         Contestant contestant = createContestant();
 
         // when
-        contestant.setId("changed id");
+        contestant.setId(5);
 
         // then
-        assertEquals("changed id", contestant.getId());
+        assertEquals(5, contestant.getId());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ContestantTests {
     }
 
     private Contestant createContestant() {
-        String id = "1";
+        int id = 1;
         String contestId = "abc";
         int solved = 1;
         int submitted = 2;

@@ -18,7 +18,7 @@ public class ContestantTests {
     @Test
     public void createFromParcel_returnsParceledContestant() {
         // given
-        Contestant contestant = new Contestant("1", "abc", 1, 2, 3, 4 ,5);
+        Contestant contestant = new Contestant(1, "abc", 1, 2, 3, 4 ,5);
 
         // when
         Parcel parcel = Parcel.obtain();

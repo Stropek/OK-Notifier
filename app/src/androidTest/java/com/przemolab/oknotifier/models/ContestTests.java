@@ -10,7 +10,7 @@ import android.os.Parcel;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.przemolab.oknotifier.data.ContestContract;
+import com.przemolab.oknotifier.data.NotifierContract;
 import com.przemolab.oknotifier.utils.DateUtils;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
@@ -79,18 +79,18 @@ public class ContestTests {
         // given
         ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ContestContract.ContestEntry.COLUMN_NAME, "name");
-        contentValues.put(ContestContract.ContestEntry.COLUMN_CONTEST_ID, "abc");
-        contentValues.put(ContestContract.ContestEntry.COLUMN_START_DATE, "2010-10-16 16:00:00");
-        contentValues.put(ContestContract.ContestEntry.COLUMN_END_DATE, "2010-10-26 18:00:00");
-        contentValues.put(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, 3);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, 5);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED, 1);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_NAME, "name");
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_CONTEST_ID, "abc");
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_START_DATE, "2010-10-16 16:00:00");
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_END_DATE, "2010-10-26 18:00:00");
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, 3);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, 5);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_IS_SUBSCRIBED, 1);
         contentResolver.insert(uri, contentValues);
 
         Cursor contests = contentResolver.query(uri, null, null, null, null);
@@ -121,13 +121,13 @@ public class ContestTests {
 
         // then
         assertEquals(7, result.size());
-        assertEquals("name", result.get(ContestContract.ContestEntry.COLUMN_NAME));
-        assertEquals("abc", result.get(ContestContract.ContestEntry.COLUMN_CONTEST_ID));
-        assertEquals("2015-06-10 16:00:00", result.get(ContestContract.ContestEntry.COLUMN_START_DATE));
-        assertEquals("2015-06-15 17:00:00", result.get(ContestContract.ContestEntry.COLUMN_END_DATE));
-        assertEquals(5, result.get(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS));
-        assertEquals(10, result.get(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS));
-        assertEquals(false, result.get(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED));
+        assertEquals("name", result.get(NotifierContract.ContestEntry.COLUMN_NAME));
+        assertEquals("abc", result.get(NotifierContract.ContestEntry.COLUMN_CONTEST_ID));
+        assertEquals("2015-06-10 16:00:00", result.get(NotifierContract.ContestEntry.COLUMN_START_DATE));
+        assertEquals("2015-06-15 17:00:00", result.get(NotifierContract.ContestEntry.COLUMN_END_DATE));
+        assertEquals(5, result.get(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS));
+        assertEquals(10, result.get(NotifierContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS));
+        assertEquals(false, result.get(NotifierContract.ContestEntry.COLUMN_IS_SUBSCRIBED));
     }
 
     private Contest createContest() {

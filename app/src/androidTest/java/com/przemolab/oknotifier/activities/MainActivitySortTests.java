@@ -12,7 +12,7 @@ import com.przemolab.oknotifier.DaggerTestAppComponent;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
-import com.przemolab.oknotifier.data.ContestContract;
+import com.przemolab.oknotifier.data.NotifierContract;
 import com.przemolab.oknotifier.modules.ContestRepositoryModule;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
@@ -64,7 +64,7 @@ public class MainActivitySortTests {
         // given
         ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
@@ -98,7 +98,7 @@ public class MainActivitySortTests {
     public void sort_byName_sortsContestsByName() {
         ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
@@ -130,7 +130,7 @@ public class MainActivitySortTests {
     public void sort_byStartDate_sortsContestsByStartDate() {
         ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
@@ -161,7 +161,7 @@ public class MainActivitySortTests {
     public void sort_byNumberOfContestants_sortsContestsByNumberOfContestants() {
         ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
@@ -193,7 +193,7 @@ public class MainActivitySortTests {
     public void sort_byNumberOfProblems_sortsContestsByNumberOfProblems() {
         ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 

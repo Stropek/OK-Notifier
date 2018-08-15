@@ -7,8 +7,8 @@ import android.database.ContentObserver;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.przemolab.oknotifier.data.ContestContract;
-import com.przemolab.oknotifier.data.ContestDbHelper;
+import com.przemolab.oknotifier.data.NotifierContract;
+import com.przemolab.oknotifier.data.NotifierDbHelper;
 import com.przemolab.oknotifier.models.Contest;
 
 import java.util.ArrayList;
@@ -65,15 +65,29 @@ public abstract class DataHelper {
 
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(ContestContract.ContestEntry.COLUMN_NAME, name);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_CONTEST_ID, id);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_START_DATE, startDate);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_END_DATE, endDate);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, numOfContestants);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, numOfProblems);
-        contentValues.put(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED, isSubscribed);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_NAME, name);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_CONTEST_ID, id);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_START_DATE, startDate);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_END_DATE, endDate);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, numOfContestants);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, numOfProblems);
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_IS_SUBSCRIBED, isSubscribed);
 
         return contentResolver.insert(uri, contentValues);
+    }
+
+    public static Uri insertContestant(ContentResolver contentResolver, Uri uri, String contestId) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(NotifierContract.ContestantEntry.COLUMN_CONTEST_ID, contestId);
+        contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED, 1);
+        contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SUBMITTED, 2);
+        contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_FAILED, 3);
+        contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_NOT_TRIED, 4);
+        contentValues.put(NotifierContract.ContestantEntry.COLUMN_TIME, 5);
+
+        return contentResolver.insert(uri, contentValues);
+
     }
 
     public static void setObservedUriOnContentResolver(ContentResolver contentResolver, Uri uri, ContentObserver contentObserver) {
@@ -87,10 +101,11 @@ public abstract class DataHelper {
     }
 
     public static void deleteTablesData(Context context) {
-        ContestDbHelper dbHelper = new ContestDbHelper(context);
+        NotifierDbHelper dbHelper = new NotifierDbHelper(context);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         // cleanup contests before tests start
-        database.delete(ContestContract.ContestEntry.TABLE_NAME, null, null);
+        database.delete(NotifierContract.ContestEntry.TABLE_NAME, null, null);
+        database.delete(NotifierContract.ContestantEntry.TABLE_NAME, null, null);
     }
 }

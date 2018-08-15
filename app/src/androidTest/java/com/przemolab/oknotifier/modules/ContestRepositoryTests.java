@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.przemolab.oknotifier.data.ContestContract;
+import com.przemolab.oknotifier.data.NotifierContract;
 import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.utils.TestContentObserver;
@@ -44,7 +44,7 @@ public class ContestRepositoryTests {
         // given
         ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 

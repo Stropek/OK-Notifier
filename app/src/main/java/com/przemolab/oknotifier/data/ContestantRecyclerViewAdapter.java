@@ -41,6 +41,7 @@ public class ContestantRecyclerViewAdapter extends RecyclerView.Adapter<Contesta
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Resources resources = holder.view.getResources();
+        // TODO: assign values to views
 
         final Contestant contestant = contestants.get(position);
 

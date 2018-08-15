@@ -11,21 +11,27 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-public class ContestDataProvider extends ContentProvider {
+public class NotifierDataProvider extends ContentProvider {
 
     private Context _context;
 
-    private static ContestDbHelper db;
+    private static NotifierDbHelper db;
     private static UriMatcher uriMatcher = buildUriMatcher();
 
     private static final int CONTEST_ENTRIES = 100;
     private static final int CONTEST_ENTRIES_BY_IDS = 101;
 
+    private static final int CONTESTANT_ENTRIES = 200;
+    private static final int CONTESTANT_ENTRIES_BY_CONTEST_ID = 201;
+
     private static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        uriMatcher.addURI(ContestContract.AUTHORITY, ContestContract.PATH_CONTESTS, CONTEST_ENTRIES);
-        uriMatcher.addURI(ContestContract.AUTHORITY, ContestContract.PATH_CONTESTS + "/byContestIds", CONTEST_ENTRIES_BY_IDS);
+        uriMatcher.addURI(NotifierContract.AUTHORITY, NotifierContract.PATH_CONTESTS, CONTEST_ENTRIES);
+        uriMatcher.addURI(NotifierContract.AUTHORITY, NotifierContract.PATH_CONTESTS + "/byContestIds", CONTEST_ENTRIES_BY_IDS);
+
+        uriMatcher.addURI(NotifierContract.AUTHORITY, NotifierContract.PATH_CONTESTANTS, CONTESTANT_ENTRIES);
+        uriMatcher.addURI(NotifierContract.AUTHORITY, NotifierContract.PATH_CONTESTANTS + "/byContestId/*", CONTESTANT_ENTRIES_BY_CONTEST_ID);
 
         return uriMatcher;
     }
@@ -33,7 +39,7 @@ public class ContestDataProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         _context = getContext();
-        db = new ContestDbHelper(_context);
+        db = new NotifierDbHelper(_context);
 
         return true;
     }
@@ -41,15 +47,25 @@ public class ContestDataProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        SQLiteDatabase db = ContestDataProvider.db.getReadableDatabase();
+        SQLiteDatabase db = NotifierDataProvider.db.getReadableDatabase();
         Cursor cursor;
 
         switch (uriMatcher.match(uri)) {
             case CONTEST_ENTRIES:
-                cursor = db.query(ContestContract.ContestEntry.TABLE_NAME,
+                cursor = db.query(NotifierContract.ContestEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            case CONTESTANT_ENTRIES_BY_CONTEST_ID:
+                String contestId = uri.getLastPathSegment();
+                cursor = db.query(NotifierContract.ContestantEntry.TABLE_NAME,
+                        projection,
+                        NotifierContract.ContestantEntry.COLUMN_CONTEST_ID +"=?",
+                        new String[] { contestId },
                         null,
                         null,
                         sortOrder);
@@ -70,15 +86,23 @@ public class ContestDataProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         Uri returnUri;
-        SQLiteDatabase db = ContestDataProvider.db.getWritableDatabase();
+        SQLiteDatabase db = NotifierDataProvider.db.getWritableDatabase();
 
         switch (uriMatcher.match(uri)) {
             case CONTEST_ENTRIES:
-                long id = db.insert(ContestContract.ContestEntry.TABLE_NAME, null, values);
-                if (id > -1) {
-                    returnUri = uri.buildUpon().appendPath(String.format("%s", id)).build();
+                long contestId = db.insert(NotifierContract.ContestEntry.TABLE_NAME, null, values);
+                if (contestId > -1) {
+                    returnUri = uri.buildUpon().appendPath(String.format("%s", contestId)).build();
                 } else {
                     throw new SQLException("Failed to insert a new contest into: " + uri);
+                }
+                break;
+            case CONTESTANT_ENTRIES:
+                long contestantId = db.insert(NotifierContract.ContestantEntry.TABLE_NAME, null, values);
+                if (contestantId > -1) {
+                    returnUri = uri.buildUpon().appendPath(String.format("%s", contestantId)).build();
+                } else {
+                    throw new SQLException("Failed to insert a new contestant into: " + uri);
                 }
                 break;
             default:
@@ -92,7 +116,7 @@ public class ContestDataProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         int deleted = 0;
-        SQLiteDatabase db = ContestDataProvider.db.getWritableDatabase();
+        SQLiteDatabase db = NotifierDataProvider.db.getWritableDatabase();
 
         switch (uriMatcher.match(uri)) {
             case CONTEST_ENTRIES_BY_IDS:
@@ -104,8 +128,8 @@ public class ContestDataProvider extends ContentProvider {
                     }
                     inCondition.deleteCharAt(inCondition.lastIndexOf(","));
 
-                    deleted = db.delete(ContestContract.ContestEntry.TABLE_NAME,
-                            ContestContract.ContestEntry.COLUMN_CONTEST_ID + " IN (" + inCondition.toString() + ")",
+                    deleted = db.delete(NotifierContract.ContestEntry.TABLE_NAME,
+                            NotifierContract.ContestEntry.COLUMN_CONTEST_ID + " IN (" + inCondition.toString() + ")",
                             null);
                 }
 
@@ -120,11 +144,11 @@ public class ContestDataProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         int updated;
-        SQLiteDatabase db = ContestDataProvider.db.getWritableDatabase();
+        SQLiteDatabase db = NotifierDataProvider.db.getWritableDatabase();
 
         switch (uriMatcher.match(uri)) {
             case CONTEST_ENTRIES:
-                updated = db.update(ContestContract.ContestEntry.TABLE_NAME, values, selection, selectionArgs);
+                updated = db.update(NotifierContract.ContestEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown operation URI: " + uri);

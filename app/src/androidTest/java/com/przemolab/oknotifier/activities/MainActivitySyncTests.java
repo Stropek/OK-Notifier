@@ -13,7 +13,7 @@ import com.przemolab.oknotifier.DaggerTestAppComponent;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
-import com.przemolab.oknotifier.data.ContestContract;
+import com.przemolab.oknotifier.data.NotifierContract;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.modules.ContestRepositoryModule;
 import com.przemolab.oknotifier.modules.OpenKattisService;
@@ -83,7 +83,7 @@ public class MainActivitySyncTests {
         // given
         ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
@@ -105,7 +105,7 @@ public class MainActivitySyncTests {
         // given
         ContentResolver contentResolver = context.getContentResolver();
         TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
@@ -131,7 +131,7 @@ public class MainActivitySyncTests {
         // given
         ContentResolver contentResolver = context.getContentResolver();
         TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
@@ -161,7 +161,7 @@ public class MainActivitySyncTests {
         // given
         ContentResolver contentResolver = context.getContentResolver();
         TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 

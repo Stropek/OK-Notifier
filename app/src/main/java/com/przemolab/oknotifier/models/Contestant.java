@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class Contestant implements Parcelable {
 
-    private String id;
+    private int id;
     private String contestId;
     private int problemsSolved;
     private int problemsSubmitted;
@@ -15,7 +15,7 @@ public class Contestant implements Parcelable {
 
     private Contestant() {}
 
-    public Contestant(String id, String contestId, int problemsSolved, int problemsSubmitted, int problemsFailed, int problemsNotTried, int time) {
+    public Contestant(int id, String contestId, int problemsSolved, int problemsSubmitted, int problemsFailed, int problemsNotTried, int time) {
         this.id = id;
         this.contestId = contestId;
         this.problemsSolved = problemsSolved;
@@ -26,7 +26,7 @@ public class Contestant implements Parcelable {
     }
 
     public Contestant(Parcel in) {
-        id = in.readString();
+        id = in.readInt();
         contestId = in.readString();
         problemsSolved = in.readInt();
         problemsSubmitted = in.readInt();
@@ -54,7 +54,7 @@ public class Contestant implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeInt(id);
         dest.writeString(contestId);
         dest.writeInt(problemsSolved);
         dest.writeInt(problemsSubmitted);
@@ -63,11 +63,11 @@ public class Contestant implements Parcelable {
         dest.writeInt(time);
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

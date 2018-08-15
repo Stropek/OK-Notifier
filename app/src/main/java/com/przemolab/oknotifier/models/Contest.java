@@ -6,7 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.przemolab.oknotifier.utils.DateUtils;
-import com.przemolab.oknotifier.data.ContestContract;
+import com.przemolab.oknotifier.data.NotifierContract;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -57,13 +57,13 @@ public class Contest implements Parcelable {
     public ContentValues toContentValues() {
         ContentValues values = new ContentValues();
 
-        values.put(ContestContract.ContestEntry.COLUMN_NAME, this.name);
-        values.put(ContestContract.ContestEntry.COLUMN_CONTEST_ID, this.id);
-        values.put(ContestContract.ContestEntry.COLUMN_START_DATE, DateUtils.formatDate(this.startDate, DateUtils.SQLiteDateTimeFormat));
-        values.put(ContestContract.ContestEntry.COLUMN_END_DATE, DateUtils.formatDate(this.endDate, DateUtils.SQLiteDateTimeFormat));
-        values.put(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, this.numberOfContestants);
-        values.put(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, this.numberOfProblems);
-        values.put(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED, this.isSubscribed);
+        values.put(NotifierContract.ContestEntry.COLUMN_NAME, this.name);
+        values.put(NotifierContract.ContestEntry.COLUMN_CONTEST_ID, this.id);
+        values.put(NotifierContract.ContestEntry.COLUMN_START_DATE, DateUtils.formatDate(this.startDate, DateUtils.SQLiteDateTimeFormat));
+        values.put(NotifierContract.ContestEntry.COLUMN_END_DATE, DateUtils.formatDate(this.endDate, DateUtils.SQLiteDateTimeFormat));
+        values.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, this.numberOfContestants);
+        values.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, this.numberOfProblems);
+        values.put(NotifierContract.ContestEntry.COLUMN_IS_SUBSCRIBED, this.isSubscribed);
 
         return values;
     }
@@ -71,13 +71,13 @@ public class Contest implements Parcelable {
     public static Contest getFromCursor(Cursor cursor) throws ParseException {
         Contest contest = new Contest();
 
-        contest.setId(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_CONTEST_ID)));
-        contest.setName(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_NAME)));
-        contest.setStartDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_START_DATE)), DateUtils.SQLiteDateTimeFormat));
-        contest.setEndDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_END_DATE)), DateUtils.SQLiteDateTimeFormat));
-        contest.setNumberOfContestants(cursor.getInt(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS)));
-        contest.setNumberOfProblems(cursor.getInt(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS)));
-        contest.setSubscribed(cursor.getInt(cursor.getColumnIndex(ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED)) == 1);
+        contest.setId(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_CONTEST_ID)));
+        contest.setName(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_NAME)));
+        contest.setStartDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_START_DATE)), DateUtils.SQLiteDateTimeFormat));
+        contest.setEndDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_END_DATE)), DateUtils.SQLiteDateTimeFormat));
+        contest.setNumberOfContestants(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS)));
+        contest.setNumberOfProblems(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS)));
+        contest.setSubscribed(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_IS_SUBSCRIBED)) == 1);
 
         return contest;
     }

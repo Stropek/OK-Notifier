@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.przemolab.oknotifier.data.ContestContract;
+import com.przemolab.oknotifier.data.NotifierContract;
 import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.models.Contestant;
@@ -26,7 +26,7 @@ public class ContestRepository {
     public List<Contest> getAll(SortOrder sortOrder) {
         try {
             List<Contest> contests = new ArrayList<>();
-            Uri contestsUri = ContestContract.ContestEntry.CONTENT_URI;
+            Uri contestsUri = NotifierContract.ContestEntry.CONTENT_URI;
             Cursor cursor = context.getContentResolver()
                     .query(contestsUri, null, null, null, getSortOrder(sortOrder));
 
@@ -99,16 +99,16 @@ public class ContestRepository {
     }
 
     public void updateContest(Contest contest) {
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         Timber.i("Updating contest: %s [%s]", contest.getName(), contest.getId());
         context.getContentResolver().update(uri, contest.toContentValues(),
-                ContestContract.ContestEntry.COLUMN_CONTEST_ID + "=?",
+                NotifierContract.ContestEntry.COLUMN_CONTEST_ID + "=?",
                 new String[] {contest.getId()});
     }
 
     private void deleteContests(List<Contest> contestsToDelete) {
-        Uri deleteUri = ContestContract.ContestEntry.CONTENT_URI
+        Uri deleteUri = NotifierContract.ContestEntry.CONTENT_URI
                 .buildUpon().appendPath("byContestIds").build();
 
         String[] contestsIds = new String[contestsToDelete.size()];
@@ -121,26 +121,26 @@ public class ContestRepository {
     }
 
     private void createContest(Contest contest) {
-        Uri uri = ContestContract.ContestEntry.CONTENT_URI;
+        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
         Timber.i("Creating contest: %s [%s]", contest.getName(), contest.getId());
         context.getContentResolver().insert(uri, contest.toContentValues());
     }
 
     private String getSortOrder(SortOrder sortOrder) {
-        String orderBy = ContestContract.ContestEntry.COLUMN_IS_SUBSCRIBED + " DESC";
+        String orderBy = NotifierContract.ContestEntry.COLUMN_IS_SUBSCRIBED + " DESC";
         switch (sortOrder) {
             case ByName:
-                orderBy = ContestContract.ContestEntry.COLUMN_NAME;
+                orderBy = NotifierContract.ContestEntry.COLUMN_NAME;
                 break;
             case ByStartDate:
-                orderBy = ContestContract.ContestEntry.COLUMN_START_DATE;
+                orderBy = NotifierContract.ContestEntry.COLUMN_START_DATE;
                 break;
             case ByNumberOfProblems:
-                orderBy = ContestContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS + " DESC";
+                orderBy = NotifierContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS + " DESC";
                 break;
             case ByNumberOfContestants:
-                orderBy = ContestContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS + " DESC";
+                orderBy = NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS + " DESC";
                 break;
         }
 
