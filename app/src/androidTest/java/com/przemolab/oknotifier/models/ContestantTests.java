@@ -63,9 +63,10 @@ public class ContestantTests {
         // given
         ContentResolver contentResolver = context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
+        Uri insertUri = NotifierContract.ContestantEntry.CONTENT_URI;
+        Uri queryUri =  insertUri.buildUpon().appendPath("byContestId").appendPath("abc").build();
 
-        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        setObservedUriOnContentResolver(contentResolver, insertUri, contentObserver);
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_NAME, "name");
@@ -75,9 +76,9 @@ public class ContestantTests {
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_FAILED, 3);
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_NOT_TRIED, 4);
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_TIME, 5);
-        contentResolver.insert(uri, contentValues);
+        contentResolver.insert(insertUri, contentValues);
 
-        Cursor contestants = contentResolver.query(uri, null, null, null, null);
+        Cursor contestants = contentResolver.query(queryUri, null, null, null, null);
 
         assertNotNull(contestants);
         contestants.moveToFirst();
