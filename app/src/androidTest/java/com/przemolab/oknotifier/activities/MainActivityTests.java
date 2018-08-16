@@ -12,6 +12,7 @@ import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
 import com.przemolab.oknotifier.enums.SortOrder;
+import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.modules.NotifierRepository;
 import com.przemolab.oknotifier.modules.TestNotifierRepositoryModule;
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
@@ -38,6 +39,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.przemolab.oknotifier.matchers.Matchers.isNotSubscribed;
 import static com.przemolab.oknotifier.matchers.Matchers.isSubscribed;
 import static com.przemolab.oknotifier.utils.DataHelper.createContest;
+import static com.przemolab.oknotifier.utils.DataHelper.createContestants;
 import static com.przemolab.oknotifier.utils.DataHelper.createContests;
 import static org.mockito.Mockito.when;
 
@@ -158,5 +160,24 @@ public class MainActivityTests {
         // then
         onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition(contests.size() - 1));
         onView(withText("id 10")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void contestClicked_activityWithContestStandingsOpens() {
+        // given
+        List<Contest> contests = createContests(1);
+        List<Contestant> contestants = createContestants(3, "id 1");
+        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
+        when(notifierRepository.getAllContestants("id 1")).thenReturn(contestants);
+
+        testRule.launchActivity(null);
+
+        // when
+        onView(withId(R.id.contestItem_fl)).perform(click());
+
+        // then
+        onView(withText("name 1")).check(matches(isDisplayed()));
+        onView(withText("name 2")).check(matches(isDisplayed()));
+        onView(withText("name 3")).check(matches(isDisplayed()));
     }
 }

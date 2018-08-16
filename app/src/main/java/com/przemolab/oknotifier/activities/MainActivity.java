@@ -1,5 +1,6 @@
 package com.przemolab.oknotifier.activities;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -92,7 +93,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onContestClicked(Contest contest) {
-        Toast.makeText(this, "Contest from main activity", Toast.LENGTH_LONG).show();
+        // TODO: alternate handling for master-slave view
+        Intent contestIntent = new Intent(this, ContestActivity.class);
+        contestIntent.putExtra(Constants.BundleKeys.ContestId, contest.getId());
+        startActivity(contestIntent);
     }
 
     @Override
