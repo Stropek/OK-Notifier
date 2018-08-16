@@ -1,6 +1,5 @@
 package com.przemolab.oknotifier.data;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,10 +39,14 @@ public class ContestantRecyclerViewAdapter extends RecyclerView.Adapter<Contesta
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Resources resources = holder.view.getResources();
-        // TODO: assign values to views
-
         final Contestant contestant = contestants.get(position);
+
+        holder.userName.setText(contestant.getName());
+        holder.userTime.setText(String.valueOf(contestant.getTime()));
+        holder.solved.setText(String.valueOf(contestant.getProblemsSolved()));
+        holder.submitted.setText(String.valueOf(contestant.getProblemsSubmitted()));
+        holder.failed.setText(String.valueOf(contestant.getProblemsFailed()));
+        holder.notTried.setText(String.valueOf(contestant.getProblemsNotTried()));
 
         holder.expand.setOnClickListener(new View.OnClickListener() {
             @Override

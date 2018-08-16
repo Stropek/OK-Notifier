@@ -31,6 +31,7 @@ public class NotifierContract {
 
         public static final String TABLE_NAME = "contestants";
 
+        public static final String COLUMN_NAME = "name";
         public static final String COLUMN_CONTEST_ID = "contest_id";
         public static final String COLUMN_CREATED_DATE = "created_date";
         public static final String COLUMN_LAST_MODIFIED_DATE = "last_modified_date";

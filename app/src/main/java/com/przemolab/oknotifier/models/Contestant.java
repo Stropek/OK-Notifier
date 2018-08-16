@@ -1,11 +1,15 @@
 package com.przemolab.oknotifier.models;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.przemolab.oknotifier.data.NotifierContract;
 
 public class Contestant implements Parcelable {
 
     private int id;
+    private String name;
     private String contestId;
     private int problemsSolved;
     private int problemsSubmitted;
@@ -15,8 +19,9 @@ public class Contestant implements Parcelable {
 
     private Contestant() {}
 
-    public Contestant(int id, String contestId, int problemsSolved, int problemsSubmitted, int problemsFailed, int problemsNotTried, int time) {
+    public Contestant(int id, String name, String contestId, int problemsSolved, int problemsSubmitted, int problemsFailed, int problemsNotTried, int time) {
         this.id = id;
+        this.name = name;
         this.contestId = contestId;
         this.problemsSolved = problemsSolved;
         this.problemsSubmitted = problemsSubmitted;
@@ -27,6 +32,7 @@ public class Contestant implements Parcelable {
 
     public Contestant(Parcel in) {
         id = in.readInt();
+        name = in.readString();
         contestId = in.readString();
         problemsSolved = in.readInt();
         problemsSubmitted = in.readInt();
@@ -47,6 +53,20 @@ public class Contestant implements Parcelable {
         }
     };
 
+    public static Contestant getFromCursor(Cursor cursor) {
+        Contestant contestant = new Contestant();
+
+        contestant.setName(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_NAME)));
+        contestant.setContestId(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_CONTEST_ID)));
+        contestant.setProblemsSolved(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED)));
+        contestant.setProblemsSubmitted(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SUBMITTED)));
+        contestant.setProblemsFailed(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_FAILED)));
+        contestant.setProblemsNotTried(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_NOT_TRIED)));
+        contestant.setTime(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_TIME)));
+
+        return contestant;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -55,6 +75,7 @@ public class Contestant implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
+        dest.writeString(name);
         dest.writeString(contestId);
         dest.writeInt(problemsSolved);
         dest.writeInt(problemsSubmitted);
@@ -69,6 +90,14 @@ public class Contestant implements Parcelable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContestId() {

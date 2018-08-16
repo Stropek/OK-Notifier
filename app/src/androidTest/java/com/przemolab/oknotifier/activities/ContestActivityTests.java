@@ -1,20 +1,21 @@
 package com.przemolab.oknotifier.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.DaggerTestAppComponent;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
-import com.przemolab.oknotifier.enums.SortOrder;
-import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.models.Contestant;
-import com.przemolab.oknotifier.modules.ContestRepository;
+import com.przemolab.oknotifier.modules.NotifierRepository;
 import com.przemolab.oknotifier.modules.OpenKattisService;
-import com.przemolab.oknotifier.modules.TestContestRepositoryModule;
+import com.przemolab.oknotifier.modules.TestNotifierRepositoryModule;
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
 
 import org.junit.Before;
@@ -32,6 +33,9 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.przemolab.oknotifier.utils.DataHelper.createContest;
+import static com.przemolab.oknotifier.utils.DataHelper.createContestants;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -45,7 +49,7 @@ public class ContestActivityTests {
     @Inject
     OpenKattisService openKattisService;
     @Inject
-    ContestRepository contestRepository;
+    NotifierRepository notifierRepository;
 
     @Before
     public void setUp() {
@@ -54,7 +58,7 @@ public class ContestActivityTests {
 
         TestAppComponent testAppComponent = DaggerTestAppComponent.builder()
                 .openKattisServiceModule(new TestOpenKattisServiceModule())
-                .contestRepositoryModule(new TestContestRepositoryModule(app))
+                .notifierRepositoryModule(new TestNotifierRepositoryModule(app))
                 .build();
 
         app.appComponent = testAppComponent;
@@ -65,12 +69,32 @@ public class ContestActivityTests {
     public void default_noContestants_displaysEmptyView() {
         // given
         List<Contestant> contestants = new ArrayList<>();
-        when(contestRepository.getAllContestants("contestId")).thenReturn(contestants);
+        when(notifierRepository.getAllContestants("contestId")).thenReturn(contestants);
+
+        Intent startIntent = new Intent();
+        startIntent.putExtra(Constants.BundleKeys.ContestId, "contestId");
 
         // when
-        testRule.launchActivity(null);
+        testRule.launchActivity(startIntent);
 
         // then
         onView(withId(R.id.empty_cl)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void default_contestStandings_displaysContestStandings() {
+        // given
+        List<Contestant> contestants = createContestants(5, "abc");
+        when(notifierRepository.getAllContestants("abc")).thenReturn(contestants);
+
+        Intent startIntent = new Intent();
+        startIntent.putExtra(Constants.BundleKeys.ContestId, "abc");
+
+        // when
+        testRule.launchActivity(startIntent);
+
+        // then
+        onView(withId(R.id.contestantsList_rv)).perform(RecyclerViewActions.scrollToPosition(contestants.size() - 1));
+        onView(withText("name 4")).check(matches(isDisplayed()));
     }
 }

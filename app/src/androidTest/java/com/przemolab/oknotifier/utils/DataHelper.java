@@ -10,6 +10,7 @@ import android.net.Uri;
 import com.przemolab.oknotifier.data.NotifierContract;
 import com.przemolab.oknotifier.data.NotifierDbHelper;
 import com.przemolab.oknotifier.models.Contest;
+import com.przemolab.oknotifier.models.Contestant;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,11 +37,27 @@ public abstract class DataHelper {
     public static List<Contest> createContests(int count) {
         List<Contest> contests = new ArrayList<>();
 
-        for (int i = 1; i < count + 1; i++) {
+        for (int i = 1; i <= count; i++) {
             contests.add(createContest(i));
         }
 
         return contests;
+    }
+
+    public static Contestant createContestant(int id, String contestId) {
+        String name = String.format("name %s", id);
+
+        return new Contestant(id, name, contestId, 0, 0, 0, 0, 0);
+    }
+
+    public static List<Contestant> createContestants(int count, String contestId) {
+        List<Contestant> contestants = new ArrayList<>();
+
+        for (int i = 1; i <= count; i++) {
+            contestants.add(createContestant(i, contestId));
+        }
+
+        return contestants;
     }
 
     public static Uri insertContest(ContentResolver contentResolver, Uri uri, Contest contest) {
@@ -79,6 +96,7 @@ public abstract class DataHelper {
     public static Uri insertContestant(ContentResolver contentResolver, Uri uri, String contestId) {
         ContentValues contentValues = new ContentValues();
 
+        contentValues.put(NotifierContract.ContestantEntry.COLUMN_NAME, "john doe");
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_CONTEST_ID, contestId);
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED, 1);
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SUBMITTED, 2);

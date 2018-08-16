@@ -8,17 +8,17 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class ContestRepositoryModule {
+public class NotifierRepositoryModule {
 
     private Context context;
 
-    public ContestRepositoryModule(Context context) {
+    public NotifierRepositoryModule(Context context) {
         this.context = context;
     }
 
     @Provides
     @Singleton
-    public ContestRepository provideContestRepository() {
-        return new ContestRepository(context);
+    public NotifierRepository provideNotifierRepository() {
+        return new NotifierRepository(context);
     }
 }

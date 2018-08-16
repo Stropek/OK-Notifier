@@ -5,7 +5,7 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.models.Contest;
-import com.przemolab.oknotifier.modules.ContestRepository;
+import com.przemolab.oknotifier.modules.NotifierRepository;
 
 import java.util.List;
 
@@ -14,12 +14,12 @@ import timber.log.Timber;
 public class SqliteContestLoader extends AsyncTaskLoader<List<Contest>> {
 
     private List<Contest> contests = null;
-    private ContestRepository contestRepository;
+    private NotifierRepository notifierRepository;
     private SortOrder sortOrder;
 
-    public SqliteContestLoader(Context context, ContestRepository contestRepository, SortOrder sortOrder) {
+    public SqliteContestLoader(Context context, NotifierRepository notifierRepository, SortOrder sortOrder) {
         super(context);
-        this.contestRepository = contestRepository;
+        this.notifierRepository = notifierRepository;
         this.sortOrder = sortOrder;
     }
 
@@ -27,7 +27,7 @@ public class SqliteContestLoader extends AsyncTaskLoader<List<Contest>> {
     public List<Contest> loadInBackground() {
         try {
             Timber.d("Loading contests from SQLite");
-            return contestRepository.getAll(sortOrder);
+            return notifierRepository.getAll(sortOrder);
         } catch (Exception ex) {
             Timber.e(ex);
             return null;

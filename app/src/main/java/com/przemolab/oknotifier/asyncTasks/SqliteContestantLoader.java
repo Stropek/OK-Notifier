@@ -4,9 +4,8 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.przemolab.oknotifier.models.Contestant;
-import com.przemolab.oknotifier.modules.ContestRepository;
+import com.przemolab.oknotifier.modules.NotifierRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
@@ -14,20 +13,20 @@ import timber.log.Timber;
 public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
 
     private List<Contestant> contestants = null;
-//    private ContestRepository contestRepository;
+    private NotifierRepository notifierRepository;
+    private String contestId;
 
-    public SqliteContestantLoader(Context context) {
+    public SqliteContestantLoader(Context context, NotifierRepository notifierRepository, String contestId) {
         super(context);
-//        this.contestRepository = contestRepository;
+        this.notifierRepository = notifierRepository;
+        this.contestId = contestId;
     }
 
     @Override
     public List<Contestant> loadInBackground() {
         try {
             Timber.d("Loading contestants from SQLite");
-
-            // TODO:
-            return new ArrayList<>();
+            return notifierRepository.getAllContestants(contestId);
         } catch (Exception ex) {
             Timber.e(ex);
             return null;

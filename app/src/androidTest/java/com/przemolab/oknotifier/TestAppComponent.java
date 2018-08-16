@@ -4,7 +4,7 @@ import com.przemolab.oknotifier.activities.ContestActivityTests;
 import com.przemolab.oknotifier.activities.MainActivitySortTests;
 import com.przemolab.oknotifier.activities.MainActivitySyncTests;
 import com.przemolab.oknotifier.activities.MainActivityTests;
-import com.przemolab.oknotifier.modules.ContestRepositoryModule;
+import com.przemolab.oknotifier.modules.NotifierRepositoryModule;
 import com.przemolab.oknotifier.modules.OpenKattisServiceModule;
 
 import javax.inject.Singleton;
@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { OpenKattisServiceModule.class, ContestRepositoryModule.class } )
+@Component(modules = { OpenKattisServiceModule.class, NotifierRepositoryModule.class } )
 public interface TestAppComponent extends AppComponent {
 
     void inject(MainActivityTests test);

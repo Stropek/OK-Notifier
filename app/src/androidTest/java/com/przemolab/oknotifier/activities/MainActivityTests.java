@@ -12,8 +12,8 @@ import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
 import com.przemolab.oknotifier.enums.SortOrder;
-import com.przemolab.oknotifier.modules.ContestRepository;
-import com.przemolab.oknotifier.modules.TestContestRepositoryModule;
+import com.przemolab.oknotifier.modules.NotifierRepository;
+import com.przemolab.oknotifier.modules.TestNotifierRepositoryModule;
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.modules.OpenKattisService;
@@ -52,7 +52,7 @@ public class MainActivityTests {
     @Inject
     OpenKattisService openKattisService;
     @Inject
-    ContestRepository contestRepository;
+    NotifierRepository notifierRepository;
 
     @Before
     public void setUp() {
@@ -61,7 +61,7 @@ public class MainActivityTests {
 
         TestAppComponent testAppComponent = DaggerTestAppComponent.builder()
                 .openKattisServiceModule(new TestOpenKattisServiceModule())
-                .contestRepositoryModule(new TestContestRepositoryModule(app))
+                .notifierRepositoryModule(new TestNotifierRepositoryModule(app))
                 .build();
 
         app.appComponent = testAppComponent;
@@ -72,7 +72,7 @@ public class MainActivityTests {
     public void default_noContests_displaysEmptyView() {
         // given
         List<Contest> contests = new ArrayList<>();
-        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
+        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         // when
         testRule.launchActivity(null);
@@ -86,7 +86,7 @@ public class MainActivityTests {
         // given
         List<Contest> contests = new ArrayList<>();
         contests.add(createContest(1));
-        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
+        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         // when
         testRule.launchActivity(null);
@@ -101,7 +101,7 @@ public class MainActivityTests {
         // given
         List<Contest> contests = new ArrayList<>();
         contests.add(createContest(1, true));
-        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
+        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         // when
         testRule.launchActivity(null);
@@ -116,7 +116,7 @@ public class MainActivityTests {
         // given
         List<Contest> contests = new ArrayList<>();
         contests.add(createContest(1));
-        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
+        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         testRule.launchActivity(null);
 
@@ -131,7 +131,7 @@ public class MainActivityTests {
     public void toggleOrientation_displaysOngoingContests() {
         // given
         List<Contest> contests = createContests(10);
-        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
+        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         testRule.launchActivity(null);
 
@@ -147,7 +147,7 @@ public class MainActivityTests {
     public void toggleOrientationTwice_displaysOngoingContests() {
         // given
         List<Contest> contests = createContests(10);
-        when(contestRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
+        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         testRule.launchActivity(null);
 

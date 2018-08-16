@@ -15,11 +15,11 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class ContestRepository {
+public class NotifierRepository {
 
     private Context context;
 
-    public ContestRepository(Context context) {
+    public NotifierRepository(Context context) {
         this.context = context;
     }
 
@@ -46,7 +46,28 @@ public class ContestRepository {
     }
 
     public List<Contestant> getAllContestants(String contestId) {
-        return new ArrayList<>();
+        try {
+            List<Contestant> contestants = new ArrayList<>();
+            Uri contestantsUri = NotifierContract.ContestantEntry.CONTENT_URI.buildUpon()
+                    .appendPath("byContestId")
+                    .appendPath(contestId)
+                    .build();
+            Cursor cursor = context.getContentResolver()
+                    .query(contestantsUri, null, null, null, null);
+
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    contestants.add(Contestant.getFromCursor(cursor));
+                }
+
+                cursor.close();
+            }
+
+            return contestants;
+        } catch (Exception ex) {
+            Timber.e(ex);
+            return null;
+        }
     }
 
     public void persist(List<Contest> contests) {

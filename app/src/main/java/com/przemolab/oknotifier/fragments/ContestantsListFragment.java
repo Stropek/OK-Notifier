@@ -15,14 +15,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.asyncTasks.SqliteContestantLoader;
 import com.przemolab.oknotifier.data.ContestantRecyclerViewAdapter;
 import com.przemolab.oknotifier.models.Contestant;
+import com.przemolab.oknotifier.modules.NotifierRepository;
 
 import java.util.List;
 import java.util.Objects;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,11 +35,15 @@ public class ContestantsListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Contestant>> {
 
     public static final int CONTESTANT_LOADER_ID = 1;
+    private String contestId;
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     @BindView(R.id.contestantsList_rv) public RecyclerView contestantsRecyclerView;
     @BindView(R.id.empty_cl) public ConstraintLayout emptyLayout;
+
+    @Inject
+    public NotifierRepository notifierRepository;
 
     private ContestantRecyclerViewAdapter contestantRecyclerViewAdapter = null;
 
@@ -51,9 +59,10 @@ public class ContestantsListFragment extends Fragment
 
         Bundle arguments = getArguments();
         if (savedInstanceState == null) {
-
+            assert arguments != null;
+            contestId = arguments.getString(Constants.BundleKeys.ContestId);
         } else {
-
+            contestId = savedInstanceState.getString(Constants.BundleKeys.ContestId);
         }
 
         contestantRecyclerViewAdapter = new ContestantRecyclerViewAdapter();
@@ -101,7 +110,7 @@ public class ContestantsListFragment extends Fragment
     @NonNull
     @Override
     public Loader<List<Contestant>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new SqliteContestantLoader(getActivity());
+        return new SqliteContestantLoader(getActivity(), notifierRepository, contestId);
     }
 
     @Override

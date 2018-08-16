@@ -13,7 +13,7 @@ import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
 import com.przemolab.oknotifier.data.NotifierContract;
-import com.przemolab.oknotifier.modules.ContestRepositoryModule;
+import com.przemolab.oknotifier.modules.NotifierRepositoryModule;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
 import org.junit.After;
@@ -47,7 +47,7 @@ public class MainActivitySortTests {
         NotifierApp app = (NotifierApp) context.getApplicationContext();
 
         TestAppComponent testAppComponent = DaggerTestAppComponent.builder()
-                .contestRepositoryModule(new ContestRepositoryModule(app))
+                .notifierRepositoryModule(new NotifierRepositoryModule(app))
                 .build();
 
         app.appComponent = testAppComponent;

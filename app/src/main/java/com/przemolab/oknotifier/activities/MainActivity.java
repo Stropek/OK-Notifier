@@ -44,15 +44,6 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
     }
 
-    private void loadContestsListFragment() {
-        contestsListFragment = getContestsListFragment();
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-        fragmentTransaction.replace(R.id.contestsList_fl, contestsListFragment);
-        fragmentTransaction.commit();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_activity, menu);
@@ -126,5 +117,14 @@ public class MainActivity extends AppCompatActivity
 
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    private void loadContestsListFragment() {
+        contestsListFragment = getContestsListFragment();
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.contestsList_fl, contestsListFragment);
+        fragmentTransaction.commit();
     }
 }

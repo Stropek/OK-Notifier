@@ -2,7 +2,7 @@ package com.przemolab.oknotifier;
 
 import android.app.Application;
 
-import com.przemolab.oknotifier.modules.ContestRepositoryModule;
+import com.przemolab.oknotifier.modules.NotifierRepositoryModule;
 import com.przemolab.oknotifier.modules.OpenKattisServiceModule;
 
 import timber.log.Timber;
@@ -17,7 +17,7 @@ public class NotifierApp extends Application {
 
         appComponent = DaggerAppComponent.builder()
                 .openKattisServiceModule(new OpenKattisServiceModule())
-                .contestRepositoryModule(new ContestRepositoryModule(this))
+                .notifierRepositoryModule(new NotifierRepositoryModule(this))
                 .build();
         appComponent.inject(this);
 

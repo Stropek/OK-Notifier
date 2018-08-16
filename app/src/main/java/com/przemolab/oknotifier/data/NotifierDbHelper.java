@@ -32,6 +32,7 @@ public class NotifierDbHelper extends SQLiteOpenHelper {
         final String CREATE_CONTESTANTS_TABLE = "CREATE TABLE " +
                 NotifierContract.ContestantEntry.TABLE_NAME + "(" +
                 NotifierContract.ContestantEntry._ID + " INTEGER PRIMARY KEY," +
+                NotifierContract.ContestantEntry.COLUMN_NAME + " VARCHAR(255) NOT NULL," +
                 NotifierContract.ContestantEntry.COLUMN_CONTEST_ID+ " VARCHAR(20) NOT NULL," +
                 NotifierContract.ContestantEntry.COLUMN_CREATED_DATE + " TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 NotifierContract.ContestantEntry.COLUMN_LAST_MODIFIED_DATE + " TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP," +

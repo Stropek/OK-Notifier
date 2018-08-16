@@ -34,6 +34,18 @@ public class ContestantTests {
     }
 
     @Test
+    public void setName_setsName() {
+        // given
+        Contestant contestant = createContestant();
+
+        // when
+        contestant.setName("changed name");
+
+        // then
+        assertEquals("changed name", contestant.getName());
+    }
+
+    @Test
     public void setContestId_setsContestId() {
         // given
         Contestant contestant = createContestant();
@@ -107,6 +119,7 @@ public class ContestantTests {
 
     private Contestant createContestant() {
         int id = 1;
+        String name = "name";
         String contestId = "abc";
         int solved = 1;
         int submitted = 2;
@@ -114,6 +127,6 @@ public class ContestantTests {
         int notTried = 4;
         int time = 5;
 
-        return new Contestant(id, contestId, solved, submitted, failed, notTried, time);
+        return new Contestant(id, name, contestId, solved, submitted, failed, notTried, time);
     }
 }

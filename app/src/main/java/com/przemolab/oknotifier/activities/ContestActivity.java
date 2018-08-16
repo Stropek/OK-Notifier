@@ -1,11 +1,13 @@
 package com.przemolab.oknotifier.activities;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.fragments.ContestantsListFragment;
 
@@ -13,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ContestActivity extends AppCompatActivity
-    implements ContestantsListFragment.OnListFragmentInteractionListener {
+        implements ContestantsListFragment.OnListFragmentInteractionListener {
 
     private ContestantsListFragment contestantsListFragment;
 
@@ -34,17 +36,29 @@ public class ContestActivity extends AppCompatActivity
         ButterKnife.bind(this);
     }
 
+    @Override
+    public void onListFragmentInteraction() {
+
+    }
+
+    public ContestantsListFragment getContestantsListFragment() {
+        ContestantsListFragment fragment = new ContestantsListFragment();
+
+        Intent intent = getIntent();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BundleKeys.ContestId, intent.getStringExtra(Constants.BundleKeys.ContestId));
+
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     private void loadContestantsListFragment() {
-        contestantsListFragment = new ContestantsListFragment();
+        contestantsListFragment = getContestantsListFragment();
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.contestantsList_fl, contestantsListFragment);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onListFragmentInteraction() {
-
     }
 }

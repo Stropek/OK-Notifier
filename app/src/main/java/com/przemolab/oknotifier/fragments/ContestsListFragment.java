@@ -22,7 +22,7 @@ import com.przemolab.oknotifier.asyncTasks.RetrieveContestsTask;
 import com.przemolab.oknotifier.asyncTasks.SqliteContestLoader;
 import com.przemolab.oknotifier.data.ContestRecyclerViewAdapter;
 import com.przemolab.oknotifier.enums.SortOrder;
-import com.przemolab.oknotifier.modules.ContestRepository;
+import com.przemolab.oknotifier.modules.NotifierRepository;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.modules.OpenKattisService;
 
@@ -48,7 +48,7 @@ public class ContestsListFragment extends Fragment
     @Inject
     public OpenKattisService openKattisService;
     @Inject
-    public ContestRepository contestRepository;
+    public NotifierRepository notifierRepository;
 
     private ContestRecyclerViewAdapter contestRecyclerViewAdapter = null;
 
@@ -59,7 +59,7 @@ public class ContestsListFragment extends Fragment
 
     @OnClick(R.id.sync_ib)
     public void onSyncClicked() {
-        new RetrieveContestsTask(openKattisService, contestRepository, onContestListEventsListener).execute();
+        new RetrieveContestsTask(openKattisService, notifierRepository, onContestListEventsListener).execute();
     }
 
     @Override
@@ -122,7 +122,7 @@ public class ContestsListFragment extends Fragment
     @NonNull
     @Override
     public Loader<List<Contest>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new SqliteContestLoader(getActivity(), contestRepository, sortOrder);
+        return new SqliteContestLoader(getActivity(), notifierRepository, sortOrder);
     }
 
     @Override
@@ -144,7 +144,7 @@ public class ContestsListFragment extends Fragment
     }
 
     public void toggleSubscription(Contest contest) {
-        contestRepository.updateContest(contest);
+        notifierRepository.updateContest(contest);
         getLoaderManager().restartLoader(CONTEST_LOADER_ID, null, this);
     }
 

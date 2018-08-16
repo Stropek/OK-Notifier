@@ -15,7 +15,7 @@ import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.TestAppComponent;
 import com.przemolab.oknotifier.data.NotifierContract;
 import com.przemolab.oknotifier.models.Contest;
-import com.przemolab.oknotifier.modules.ContestRepositoryModule;
+import com.przemolab.oknotifier.modules.NotifierRepositoryModule;
 import com.przemolab.oknotifier.modules.OpenKattisService;
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
 import com.przemolab.oknotifier.utils.TestContentObserver;
@@ -66,7 +66,7 @@ public class MainActivitySyncTests {
 
         TestAppComponent testAppComponent = DaggerTestAppComponent.builder()
                 .openKattisServiceModule(new TestOpenKattisServiceModule())
-                .contestRepositoryModule(new ContestRepositoryModule(app))
+                .notifierRepositoryModule(new NotifierRepositoryModule(app))
                 .build();
 
         app.appComponent = testAppComponent;
