@@ -3,6 +3,7 @@ package com.przemolab.oknotifier.modules;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.przemolab.oknotifier.models.Contest;
+import com.przemolab.oknotifier.models.Contestant;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,5 +25,20 @@ public class OpenKattisServiceTests {
 
         // then
         assertNotNull(result);
+    }
+
+    @Test
+    public void getContestStandings_returnsContestantsList() {
+        // given
+        OpenKattisService service = new OpenKattisService();
+        List<Contest> contests = service.getOngoingContests();
+
+        if (!contests.isEmpty()) {
+            // when
+            List<Contestant> result = service.getContestStandings(contests.get(0).getId());
+
+            // then
+            assertNotNull(result);
+        }
     }
 }

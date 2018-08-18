@@ -5,6 +5,7 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.modules.NotifierRepository;
+import com.przemolab.oknotifier.modules.OpenKattisService;
 
 import java.util.List;
 
@@ -13,12 +14,14 @@ import timber.log.Timber;
 public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
 
     private List<Contestant> contestants = null;
-    private NotifierRepository notifierRepository;
-    private String contestId;
+    private final NotifierRepository notifierRepository;
+    private final OpenKattisService openKattisService;
+    private final String contestId;
 
-    public SqliteContestantLoader(Context context, NotifierRepository notifierRepository, String contestId) {
+    public SqliteContestantLoader(Context context, NotifierRepository notifierRepository, OpenKattisService openKattisService, String contestId) {
         super(context);
         this.notifierRepository = notifierRepository;
+        this.openKattisService = openKattisService;
         this.contestId = contestId;
     }
 
@@ -26,7 +29,12 @@ public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
     public List<Contestant> loadInBackground() {
         try {
             Timber.d("Loading contestants from SQLite");
-            return notifierRepository.getAllContestants(contestId);
+            List<Contestant> contestants = notifierRepository.getAllContestants(contestId);
+            if (contestants.isEmpty()) {
+                Timber.d("No contestants in SQLite. Loading from Open Kattis Service");
+                contestants = openKattisService.getContestStandings(contestId);
+            }
+            return contestants;
         } catch (Exception ex) {
             Timber.e(ex);
             return null;

@@ -163,12 +163,33 @@ public class MainActivityTests {
     }
 
     @Test
-    public void contestClicked_activityWithContestStandingsOpens() {
+    public void contestClicked_contestantsInRepository_activityWithContestStandingsOpens() {
         // given
         List<Contest> contests = createContests(1);
         List<Contestant> contestants = createContestants(3, "id 1");
         when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
         when(notifierRepository.getAllContestants("id 1")).thenReturn(contestants);
+
+        testRule.launchActivity(null);
+
+        // when
+        onView(withId(R.id.contestItem_fl)).perform(click());
+
+        // then
+        onView(withText("name 1")).check(matches(isDisplayed()));
+        onView(withText("name 2")).check(matches(isDisplayed()));
+        onView(withText("name 3")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void contestClicked_contestantsNotInRepository_activityLoadsContestStandingsFromOpenKattis() {
+        // given
+        List<Contest> contests = createContests(1);
+        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
+        when(notifierRepository.getAllContestants("id 1")).thenReturn(new ArrayList<Contestant>());
+
+        List<Contestant> contestants = createContestants(3, "id 1");
+        when(openKattisService.getContestStandings("id 1")).thenReturn(contestants);
 
         testRule.launchActivity(null);
 

@@ -22,6 +22,7 @@ import com.przemolab.oknotifier.asyncTasks.SqliteContestantLoader;
 import com.przemolab.oknotifier.data.ContestantRecyclerViewAdapter;
 import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.modules.NotifierRepository;
+import com.przemolab.oknotifier.modules.OpenKattisService;
 
 import java.util.List;
 import java.util.Objects;
@@ -44,6 +45,8 @@ public class ContestantsListFragment extends Fragment
 
     @Inject
     public NotifierRepository notifierRepository;
+    @Inject
+    public OpenKattisService openKattisService;
 
     private ContestantRecyclerViewAdapter contestantRecyclerViewAdapter = null;
 
@@ -73,7 +76,6 @@ public class ContestantsListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_contestant_list, container, false);
         ButterKnife.bind(this, view);
 
@@ -110,7 +112,7 @@ public class ContestantsListFragment extends Fragment
     @NonNull
     @Override
     public Loader<List<Contestant>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new SqliteContestantLoader(getActivity(), notifierRepository, contestId);
+        return new SqliteContestantLoader(getActivity(), notifierRepository, openKattisService, contestId);
     }
 
     @Override
