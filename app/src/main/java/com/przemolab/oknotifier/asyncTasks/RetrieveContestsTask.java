@@ -12,6 +12,7 @@ import java.util.List;
 import timber.log.Timber;
 
 public class RetrieveContestsTask extends AsyncTask<Void, Void, List<Contest>> {
+    // TODO: move to SQL contest loader and rename the loader to contest loader
 
     private OpenKattisService openKattisService;
     private NotifierRepository notifierRepository;

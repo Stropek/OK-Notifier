@@ -5,18 +5,24 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.fragments.ContestantsListFragment;
+import com.przemolab.oknotifier.models.Contestant;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ContestActivity extends AppCompatActivity
-        implements ContestantsListFragment.OnListFragmentInteractionListener {
+        implements ContestantsListFragment.OnContestantsListEventListener {
 
     private ContestantsListFragment contestantsListFragment;
 
@@ -43,8 +49,18 @@ public class ContestActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction() {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_contest_activity, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.sync_menu_item) {
+            contestantsListFragment.onSyncClicked();
+        }
+
+        return true;
     }
 
     public ContestantsListFragment getContestantsListFragment() {
@@ -66,5 +82,17 @@ public class ContestActivity extends AppCompatActivity
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.contestantsList_fl, contestantsListFragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onSyncStarted() {
+        syncProgressBar.setVisibility(ProgressBar.VISIBLE);
+        contestantsListFrameLayout.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onSyncFinished(List<Contestant> contestants) {
+        contestantsListFrameLayout.setVisibility(View.VISIBLE);
+        syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 }

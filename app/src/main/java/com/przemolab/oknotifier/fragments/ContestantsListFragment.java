@@ -31,6 +31,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ContestantsListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Contestant>> {
@@ -38,7 +39,7 @@ public class ContestantsListFragment extends Fragment
     public static final int CONTESTANT_LOADER_ID = 1;
     private String contestId;
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnContestantsListEventListener onContestantsListEventsListener;
 
     @BindView(R.id.contestantsList_rv) public RecyclerView contestantsRecyclerView;
     @BindView(R.id.empty_cl) public ConstraintLayout emptyLayout;
@@ -51,6 +52,11 @@ public class ContestantsListFragment extends Fragment
     private ContestantRecyclerViewAdapter contestantRecyclerViewAdapter = null;
 
     public ContestantsListFragment() {
+    }
+
+    @OnClick(R.id.sync_ib)
+    public void onSyncClicked() {
+        getLoaderManager().restartLoader(CONTESTANT_LOADER_ID, null, this);
     }
 
     @Override
@@ -95,8 +101,8 @@ public class ContestantsListFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnContestantsListEventListener) {
+            onContestantsListEventsListener = (OnContestantsListEventListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -106,13 +112,13 @@ public class ContestantsListFragment extends Fragment
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        onContestantsListEventsListener = null;
     }
 
     @NonNull
     @Override
     public Loader<List<Contestant>> onCreateLoader(int id, @Nullable Bundle args) {
-        return new SqliteContestantLoader(getActivity(), notifierRepository, openKattisService, contestId);
+        return new SqliteContestantLoader(getActivity(), notifierRepository, openKattisService, contestId, onContestantsListEventsListener);
     }
 
     @Override
@@ -133,7 +139,10 @@ public class ContestantsListFragment extends Fragment
         contestantRecyclerViewAdapter.swapData(null);
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction();
+    public interface OnContestantsListEventListener {
+
+        void onSyncStarted();
+
+        void onSyncFinished(List<Contestant> contestants);
     }
 }

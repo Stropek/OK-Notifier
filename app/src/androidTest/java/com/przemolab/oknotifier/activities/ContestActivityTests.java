@@ -23,6 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -96,5 +99,36 @@ public class ContestActivityTests {
         // then
         onView(withId(R.id.contestantsList_rv)).perform(RecyclerViewActions.scrollToPosition(contestants.size() - 1));
         onView(withText("name 4")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void syncClicked_contestantsLoaded() {
+        // given
+        final List<Contestant> contestants = createContestants(5, "abc");
+        when(openKattisService.getContestStandings("abc"))
+                .thenAnswer(new Answer<List<Contestant>>() {
+                    private int count = 0;
+
+                    @Override
+                    public List<Contestant> answer(InvocationOnMock invocation) {
+                        count++;
+                        if (count == 1) {
+                            return new ArrayList<>();
+                        }
+                        return contestants;
+                    }
+                });
+
+        Intent startIntent = new Intent();
+        startIntent.putExtra(Constants.BundleKeys.ContestId, "abc");
+
+        testRule.launchActivity(startIntent);
+
+        // when
+        onView(withId(R.id.sync_menu_item)).perform(click());
+
+        // then
+        onView(withId(R.id.contestantsList_rv)).perform(RecyclerViewActions.scrollToPosition(contestants.size() - 1));
+        onView(withText("name 5")).check(matches(isDisplayed()));
     }
 }

@@ -97,6 +97,10 @@ public class OpenKattisService {
             Elements cells = row.select("td");
 
             String name = cells.get(1).select("a").text();
+            if (name.isEmpty()) {
+                name = cells.get(1).select("div").text();
+            }
+
             int time = Integer.valueOf(cells.get(3).text());
 
             int solved = 0;

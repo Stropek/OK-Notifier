@@ -3,6 +3,7 @@ package com.przemolab.oknotifier.asyncTasks;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.przemolab.oknotifier.fragments.ContestantsListFragment;
 import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.modules.NotifierRepository;
 import com.przemolab.oknotifier.modules.OpenKattisService;
@@ -17,12 +18,15 @@ public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
     private final NotifierRepository notifierRepository;
     private final OpenKattisService openKattisService;
     private final String contestId;
+    private final ContestantsListFragment.OnContestantsListEventListener onContestantsListEventListener;
 
-    public SqliteContestantLoader(Context context, NotifierRepository notifierRepository, OpenKattisService openKattisService, String contestId) {
+    public SqliteContestantLoader(Context context, NotifierRepository notifierRepository, OpenKattisService openKattisService, String contestId,
+                                  ContestantsListFragment.OnContestantsListEventListener onContestantsListEventListener) {
         super(context);
         this.notifierRepository = notifierRepository;
         this.openKattisService = openKattisService;
         this.contestId = contestId;
+        this.onContestantsListEventListener = onContestantsListEventListener;
     }
 
     @Override
@@ -43,6 +47,7 @@ public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
 
     @Override
     protected void onStartLoading() {
+        onContestantsListEventListener.onSyncStarted();
         if (contestants == null) {
             forceLoad();
         } else {
@@ -53,6 +58,7 @@ public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
     @Override
     public void deliverResult(List<Contestant> data) {
         contestants = data;
+        onContestantsListEventListener.onSyncFinished(data);
         super.deliverResult(data);
     }
 }

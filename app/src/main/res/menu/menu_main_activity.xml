@@ -6,12 +6,12 @@
         android:id="@+id/sync_menu_item"
         android:icon="@drawable/ic_sync_white"
         android:title="@string/sync_contest"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/sort_menu_item"
         android:icon="@android:drawable/ic_menu_sort_by_size"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/sort">
 
         <menu>
