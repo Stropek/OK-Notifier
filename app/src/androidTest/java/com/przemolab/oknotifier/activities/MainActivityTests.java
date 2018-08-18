@@ -34,6 +34,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.przemolab.oknotifier.matchers.Matchers.isNotSubscribed;
@@ -200,5 +201,22 @@ public class MainActivityTests {
         onView(withText("name 1")).check(matches(isDisplayed()));
         onView(withText("name 2")).check(matches(isDisplayed()));
         onView(withText("name 3")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void navigateUp_fromContestActivity_takesUserBackToMainActivity() {
+        // given
+        List<Contest> contests = createContests(1);
+        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
+
+        testRule.launchActivity(null);
+
+        onView(withId(R.id.contestItem_fl)).perform(click());
+
+        // when
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+
+        // then
+        onView(withText("id 1")).check(matches(isDisplayed()));
     }
 }

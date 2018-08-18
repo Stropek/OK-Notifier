@@ -56,8 +56,13 @@ public class ContestActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.sync_menu_item) {
-            contestantsListFragment.onSyncClicked();
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.sync_menu_item:
+                contestantsListFragment.onSyncClicked();
+                break;
         }
 
         return true;
