@@ -72,8 +72,7 @@ public class SettingsActivityTests {
         onView(withId(R.id.rejected_tb)).perform(click());
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        openActionBarOverflowOrOptionsMenu(context);
-        onView(withText("Preferences")).perform(click());
+        onView(withId(R.id.settings_menu_item)).perform(click());
 
         // then
         onView(withId(R.id.approved_tb)).check(matches(not(isChecked())));
@@ -82,7 +81,7 @@ public class SettingsActivityTests {
     }
 
     @Test
-    public void changeChangeCheckFrequency_persistsFrequency() {
+    public void changeCheckFrequency_persistsFrequency() {
         // given
         testRule.launchActivity(null);
 
@@ -91,8 +90,7 @@ public class SettingsActivityTests {
         onView(withId(R.id.value_sb)).perform(setProgress(50));
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        openActionBarOverflowOrOptionsMenu(context);
-        onView(withText("Preferences")).perform(click());
+        onView(withId(R.id.settings_menu_item)).perform(click());
 
         // then
         onView(withId(R.id.list)).perform(RecyclerViewActions.scrollToPosition(9));
