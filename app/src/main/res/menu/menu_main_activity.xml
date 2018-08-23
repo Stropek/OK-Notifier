@@ -29,4 +29,10 @@
 
     </item>
 
+    <item
+        android:id="@+id/settings_menu_item"
+        android:icon="@android:drawable/ic_menu_preferences"
+        app:showAsAction="never"
+        android:title="@string/preferences"/>
+
 </menu>

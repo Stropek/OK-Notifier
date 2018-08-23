@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="NumberBoxTextView" parent="@android:style/TextAppearance.Widget.TextView">
@@ -55,6 +56,17 @@
         <item name="android:layout_margin">@dimen/margin_large</item>
         <item name="android:layout_width">@dimen/image_button_size_small</item>
         <item name="android:layout_height">@dimen/image_button_size_small</item>
+    </style>
+
+    <style name="PreferenceToggleButton" parent="@android:style/Widget.Material.Light.Button.Toggle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">100dp</item>
+        <item name="android:paddingStart">@dimen/padding_large</item>
+        <item name="android:paddingEnd">@dimen/padding_large</item>
+        <item name="android:layout_margin">@dimen/margin_small</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:background">@drawable/toggle_contests_selector</item>
     </style>
 
 </resources>

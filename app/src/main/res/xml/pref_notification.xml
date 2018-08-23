@@ -1,0 +1,56 @@
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="@string/pref_category_general">
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="pref_notifications_switch"
+            android:title="@string/pref_notifications_switch" />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory
+        android:dependency="pref_notifications_switch"
+        android:title="@string/pref_category_contest_notifications">
+
+        <com.przemolab.oknotifier.preferences.ContestsSwitchesPreference
+            android:key="pref_contest_switches"
+            android:title="@string/pref_contest_switches" />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory
+        android:dependency="pref_notifications_switch"
+        android:title="@string/pref_category_other_notifications">
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="pref_upcoming_contests_switch"
+            android:title="@string/pref_upcoming_contests_switch" />
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="pref_new_problems_switch"
+            android:title="@string/pref_new_problems_switch" />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory
+        android:dependency="pref_notifications_switch"
+        android:title="@string/pref_category_data_sync">
+
+        <android.support.v7.preference.CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_only_on_wifi_switch"
+            android:title="@string/pref_only_on_wifi_switch" />
+
+        <com.przemolab.oknotifier.preferences.SeekBarPreference
+            android:defaultValue="15"
+            android:key="sync_frequency_sb"
+            android:title="@string/pref_title_sync_frequency" />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>

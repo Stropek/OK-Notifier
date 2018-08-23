@@ -5,8 +5,13 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="lightGreen">#FFABE6A6</color>
+    <color name="darkGreen">#457142</color>
+
     <color name="lightRed">#FFF57A51</color>
+    <color name="darkRed">#9a3d1e</color>
+
     <color name="lightGrey">#FFE6E6E6</color>
     <color name="darkGrey">#FFABABAB</color>
+
     <color name="white">#FFFFFF</color>
 </resources>

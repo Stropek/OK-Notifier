@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">OK Notifier</string>
+    <string name="ongoing_contests">Ongoing contests</string>
+    <string name="title_activity_settings">Settings</string>
 
     <!-- Menu -->
     <string name="sync_contest">Sync contests</string>
@@ -10,6 +12,7 @@
     <string name="sort_by_start_date">By start date</string>
     <string name="sort_by_number_of_contestants">By # of contestants</string>
     <string name="sort_by_number_of_problems">By # of problems</string>
+    <string name="preferences">Preferences</string>
 
     <!-- Design values -->
     <string name="design_string_contest_name">Super Contest 2018</string>
@@ -19,6 +22,7 @@
     <string name="design_string_zero">0</string>
     <string name="design_string_twenty_for">24</string>
     <string name="design_string_time">1234</string>
+    <string name="design_string_ten_minutes">10m</string>
 
     <!-- Content descriptions -->
     <string name="number_of_contestants">Number of contestants</string>
@@ -26,5 +30,28 @@
     <string name="toggle_subscription_to_contest">Subscribe / unsubscribe to contest</string>
     <string name="time">Time</string>
     <string name="expand">Expand</string>
+
+    <!-- Settings -->
+    <string name="pref_category_general">General</string>
+    <string name="pref_category_contest_notifications">Contest notifications</string>
+    <string name="pref_category_other_notifications">Other notifications</string>
+    <string name="pref_category_data_sync">Data sync</string>
+
+    <string name="pref_notifications_switch">Notifications</string>
+    <string name="pref_accepted_switch">Approved</string>
+    <string name="pref_submitted_switch">Submitted</string>
+    <string name="pref_rejected_switch">Rejected</string>
+    <string name="pref_upcoming_contests_switch">Upcoming contests</string>
+    <string name="pref_new_problems_switch">New problems</string>
+    <string name="pref_only_on_wifi_switch">Check only when on Wi-Fi</string>
+
+    <string name="pref_contest_switches">Contest switches</string>
+    <string name="pref_approved">Approved</string>
+    <string name="pref_submitted">Submitted</string>
+    <string name="pref_rejected">Rejected</string>
+
+    <string name="pref_switches_label">Notify when solution is:</string>
+    <string name="pref_check_every_label">Check every:</string>
+    <string name="pref_title_sync_frequency">15m</string>
 
 </resources>

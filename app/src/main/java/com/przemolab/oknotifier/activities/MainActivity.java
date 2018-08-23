@@ -54,12 +54,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == R.id.sync_menu_item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.sync_menu_item) {
             contestsListFragment.onSyncClicked();
+        } else if (itemId == R.id.settings_menu_item) {
+            openSettings();
         } else {
             SortOrder current = sortOrder;
 
-            switch (item.getItemId()) {
+            switch (itemId) {
                 case R.id.sort_subscribed_first:
                     sortOrder = SortOrder.SubscribedFirst;
                     break;
@@ -130,5 +133,10 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.contestsList_fl, contestsListFragment);
         fragmentTransaction.commit();
+    }
+
+    private void openSettings() {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 }

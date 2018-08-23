@@ -58,7 +58,7 @@ public class ContestActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.sync_menu_item:
                 contestantsListFragment.onSyncClicked();
@@ -66,6 +66,18 @@ public class ContestActivity extends AppCompatActivity
         }
 
         return true;
+    }
+
+    @Override
+    public void onSyncStarted() {
+        syncProgressBar.setVisibility(ProgressBar.VISIBLE);
+        contestantsListFrameLayout.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onSyncFinished(List<Contestant> contestants) {
+        contestantsListFrameLayout.setVisibility(View.VISIBLE);
+        syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 
     public ContestantsListFragment getContestantsListFragment() {
@@ -87,17 +99,5 @@ public class ContestActivity extends AppCompatActivity
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.contestantsList_fl, contestantsListFragment);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public void onSyncStarted() {
-        syncProgressBar.setVisibility(ProgressBar.VISIBLE);
-        contestantsListFrameLayout.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void onSyncFinished(List<Contestant> contestants) {
-        contestantsListFrameLayout.setVisibility(View.VISIBLE);
-        syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
     }
 }
