@@ -87,6 +87,7 @@ public class SettingsActivityTests {
         testRule.launchActivity(null);
 
         // when
+        onView(withId(R.id.list)).perform(RecyclerViewActions.scrollToPosition(9));
         onView(withId(R.id.value_sb)).perform(setProgress(50));
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
