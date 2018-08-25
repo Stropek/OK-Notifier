@@ -150,6 +150,9 @@ public class NotifierDataProvider extends ContentProvider {
             case CONTEST_ENTRIES:
                 updated = db.update(NotifierContract.ContestEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
+            case CONTESTANT_ENTRIES:
+                updated = db.update(NotifierContract.ContestantEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown operation URI: " + uri);
         }

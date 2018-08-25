@@ -237,4 +237,33 @@ public class NotifierDataProviderTests {
         assertEquals("new name", contests.getString(contests.getColumnIndex(NotifierContract.ContestEntry.COLUMN_NAME)));
         assertEquals("abc", contests.getString(contests.getColumnIndex(NotifierContract.ContestEntry.COLUMN_CONTEST_ID)));
     }
+    @Test
+    public void update_contestantWithExistingContestantId_shouldOnlyUpdateNewValues() {
+        // given
+        ContentResolver contentResolver = context.getContentResolver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        Uri uri = NotifierContract.ContestantEntry.CONTENT_URI;
+        Uri queryUri = uri.buildUpon().appendPath("byContestId").appendPath("abc").build();
+
+        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+
+        insertContestant(contentResolver, uri, "abc");
+        insertContestant(contentResolver, uri, "abc");
+
+        ContentValues newValues = new ContentValues();
+        newValues.put(NotifierContract.ContestantEntry.COLUMN_NAME, "mark twain");
+
+        // when
+        int updated = contentResolver.update(uri, newValues,
+                NotifierContract.ContestantEntry._ID + "=?", new String[] {"1"});
+
+        // then
+        assertEquals(1, updated);
+        Cursor contestants = contentResolver.query(queryUri, null, null, null, null);
+        assertNotNull(contestants);
+        assertEquals(2, contestants.getCount());
+        contestants.moveToFirst();
+        assertEquals("mark twain", contestants.getString(contestants.getColumnIndex(NotifierContract.ContestEntry.COLUMN_NAME)));
+        assertEquals("abc", contestants.getString(contestants.getColumnIndex(NotifierContract.ContestEntry.COLUMN_CONTEST_ID)));
+    }
 }

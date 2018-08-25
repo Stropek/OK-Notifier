@@ -35,8 +35,10 @@ public class NotifierContract {
         public static final String COLUMN_CONTEST_ID = "contest_id";
         public static final String COLUMN_CREATED_DATE = "created_date";
         public static final String COLUMN_LAST_MODIFIED_DATE = "last_modified_date";
+        // TODO: change solved -> approved
         public static final String COLUMN_PROBLEMS_SOLVED = "problems_solved";
         public static final String COLUMN_PROBLEMS_SUBMITTED = "problems_submitted";
+        // TODO: change failed -> rejected
         public static final String COLUMN_PROBLEMS_FAILED = "problems_failed";
         public static final String COLUMN_PROBLEMS_NOT_TRIED = "problems_not_tried";
         public static final String COLUMN_TIME = "time";
