@@ -96,30 +96,37 @@ public class OpenKattisService {
         try {
             Elements cells = row.select("td");
 
-            String name = cells.get(1).select("a").text();
-            if (name.isEmpty()) {
-                name = cells.get(1).select("div").text();
-            }
+            String rank = cells.get(0).select(".rank").text();
 
-            int time = Integer.valueOf(cells.get(3).text());
+            if (!rank.isEmpty()) {
 
-            int solved = 0;
-            int submitted = 0;
-            int failed = 0;
-            int notTried = 0;
-            for (Element cell : cells) {
-                if (cell.hasClass("solved")) {
-                    solved++;
-                } else if (cell.hasClass("pending")) {
-                    submitted++;
-                } else if (cell.hasClass("attempted")) {
-                    failed++;
-                } else if (!cell.hasText()) {
-                    notTried++;
+                String name = cells.get(1).select("a").text();
+                if (name.isEmpty()) {
+                    name = cells.get(1).select("div").text();
                 }
+
+                int time = Integer.valueOf(cells.get(3).text());
+
+                int solved = 0;
+                int submitted = 0;
+                int failed = 0;
+                int notTried = 0;
+                for (Element cell : cells) {
+                    if (cell.hasClass("solved")) {
+                        solved++;
+                    } else if (cell.hasClass("pending")) {
+                        submitted++;
+                    } else if (cell.hasClass("attempted")) {
+                        failed++;
+                    } else if (!cell.hasText()) {
+                        notTried++;
+                    }
+                }
+
+                return new Contestant(0, name, contestId, solved, submitted, failed, notTried, time);
             }
 
-            return new Contestant(0, name, contestId, solved, submitted, failed, notTried, time);
+            return null;
         } catch (Exception ex) {
             Timber.e(ex);
             return null;
