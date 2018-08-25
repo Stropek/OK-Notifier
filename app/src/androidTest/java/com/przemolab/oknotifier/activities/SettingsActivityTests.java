@@ -41,7 +41,7 @@ public class SettingsActivityTests {
     @Before
     public void setUp() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().clear().apply();
+        preferences.edit().clear().putBoolean("pref_notifications_switch", true).apply();
     }
 
     @Test

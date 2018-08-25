@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="default_sync_switch">false</bool>
+    <string name="default_contests_states">true;false;false</string>
+    <bool name="default_ongoing_contests_switch">false</bool>
+    <bool name="default_new_problems_switch">false</bool>
+    <bool name="default_sync_wifi_switch">false</bool>
+    <integer name="default_sync_interval">30</integer>
+</resources>

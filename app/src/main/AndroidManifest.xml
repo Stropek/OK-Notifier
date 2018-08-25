@@ -37,6 +37,14 @@
             android:authorities="com.przemolab.oknotifier"
             android:exported="false" />
 
+        <service
+            android:name=".services.OpenKattisJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

@@ -16,7 +16,7 @@ public class ContestTests {
         Contest contest = createContest();
 
         // then
-        assertEquals("abc", contest.getId());
+        assertEquals("abc", contest.getContestId());
         assertEquals("name", contest.getName());
         assertEquals("6/10/15 4:00PM", contest.getStartDateFormatted());
         assertEquals("6/15/15 5:00PM", contest.getEndDateFormatted());
@@ -54,10 +54,10 @@ public class ContestTests {
         Contest contest = createContest();
 
         // when
-        contest.setId("changed id");
+        contest.setContestId("changed id");
 
         // then
-        assertEquals("changed id", contest.getId());
+        assertEquals("changed id", contest.getContestId());
     }
 
     @Test

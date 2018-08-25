@@ -9,7 +9,6 @@ import com.przemolab.oknotifier.data.NotifierContract;
 
 public class Contestant implements Parcelable {
 
-    // TODO: remove id
     private int id;
     private String name;
     private String contestId;

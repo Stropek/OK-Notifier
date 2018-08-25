@@ -35,7 +35,7 @@ public class OpenKattisServiceTests {
 
         if (!contests.isEmpty()) {
             // when
-            List<Contestant> result = service.getContestStandings(contests.get(0).getId());
+            List<Contestant> result = service.getContestStandings(contests.get(0).getContestId());
 
             // then
             assertNotNull(result);

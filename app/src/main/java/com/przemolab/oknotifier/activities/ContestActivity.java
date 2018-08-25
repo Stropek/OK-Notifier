@@ -75,9 +75,13 @@ public class ContestActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSyncFinished(List<Contestant> contestants) {
+    public void onSyncFinished(List<Contestant> contestants, boolean restartLoader) {
         contestantsListFrameLayout.setVisibility(View.VISIBLE);
         syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
+
+        if (restartLoader) {
+            getSupportLoaderManager().restartLoader(ContestantsListFragment.CONTESTANT_LOADER_ID, null, contestantsListFragment);
+        }
     }
 
     public ContestantsListFragment getContestantsListFragment() {

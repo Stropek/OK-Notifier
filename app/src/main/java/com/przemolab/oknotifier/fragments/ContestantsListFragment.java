@@ -18,7 +18,8 @@ import android.view.ViewGroup;
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
-import com.przemolab.oknotifier.asyncTasks.SqliteContestantLoader;
+import com.przemolab.oknotifier.sync.RetrieveContestantsTask;
+import com.przemolab.oknotifier.sync.SqliteContestantLoader;
 import com.przemolab.oknotifier.data.ContestantRecyclerViewAdapter;
 import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.modules.NotifierRepository;
@@ -56,7 +57,7 @@ public class ContestantsListFragment extends Fragment
 
     @OnClick(R.id.sync_ib)
     public void onSyncClicked() {
-        getLoaderManager().restartLoader(CONTESTANT_LOADER_ID, null, this);
+        new RetrieveContestantsTask(openKattisService, notifierRepository, contestId, onContestantsListEventsListener).execute();
     }
 
     @Override
@@ -143,6 +144,6 @@ public class ContestantsListFragment extends Fragment
 
         void onSyncStarted();
 
-        void onSyncFinished(List<Contestant> contestants);
+        void onSyncFinished(List<Contestant> contestants, boolean restartLoader);
     }
 }

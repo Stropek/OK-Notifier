@@ -56,7 +56,7 @@ public class ContestTests {
         Contest fromParcel = Contest.CREATOR.createFromParcel(parcel);
 
         // then
-        assertEquals(fromParcel.getId(), contest.getId());
+        assertEquals(fromParcel.getContestId(), contest.getContestId());
         assertEquals(fromParcel.getName(), contest.getName());
         assertEquals(fromParcel.getStartDate(), contest.getStartDate());
         assertEquals(fromParcel.getEndDate(), contest.getEndDate());
@@ -103,7 +103,7 @@ public class ContestTests {
 
         // then
         assertEquals(result.getName(), "name");
-        assertEquals(result.getId(), "abc");
+        assertEquals(result.getContestId(), "abc");
         assertEquals(result.getStartDateFormatted(), "10/16/10 4:00PM");
         assertEquals(result.getEndDateFormatted(), "10/26/10 6:00PM");
         assertEquals(result.getNumberOfContestants(), 3);
@@ -131,13 +131,13 @@ public class ContestTests {
     }
 
     private Contest createContest() {
-        String id = "abc";
+        String contestId = "abc";
         String name = "name";
         Date startDate = DateUtils.getDate(2015, 6, 10, 16, 0, 0);
         Date endDate = DateUtils.getDate(2015, 6, 15, 17, 0, 0);
         int numberOfContestants = 5;
         int numberOfProblems = 10;
 
-        return new Contest(id, name, startDate, endDate, numberOfContestants, numberOfProblems);
+        return new Contest(contestId, name, startDate, endDate, numberOfContestants, numberOfProblems);
     }
 }

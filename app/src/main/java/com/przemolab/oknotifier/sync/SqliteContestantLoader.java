@@ -1,4 +1,4 @@
-package com.przemolab.oknotifier.asyncTasks;
+package com.przemolab.oknotifier.sync;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
@@ -37,6 +37,7 @@ public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
             if (contestants.isEmpty()) {
                 Timber.d("No contestants in SQLite. Loading from Open Kattis Service");
                 contestants = openKattisService.getContestStandings(contestId);
+                notifierRepository.persistContestants(contestId, contestants);
             }
             return contestants;
         } catch (Exception ex) {
@@ -58,7 +59,7 @@ public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
     @Override
     public void deliverResult(List<Contestant> data) {
         contestants = data;
-        onContestantsListEventListener.onSyncFinished(data);
+        onContestantsListEventListener.onSyncFinished(data, false);
         super.deliverResult(data);
     }
 }

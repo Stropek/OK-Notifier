@@ -1,5 +1,6 @@
 package com.przemolab.oknotifier;
 
+import com.przemolab.oknotifier.activities.ContestActivitySyncTests;
 import com.przemolab.oknotifier.activities.ContestActivityTests;
 import com.przemolab.oknotifier.activities.MainActivitySortTests;
 import com.przemolab.oknotifier.activities.MainActivitySyncTests;
@@ -22,4 +23,6 @@ public interface TestAppComponent extends AppComponent {
     void inject(MainActivitySortTests test);
 
     void inject(ContestActivityTests test);
+
+    void inject(ContestActivitySyncTests test);
 }

@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class Contest implements Parcelable {
 
-    private String id;
+    private String contestId;
     private String name;
     private Date startDate;
     private Date endDate;
@@ -23,8 +23,8 @@ public class Contest implements Parcelable {
 
     private Contest() { }
 
-    public Contest(String id, String name, Date startDate, Date endDate, int numberOfContestants, int numberOfProblems) {
-        this.id = id;
+    public Contest(String contestId, String name, Date startDate, Date endDate, int numberOfContestants, int numberOfProblems) {
+        this.contestId = contestId;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -33,7 +33,7 @@ public class Contest implements Parcelable {
     }
 
     private Contest(Parcel in) {
-        this.id = in.readString();
+        this.contestId = in.readString();
         this.name = in.readString();
         this.startDate = new Date(in.readLong());
         this.endDate = new Date(in.readLong());
@@ -58,7 +58,7 @@ public class Contest implements Parcelable {
         ContentValues values = new ContentValues();
 
         values.put(NotifierContract.ContestEntry.COLUMN_NAME, this.name);
-        values.put(NotifierContract.ContestEntry.COLUMN_CONTEST_ID, this.id);
+        values.put(NotifierContract.ContestEntry.COLUMN_CONTEST_ID, this.contestId);
         values.put(NotifierContract.ContestEntry.COLUMN_START_DATE, DateUtils.formatDate(this.startDate, DateUtils.SQLiteDateTimeFormat));
         values.put(NotifierContract.ContestEntry.COLUMN_END_DATE, DateUtils.formatDate(this.endDate, DateUtils.SQLiteDateTimeFormat));
         values.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, this.numberOfContestants);
@@ -71,7 +71,7 @@ public class Contest implements Parcelable {
     public static Contest getFromCursor(Cursor cursor) throws ParseException {
         Contest contest = new Contest();
 
-        contest.setId(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_CONTEST_ID)));
+        contest.setContestId(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_CONTEST_ID)));
         contest.setName(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_NAME)));
         contest.setStartDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_START_DATE)), DateUtils.SQLiteDateTimeFormat));
         contest.setEndDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_END_DATE)), DateUtils.SQLiteDateTimeFormat));
@@ -89,7 +89,7 @@ public class Contest implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeString(contestId);
         dest.writeString(name);
         dest.writeLong(startDate.getTime());
         dest.writeLong(endDate.getTime());
@@ -98,12 +98,12 @@ public class Contest implements Parcelable {
         dest.writeByte((byte) (isSubscribed ? 1 : 0));
     }
 
-    public String getId() {
-        return id;
+    public String getContestId() {
+        return contestId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setContestId(String contestId) {
+        this.contestId = contestId;
     }
 
     public String getName() {

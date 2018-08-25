@@ -1,14 +1,19 @@
 package com.przemolab.oknotifier.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.MenuItem;
 
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.activities.MainActivity;
+import com.przemolab.oknotifier.utils.SyncUtils;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+import timber.log.Timber;
+
+public class SettingsFragment extends PreferenceFragmentCompat
+    implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -29,5 +34,26 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+
+        SyncUtils.scheduleSync(getActivity());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("pref_notifications_switch") && !sharedPreferences.getBoolean(key, false)) {
+            SyncUtils.cancelSync(getActivity());
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.przemolab.oknotifier.asyncTasks;
+package com.przemolab.oknotifier.sync;
 
 import android.os.AsyncTask;
 
@@ -12,7 +12,6 @@ import java.util.List;
 import timber.log.Timber;
 
 public class RetrieveContestsTask extends AsyncTask<Void, Void, List<Contest>> {
-    // TODO: move to SQL contest loader and rename the loader to contest loader
 
     private OpenKattisService openKattisService;
     private NotifierRepository notifierRepository;
@@ -34,7 +33,7 @@ public class RetrieveContestsTask extends AsyncTask<Void, Void, List<Contest>> {
     protected List<Contest> doInBackground(Void...voids) {
         try {
             List<Contest> contests = openKattisService.getOngoingContests();
-            notifierRepository.persist(contests);
+            notifierRepository.persistContests(contests);
             return contests;
         } catch (Exception ex) {
             Timber.e(ex);

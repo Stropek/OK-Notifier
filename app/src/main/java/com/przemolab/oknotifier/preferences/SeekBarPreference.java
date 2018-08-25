@@ -14,7 +14,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SeekBarPreference extends Preference {
-    private int interval = 0;
+    private final int intervalMin = 5;
+    private int interval = intervalMin;
 
     @BindView(R.id.value_sb) SeekBar valueBar;
     @BindView(R.id.value_tv) TextView value;
@@ -41,12 +42,14 @@ public class SeekBarPreference extends Preference {
         valueBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                value.setText(String.format("%sm", progress));
-                interval = progress;
+                if (progress >= 10) {
+                    value.setText(String.format("%sm", progress));
+                    interval = progress;
 
-                persistInt(interval);
+                    persistInt(interval);
 
-                notifyChanged();
+                    notifyChanged();
+                }
             }
 
             @Override
@@ -75,6 +78,4 @@ public class SeekBarPreference extends Preference {
             persistInt(interval);
         }
     }
-
-
 }

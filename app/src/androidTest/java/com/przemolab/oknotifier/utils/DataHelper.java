@@ -47,7 +47,7 @@ public abstract class DataHelper {
     public static Contestant createContestant(int id, String contestId) {
         String name = String.format("name %s", id);
 
-        return new Contestant(id, name, contestId, 0, 0, 0, 0, 0);
+        return new Contestant(id, name, contestId, 1, 2, 3, 4, 5);
     }
 
     public static List<Contestant> createContestants(int count, String contestId) {
@@ -63,7 +63,7 @@ public abstract class DataHelper {
     public static Uri insertContest(ContentResolver contentResolver, Uri uri, Contest contest) {
         return insertContest(contentResolver, uri,
                 contest.getName(),
-                contest.getId(),
+                contest.getContestId(),
                 DateUtils.formatDate(contest.getStartDate(), DateUtils.SQLiteDateTimeFormat),
                 DateUtils.formatDate(contest.getEndDate(), DateUtils.SQLiteDateTimeFormat),
                 contest.getNumberOfContestants(),
@@ -94,9 +94,13 @@ public abstract class DataHelper {
     }
 
     public static Uri insertContestant(ContentResolver contentResolver, Uri uri, String contestId) {
+        return insertContestant(contentResolver, uri, contestId, "john doe");
+    }
+
+    public static Uri insertContestant(ContentResolver contentResolver, Uri uri, String contestId, String name) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(NotifierContract.ContestantEntry.COLUMN_NAME, "john doe");
+        contentValues.put(NotifierContract.ContestantEntry.COLUMN_NAME, name);
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_CONTEST_ID, contestId);
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED, 1);
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SUBMITTED, 2);
@@ -105,7 +109,6 @@ public abstract class DataHelper {
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_TIME, 5);
 
         return contentResolver.insert(uri, contentValues);
-
     }
 
     public static void setObservedUriOnContentResolver(ContentResolver contentResolver, Uri uri, ContentObserver contentObserver) {

@@ -1,4 +1,4 @@
-package com.przemolab.oknotifier.asyncTasks;
+package com.przemolab.oknotifier.sync;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;

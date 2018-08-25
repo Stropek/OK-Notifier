@@ -5,7 +5,7 @@
         android:title="@string/pref_category_general">
 
         <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="true"
+            android:defaultValue="@bool/default_sync_switch"
             android:key="pref_notifications_switch"
             android:title="@string/pref_notifications_switch" />
 
@@ -16,6 +16,7 @@
         android:title="@string/pref_category_contest_notifications">
 
         <com.przemolab.oknotifier.preferences.ContestsSwitchesPreference
+            android:defaultValue="@string/default_contests_states"
             android:key="pref_contest_switches"
             android:title="@string/pref_contest_switches" />
 
@@ -26,12 +27,12 @@
         android:title="@string/pref_category_other_notifications">
 
         <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="true"
+            android:defaultValue="@bool/default_ongoing_contests_switch"
             android:key="pref_upcoming_contests_switch"
             android:title="@string/pref_upcoming_contests_switch" />
 
         <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="true"
+            android:defaultValue="@bool/default_new_problems_switch"
             android:key="pref_new_problems_switch"
             android:title="@string/pref_new_problems_switch" />
 
@@ -42,12 +43,12 @@
         android:title="@string/pref_category_data_sync">
 
         <android.support.v7.preference.CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="@bool/default_sync_wifi_switch"
             android:key="pref_only_on_wifi_switch"
             android:title="@string/pref_only_on_wifi_switch" />
 
         <com.przemolab.oknotifier.preferences.SeekBarPreference
-            android:defaultValue="15"
+            android:defaultValue="@integer/default_sync_interval"
             android:key="sync_frequency_sb"
             android:title="@string/pref_title_sync_frequency" />
 
