@@ -115,7 +115,7 @@ public class ContestantTests {
 
     private Contestant createContestant() {
         String name = "name";
-        String contestId = "contestId";
+        String contestId = "abc";
         int approved = 1;
         int submitted = 2;
         int rejected = 3;
