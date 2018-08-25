@@ -16,8 +16,6 @@ import com.przemolab.oknotifier.utils.TestContentObserver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.text.ParseException;
-
 import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -94,5 +92,36 @@ public class ContestantTests {
         assertEquals(result.getProblemsFailed(), 3);
         assertEquals(result.getProblemsNotTried(), 4);
         assertEquals(result.getTime(), 5);
+    }
+
+    @Test
+    public void toContentValues_convertsObjectToContentValuesCollection() {
+        // given
+        Contestant contestant = createContestant();
+
+        // when
+        ContentValues result = contestant.toContentValues();
+
+        // then
+        assertEquals(7, result.size());
+        assertEquals("name", result.get(NotifierContract.ContestantEntry.COLUMN_NAME));
+        assertEquals("abc", result.get(NotifierContract.ContestantEntry.COLUMN_CONTEST_ID));
+        assertEquals(1, result.get(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED));
+        assertEquals(2, result.get(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SUBMITTED));
+        assertEquals(3, result.get(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_FAILED));
+        assertEquals(4, result.get(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_NOT_TRIED));
+        assertEquals(5, result.get(NotifierContract.ContestantEntry.COLUMN_TIME));
+    }
+
+    private Contestant createContestant() {
+        String name = "name";
+        String contestId = "contestId";
+        int approved = 1;
+        int submitted = 2;
+        int rejected = 3;
+        int notTried = 4;
+        int time = 5;
+
+        return new Contestant(0, name, contestId, approved, submitted, rejected, notTried, time);
     }
 }

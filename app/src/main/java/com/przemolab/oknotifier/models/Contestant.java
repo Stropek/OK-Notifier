@@ -1,5 +1,6 @@
 package com.przemolab.oknotifier.models;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,6 +9,7 @@ import com.przemolab.oknotifier.data.NotifierContract;
 
 public class Contestant implements Parcelable {
 
+    // TODO: remove id
     private int id;
     private String name;
     private String contestId;
@@ -53,9 +55,24 @@ public class Contestant implements Parcelable {
         }
     };
 
+    public ContentValues toContentValues() {
+        ContentValues values = new ContentValues();
+
+        values.put(NotifierContract.ContestantEntry.COLUMN_NAME, this.name);
+        values.put(NotifierContract.ContestantEntry.COLUMN_CONTEST_ID, this.contestId);
+        values.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED, this.problemsSolved);
+        values.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SUBMITTED, this.problemsSubmitted);
+        values.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_FAILED, this.problemsFailed);
+        values.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_NOT_TRIED, this.problemsNotTried);
+        values.put(NotifierContract.ContestantEntry.COLUMN_TIME, this.time);
+
+        return values;
+    }
+
     public static Contestant getFromCursor(Cursor cursor) {
         Contestant contestant = new Contestant();
 
+        contestant.setId(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestantEntry._ID)));
         contestant.setName(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_NAME)));
         contestant.setContestId(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_CONTEST_ID)));
         contestant.setProblemsSolved(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED)));
