@@ -20,6 +20,10 @@ public class Contestant implements Parcelable {
 
     private Contestant() {}
 
+    public Contestant(String name, String contestId, int problemsSolved, int problemsSubmitted, int problemsFailed, int problemsNotTried, int time) {
+        this(0, name, contestId, problemsSolved, problemsSubmitted, problemsFailed, problemsNotTried, time);
+    }
+
     public Contestant(int id, String name, String contestId, int problemsSolved, int problemsSubmitted, int problemsFailed, int problemsNotTried, int time) {
         this.id = id;
         this.name = name;

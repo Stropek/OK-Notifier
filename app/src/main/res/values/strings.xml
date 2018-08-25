@@ -54,4 +54,7 @@
     <string name="pref_check_every_label">Check every:</string>
     <string name="pref_title_sync_frequency">15m</string>
 
+    <!-- Notifications -->
+    <string name="contest_notification_channel_name">contest notification channel</string>
+
 </resources>

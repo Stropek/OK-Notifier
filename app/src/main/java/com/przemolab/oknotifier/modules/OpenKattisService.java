@@ -123,7 +123,7 @@ public class OpenKattisService {
                     }
                 }
 
-                return new Contestant(0, name, contestId, solved, submitted, failed, notTried, time);
+                return new Contestant(name, contestId, solved, submitted, failed, notTried, time);
             }
 
             return null;
@@ -133,4 +133,3 @@ public class OpenKattisService {
         }
     }
 }
-

@@ -3,6 +3,7 @@
     package="com.przemolab.oknotifier">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".NotifierApp"
@@ -15,6 +16,7 @@
 
         <activity
             android:name=".activities.MainActivity"
+            android:launchMode="singleTop"
             android:label="@string/ongoing_contests">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,10 +27,12 @@
 
         <activity
             android:name=".activities.ContestActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".activities.MainActivity" />
 
         <activity
             android:name=".activities.SettingsActivity"
+            android:launchMode="singleTop"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.MainActivity" />
 

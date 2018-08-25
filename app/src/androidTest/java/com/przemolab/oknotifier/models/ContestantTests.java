@@ -28,7 +28,7 @@ public class ContestantTests {
     @Test
     public void createFromParcel_returnsParceledContestant() {
         // given
-        Contestant contestant = new Contestant(1, "name", "abc", 1, 2, 3, 4 ,5);
+        Contestant contestant = new Contestant("name", "abc", 1, 2, 3, 4 ,5);
 
         // when
         Parcel parcel = Parcel.obtain();
@@ -37,7 +37,6 @@ public class ContestantTests {
         Contestant fromParcel = Contestant.CREATOR.createFromParcel(parcel);
 
         // then
-        assertEquals(fromParcel.getId(), contestant.getId());
         assertEquals(fromParcel.getName(), contestant.getName());
         assertEquals(fromParcel.getContestId(), contestant.getContestId());
         assertEquals(fromParcel.getProblemsSolved(), contestant.getProblemsSolved());
@@ -122,6 +121,6 @@ public class ContestantTests {
         int notTried = 4;
         int time = 5;
 
-        return new Contestant(0, name, contestId, approved, submitted, rejected, notTried, time);
+        return new Contestant(name, contestId, approved, submitted, rejected, notTried, time);
     }
 }

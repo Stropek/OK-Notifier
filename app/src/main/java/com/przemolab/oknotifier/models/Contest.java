@@ -13,6 +13,7 @@ import java.util.Date;
 
 public class Contest implements Parcelable {
 
+    private int id;
     private String contestId;
     private String name;
     private Date startDate;
@@ -24,6 +25,7 @@ public class Contest implements Parcelable {
     private Contest() { }
 
     public Contest(String contestId, String name, Date startDate, Date endDate, int numberOfContestants, int numberOfProblems) {
+        this.id = 0;
         this.contestId = contestId;
         this.name = name;
         this.startDate = startDate;
@@ -33,6 +35,7 @@ public class Contest implements Parcelable {
     }
 
     private Contest(Parcel in) {
+        this.id = in.readInt();
         this.contestId = in.readString();
         this.name = in.readString();
         this.startDate = new Date(in.readLong());
@@ -71,6 +74,7 @@ public class Contest implements Parcelable {
     public static Contest getFromCursor(Cursor cursor) throws ParseException {
         Contest contest = new Contest();
 
+        contest.setId(cursor.getInt(cursor.getColumnIndex(NotifierContract.ContestEntry._ID)));
         contest.setContestId(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_CONTEST_ID)));
         contest.setName(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_NAME)));
         contest.setStartDate(DateUtils.getDate(cursor.getString(cursor.getColumnIndex(NotifierContract.ContestEntry.COLUMN_START_DATE)), DateUtils.SQLiteDateTimeFormat));
@@ -89,6 +93,7 @@ public class Contest implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(contestId);
         dest.writeString(name);
         dest.writeLong(startDate.getTime());
@@ -96,6 +101,14 @@ public class Contest implements Parcelable {
         dest.writeInt(numberOfContestants);
         dest.writeInt(numberOfProblems);
         dest.writeByte((byte) (isSubscribed ? 1 : 0));
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getContestId() {

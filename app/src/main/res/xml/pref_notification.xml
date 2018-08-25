@@ -22,21 +22,21 @@
 
     </android.support.v7.preference.PreferenceCategory>
 
-    <android.support.v7.preference.PreferenceCategory
-        android:dependency="pref_notifications_switch"
-        android:title="@string/pref_category_other_notifications">
+    <!--<android.support.v7.preference.PreferenceCategory-->
+        <!--android:dependency="pref_notifications_switch"-->
+        <!--android:title="@string/pref_category_other_notifications">-->
 
-        <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="@bool/default_ongoing_contests_switch"
-            android:key="pref_upcoming_contests_switch"
-            android:title="@string/pref_upcoming_contests_switch" />
+        <!--<android.support.v7.preference.SwitchPreferenceCompat-->
+            <!--android:defaultValue="@bool/default_ongoing_contests_switch"-->
+            <!--android:key="pref_upcoming_contests_switch"-->
+            <!--android:title="@string/pref_upcoming_contests_switch" />-->
 
-        <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="@bool/default_new_problems_switch"
-            android:key="pref_new_problems_switch"
-            android:title="@string/pref_new_problems_switch" />
+        <!--<android.support.v7.preference.SwitchPreferenceCompat-->
+            <!--android:defaultValue="@bool/default_new_problems_switch"-->
+            <!--android:key="pref_new_problems_switch"-->
+            <!--android:title="@string/pref_new_problems_switch" />-->
 
-    </android.support.v7.preference.PreferenceCategory>
+    <!--</android.support.v7.preference.PreferenceCategory>-->
 
     <android.support.v7.preference.PreferenceCategory
         android:dependency="pref_notifications_switch"

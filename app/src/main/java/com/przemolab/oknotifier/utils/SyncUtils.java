@@ -25,10 +25,8 @@ public class SyncUtils {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        // TODO: needs to by multiplied by 60 to have this in seconds
-        // change flextime to 150 - minimum sync time will be set to 10 minutes - this is 1/4 of that
-        int interval = sharedPreferences.getInt("sync_frequency_sb", context.getResources().getInteger(R.integer.default_sync_interval));
-        int flextime = 5;
+        int interval = 60 * sharedPreferences.getInt("sync_frequency_sb", context.getResources().getInteger(R.integer.default_sync_interval));
+        int flextime = 150; // 1/4 of minimum interval value
 
         Driver driver = new GooglePlayDriver(context);
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(driver);

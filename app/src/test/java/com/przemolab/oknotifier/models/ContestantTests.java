@@ -12,7 +12,7 @@ public class ContestantTests {
         Contestant contestant = createContestant();
 
         // then
-        assertEquals(1, contestant.getId());
+        assertEquals(0, contestant.getId());
         assertEquals("abc", contestant.getContestId());
         assertEquals(1, contestant.getProblemsSolved());
         assertEquals(2, contestant.getProblemsSubmitted());
@@ -118,7 +118,6 @@ public class ContestantTests {
     }
 
     private Contestant createContestant() {
-        int id = 1;
         String name = "name";
         String contestId = "abc";
         int solved = 1;
@@ -127,6 +126,6 @@ public class ContestantTests {
         int notTried = 4;
         int time = 5;
 
-        return new Contestant(id, name, contestId, solved, submitted, failed, notTried, time);
+        return new Contestant(name, contestId, solved, submitted, failed, notTried, time);
     }
 }
