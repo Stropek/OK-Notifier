@@ -1,6 +1,8 @@
 package com.przemolab.oknotifier.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,13 +10,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.fragments.ContestantsListFragment;
+import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.models.Contestant;
+import com.przemolab.oknotifier.widgets.ContestWidgetDataProvider;
 
 import java.util.List;
 
@@ -25,6 +32,10 @@ public class ContestActivity extends AppCompatActivity
         implements ContestantsListFragment.OnContestantsListEventListener {
 
     private ContestantsListFragment contestantsListFragment;
+    private ContestWidgetDataProvider contestWidgetDataProvider;
+
+    private String contestId;
+    private List<Contestant> contestants;
 
     @BindView(R.id.sync_pb) ProgressBar syncProgressBar;
     @BindView(R.id.contestantsList_fl) FrameLayout contestantsListFrameLayout;
@@ -33,6 +44,9 @@ public class ContestActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contest);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SharedPreferences.Name, Context.MODE_PRIVATE);
+        contestWidgetDataProvider = new ContestWidgetDataProvider(sharedPreferences);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -51,6 +65,23 @@ public class ContestActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_contest_activity, menu);
+
+        final Context context = this;
+        CheckBox checkBox = (CheckBox) menu.findItem(R.id.set_widget_menu_item).getActionView();
+        checkBox.setChecked(contestWidgetDataProvider.isCurrentSource(contestId));
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Contestant bestContestant = new Contestant("", contestId, 0, 0, 0, 0, 0);
+
+                if (!contestants.isEmpty()) {
+                    bestContestant = contestants.get(0);
+                }
+
+                contestWidgetDataProvider.toggleSource(context, bestContestant, isChecked);
+            }
+        });
+
         return true;
     }
 
@@ -76,6 +107,8 @@ public class ContestActivity extends AppCompatActivity
 
     @Override
     public void onSyncFinished(List<Contestant> contestants, boolean restartLoader) {
+        this.contestants = contestants;
+
         contestantsListFrameLayout.setVisibility(View.VISIBLE);
         syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
@@ -90,7 +123,8 @@ public class ContestActivity extends AppCompatActivity
         Intent intent = getIntent();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BundleKeys.ContestId, intent.getStringExtra(Constants.BundleKeys.ContestId));
+        contestId = intent.getStringExtra(Constants.BundleKeys.ContestId);
+        bundle.putSerializable(Constants.BundleKeys.ContestId, contestId);
 
         fragment.setArguments(bundle);
         return fragment;

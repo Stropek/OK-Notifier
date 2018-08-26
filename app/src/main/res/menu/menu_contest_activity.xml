@@ -8,4 +8,12 @@
         android:title="@string/sync_contest"
         app:showAsAction="ifRoom" />
 
+    <!-- TODO: change icon -->
+    <item
+        android:id="@+id/set_widget_menu_item"
+        android:title="@string/set_widget"
+        android:checkable="true"
+        app:actionViewClass="android.widget.CheckBox"
+        app:showAsAction="ifRoom" />
+
 </menu>
