@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
     private ContestsListFragment contestsListFragment;
     private SortOrder sortOrder = SortOrder.SubscribedFirst;
 
-    @BindView(R.id.sync_pb) ProgressBar syncProgressBar;
+    @BindView(R.id.sync_contests_pb) ProgressBar syncContestsProgressBar;
     @BindView(R.id.contestsList_fl) FrameLayout contestsListFrameLayout;
 
     @Override
@@ -110,14 +110,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSyncStarted() {
-        syncProgressBar.setVisibility(ProgressBar.VISIBLE);
+        syncContestsProgressBar.setVisibility(ProgressBar.VISIBLE);
         contestsListFrameLayout.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onSyncFinished(List<Contest> contests) {
         contestsListFrameLayout.setVisibility(View.VISIBLE);
-        syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
+        syncContestsProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         getSupportLoaderManager().restartLoader(ContestsListFragment.CONTEST_LOADER_ID, null, contestsListFragment);
     }

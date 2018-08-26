@@ -7,7 +7,7 @@
     tools:context=".activities.MainActivity">
 
     <ProgressBar
-        android:id="@+id/sync_pb"
+        android:id="@+id/sync_contests_pb"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:visibility="invisible"

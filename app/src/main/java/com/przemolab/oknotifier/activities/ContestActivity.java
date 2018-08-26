@@ -38,7 +38,7 @@ public class ContestActivity extends AppCompatActivity
     private String contestId;
     private List<Contestant> contestants;
 
-    @BindView(R.id.sync_pb) ProgressBar syncProgressBar;
+    @BindView(R.id.sync_standings_pb) ProgressBar syncStandingsProgressBar;
     @BindView(R.id.contestantsList_fl) FrameLayout contestantsListFrameLayout;
 
     @Override
@@ -102,7 +102,7 @@ public class ContestActivity extends AppCompatActivity
 
     @Override
     public void onSyncStarted() {
-        syncProgressBar.setVisibility(ProgressBar.VISIBLE);
+        syncStandingsProgressBar.setVisibility(ProgressBar.VISIBLE);
         contestantsListFrameLayout.setVisibility(View.INVISIBLE);
     }
 
@@ -111,7 +111,7 @@ public class ContestActivity extends AppCompatActivity
         this.contestants = contestants;
 
         contestantsListFrameLayout.setVisibility(View.VISIBLE);
-        syncProgressBar.setVisibility(ProgressBar.INVISIBLE);
+        syncStandingsProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         if (restartLoader) {
             getSupportLoaderManager().restartLoader(ContestantsListFragment.CONTESTANT_LOADER_ID, null, contestantsListFragment);
