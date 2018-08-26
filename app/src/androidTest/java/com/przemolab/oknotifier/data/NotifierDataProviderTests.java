@@ -9,9 +9,11 @@ import android.content.pm.ProviderInfo;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.przemolab.oknotifier.BuildConfig;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
 import org.junit.AfterClass;
@@ -53,7 +55,7 @@ public class NotifierDataProviderTests {
         String actualAuthority = providerInfo.authority;
 
         // then
-        assertEquals(packageName, actualAuthority);
+        assertEquals(packageName.replace("." + BuildConfig.FLAVOR, ""), actualAuthority);
     }
 
     @Test(expected = UnsupportedOperationException.class)
