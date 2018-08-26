@@ -14,12 +14,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.fragments.ContestantsListFragment;
-import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.services.ContestIntentService;
 import com.przemolab.oknotifier.widgets.ContestWidgetDataProvider;
@@ -38,7 +36,7 @@ public class ContestActivity extends AppCompatActivity
     private String contestId;
     private List<Contestant> contestants;
 
-    @BindView(R.id.sync_standings_pb) ProgressBar syncStandingsProgressBar;
+    @BindView(R.id.syncStandings_pb) ProgressBar syncStandingsProgressBar;
     @BindView(R.id.contestantsList_fl) FrameLayout contestantsListFrameLayout;
 
     @Override
@@ -101,13 +99,13 @@ public class ContestActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSyncStarted() {
+    public void onContestantsSyncStarted() {
         syncStandingsProgressBar.setVisibility(ProgressBar.VISIBLE);
         contestantsListFrameLayout.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void onSyncFinished(List<Contestant> contestants, boolean restartLoader) {
+    public void onContestantsSyncFinished(List<Contestant> contestants, boolean restartLoader) {
         this.contestants = contestants;
 
         contestantsListFrameLayout.setVisibility(View.VISIBLE);

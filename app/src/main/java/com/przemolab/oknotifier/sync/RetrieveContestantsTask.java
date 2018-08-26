@@ -31,7 +31,7 @@ public class RetrieveContestantsTask extends AsyncTask<Void, Void, List<Contesta
 
     @Override
     protected void onPreExecute() {
-        onContestantsListEventListener.onSyncStarted();
+        onContestantsListEventListener.onContestantsSyncStarted();
     }
 
     @Override
@@ -48,6 +48,6 @@ public class RetrieveContestantsTask extends AsyncTask<Void, Void, List<Contesta
 
     @Override
     protected void onPostExecute(List<Contestant> contestants) {
-        onContestantsListEventListener.onSyncFinished(contestants, true);
+        onContestantsListEventListener.onContestantsSyncFinished(contestants, true);
     }
 }

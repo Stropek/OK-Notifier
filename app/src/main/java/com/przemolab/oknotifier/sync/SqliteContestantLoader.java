@@ -48,7 +48,7 @@ public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
 
     @Override
     protected void onStartLoading() {
-        onContestantsListEventListener.onSyncStarted();
+        onContestantsListEventListener.onContestantsSyncStarted();
         if (contestants == null) {
             forceLoad();
         } else {
@@ -59,7 +59,7 @@ public class SqliteContestantLoader extends AsyncTaskLoader<List<Contestant>> {
     @Override
     public void deliverResult(List<Contestant> data) {
         contestants = data;
-        onContestantsListEventListener.onSyncFinished(data, false);
+        onContestantsListEventListener.onContestantsSyncFinished(data, false);
         super.deliverResult(data);
     }
 }

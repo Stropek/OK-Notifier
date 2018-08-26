@@ -154,8 +154,8 @@ public class ContestsListFragment extends Fragment
 
         void onContestClicked(Contest contest);
 
-        void onSyncStarted();
+        void onContestSyncStarted();
 
-        void onSyncFinished(List<Contest> contests);
+        void onContestSyncFinished(List<Contest> contests);
     }
 }

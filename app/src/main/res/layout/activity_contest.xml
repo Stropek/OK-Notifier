@@ -7,7 +7,7 @@
     tools:context=".activities.ContestActivity">
 
     <ProgressBar
-        android:id="@+id/sync_standings_pb"
+        android:id="@+id/syncStandings_pb"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerInParent="true"

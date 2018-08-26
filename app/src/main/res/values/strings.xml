@@ -2,6 +2,7 @@
     <string name="app_name">OK Notifier</string>
     <string name="ongoing_contests">Contests</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="select_contest_info">Select a contest from the list</string>
 
     <!-- Menu -->
     <string name="sync_contest">Sync contests</string>
