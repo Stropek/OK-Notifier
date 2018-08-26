@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.models.Contestant;
+import com.przemolab.oknotifier.services.ContestIntentService;
 
 public class ContestWidgetDataProvider {
 
@@ -41,7 +42,7 @@ public class ContestWidgetDataProvider {
 
         editor.apply();
 
-//        ContestIntentService.startActionUpdateContestWidgets(context);
+        ContestIntentService.startActionUpdateContestWidgets(context);
     }
 
     public boolean isCurrentSource(String contestId) {
