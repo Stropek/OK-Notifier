@@ -21,4 +21,6 @@
     <dimen name="image_button_size_small">60dp</dimen>
 
     <dimen name="widget_margin">8dp</dimen>
+
+    <dimen name="adView_height">20dp</dimen>
 </resources>

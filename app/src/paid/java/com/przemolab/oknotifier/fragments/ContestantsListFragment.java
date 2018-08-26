@@ -15,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.przemolab.oknotifier.BuildConfig;
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
@@ -83,7 +86,7 @@ public class ContestantsListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contestant_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_contestants_list, container, false);
         ButterKnife.bind(this, view);
 
         Context context = view.getContext();

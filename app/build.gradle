@@ -45,6 +45,17 @@ android {
             testCoverageEnabled true
         }
     }
+    flavorDimensions 'flavors'
+    productFlavors {
+        free {
+            dimension 'flavors'
+            applicationIdSuffix ".free"
+        }
+        paid {
+            dimension 'flavors'
+            applicationIdSuffix ".paid"
+        }
+    }
 }
 
 dependencies {
@@ -54,8 +65,10 @@ dependencies {
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:preference-v7:27.1.1'
+    implementation 'com.android.support:customtabs:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'com.google.firebase:firebase-ads:15.0.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.jakewharton.timber:timber:4.7.1'
