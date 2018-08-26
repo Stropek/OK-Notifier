@@ -19,6 +19,7 @@ public class ContestantTests {
         assertEquals(3, contestant.getProblemsFailed());
         assertEquals(4, contestant.getProblemsNotTried());
         assertEquals(5, contestant.getTime());
+        assertEquals("abc;1;2;3;4", contestant.getSharedPreferencesValue());
     }
 
     @Test

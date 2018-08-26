@@ -167,4 +167,8 @@ public class Contestant implements Parcelable {
     public void setTime(int time) {
         this.time = time;
     }
+
+    public String getSharedPreferencesValue() {
+        return String.format("%s;%s;%s;%s;%s", contestId, problemsSolved, problemsSubmitted, problemsFailed, problemsNotTried);
+    }
 }
