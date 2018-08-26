@@ -22,6 +22,14 @@ public class OpenKattisService {
     public List<Contest> getOngoingContests() {
         try {
             List<Contest> contests = new ArrayList<>();
+
+//            Date startDate = DateUtils.getDate(2000, 10, 1, 10, 30, 0);
+//            Date endDate = DateUtils.getDate(2000, 11, 1, 10, 30, 0);
+//
+//            contests.add(new Contest("abc", "Contest 1", startDate, endDate, 10, 10));
+//            contests.add(new Contest("def", "Contest 2", startDate, endDate, 5, 5));
+//
+//            return contests;
             String url = String.format("%s/contests", BaseKattisUrl);
             Document contestsPageDocument = Jsoup.connect(url).timeout(0).get();
             Elements elements = contestsPageDocument.select(".main-content table:first-of-type tbody tr");
@@ -43,6 +51,12 @@ public class OpenKattisService {
     public List<Contestant> getContestStandings(String contestId) {
         try {
             List<Contestant> contestants = new ArrayList<>();
+
+//            contestants.add(new Contestant("john doe", contestId, 1, 2, 3, 4, 5));
+//            contestants.add(new Contestant("jane doe", contestId, 6, 7, 8, 9, 10));
+//
+//            return contestants;
+
             String url = String.format("%s/contests/%s", BaseKattisUrl, contestId);
             Document contestsPageDocument = Jsoup.connect(url).timeout(0).get();
             Elements elements = contestsPageDocument.select("#standings tbody tr");

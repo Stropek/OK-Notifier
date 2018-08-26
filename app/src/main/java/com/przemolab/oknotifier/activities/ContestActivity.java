@@ -21,6 +21,7 @@ import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.fragments.ContestantsListFragment;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.models.Contestant;
+import com.przemolab.oknotifier.services.ContestIntentService;
 import com.przemolab.oknotifier.widgets.ContestWidgetDataProvider;
 
 import java.util.List;
@@ -115,6 +116,8 @@ public class ContestActivity extends AppCompatActivity
         if (restartLoader) {
             getSupportLoaderManager().restartLoader(ContestantsListFragment.CONTESTANT_LOADER_ID, null, contestantsListFragment);
         }
+
+        ContestIntentService.startActionUpdateContestWidgets(this);
     }
 
     public ContestantsListFragment getContestantsListFragment() {
