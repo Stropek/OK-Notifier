@@ -35,7 +35,7 @@ public class ContestActivity extends AppCompatActivity
     private ContestWidgetDataProvider contestWidgetDataProvider;
 
     private String contestId;
-    private List<Contestant> contestants;
+    private List<Contestant> contestants = new ArrayList<>();
 
     @BindView(R.id.syncStandings_pb) ProgressBar syncStandingsProgressBar;
     @BindView(R.id.contestantsList_fl) FrameLayout contestantsListFrameLayout;
@@ -45,7 +45,7 @@ public class ContestActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
 
         outState.putString(Constants.BundleKeys.ContestId, contestId);
-        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, (ArrayList<Contestant>) contestants);
+        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, new ArrayList<>(contestants));
     }
 
     @Override

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     private ContestantsListFragment contestantsListFragment;
 
     private SortOrder sortOrder = SortOrder.SubscribedFirst;
-    private List<Contestant> contestants;
+    private List<Contestant> contestants = new ArrayList<>();
     private String contestId = "";
 
     @BindView(R.id.syncContests_pb) ProgressBar syncContestsProgressBar;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
 
         outState.putSerializable(Constants.BundleKeys.SortOrder, sortOrder);
         outState.putString(Constants.BundleKeys.ContestId, contestId);
-        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, (ArrayList<Contestant>) contestants);
+        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, new ArrayList<>(contestants));
     }
 
     @Override

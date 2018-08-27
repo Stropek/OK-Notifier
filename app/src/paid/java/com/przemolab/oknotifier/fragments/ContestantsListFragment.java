@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.przemolab.oknotifier.BuildConfig;
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;

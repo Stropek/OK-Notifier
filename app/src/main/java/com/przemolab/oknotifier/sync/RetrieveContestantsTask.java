@@ -1,14 +1,11 @@
 package com.przemolab.oknotifier.sync;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.przemolab.oknotifier.fragments.ContestantsListFragment;
 import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.modules.NotifierRepository;
 import com.przemolab.oknotifier.modules.OpenKattisService;
-import com.przemolab.oknotifier.services.ContestIntentService;
 
 import java.util.List;
 
