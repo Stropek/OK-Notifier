@@ -143,8 +143,8 @@ public class ContestantsListFragment extends Fragment
 
     public interface OnContestantsListEventListener {
 
-        void onSyncStarted();
+        void onContestantsSyncStarted();
 
-        void onSyncFinished(List<Contestant> contestants, boolean restartLoader);
+        void onContestantsSyncFinished(List<Contestant> contestants, boolean restartLoader);
     }
 }

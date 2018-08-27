@@ -39,37 +39,6 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:38336471042:android:32b03bf3b4acafaa",
-        "android_client_info": {
-          "package_name": "com.przemolab.oknotifier.free"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "38336471042-u0iqhkpmbcmkudmoiaueict2kev9ctnr.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA76wD40f8pUHuKUqn7gdKWWgJjpE6eKbU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:38336471042:android:5bf8a79bc2de3bb0",
         "android_client_info": {
           "package_name": "com.przemolab.oknotifier.paid"
