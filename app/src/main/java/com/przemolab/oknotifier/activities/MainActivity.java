@@ -75,8 +75,6 @@ public class MainActivity extends AppCompatActivity
         if (isBigScreen && !contestId.isEmpty()) {
             loadContestantsListFragment();
         }
-
-        scheduleNotificationService();
     }
 
     @Override
@@ -226,31 +224,5 @@ public class MainActivity extends AppCompatActivity
     private void openSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
-    }
-
-    private void scheduleNotificationService() {
-
-
-
-//        ComponentName componentName = new ComponentName(this, OpenKattisJobService.class);
-//        JobInfo jobInfo = new JobInfo.Builder(OpenKattisJobService.OPEN_KATTIS_JOB_SERVICE_ID, componentName)
-//                .setPeriodic(10)
-//                .build();
-//
-//        JobScheduler jobScheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
-//        int resultCode = jobScheduler.schedule(jobInfo);
-//        if (resultCode == JobScheduler.RESULT_SUCCESS) {
-//            Timber.i("OpenKattis: Job scheduled!");
-//        } else {
-//            Timber.i("OpenKattis: Job not scheduled");
-//        }
-//
-//        for ( JobInfo pendingInfo : jobScheduler.getAllPendingJobs() ) {
-//            if (pendingInfo.getContestId() == OpenKattisJobService.OPEN_KATTIS_JOB_SERVICE_ID) {
-//                Timber.i("OpenKattis: Job is pending...");
-//                break;
-//            }
-//        }
-
     }
 }
