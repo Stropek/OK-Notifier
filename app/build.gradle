@@ -26,6 +26,14 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testPaidDebugUnitTest', '
 }
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'OkNotifierKey'
+            keyPassword 'password123'
+            storeFile file('C:/Users/p.s.curzytek/android.jks')
+            storePassword 'password'
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.przemolab.oknotifier"
@@ -39,6 +47,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         debug {
             minifyEnabled false
@@ -79,15 +88,11 @@ dependencies {
     implementation 'com.google.dagger:dagger-android:2.16'
     implementation 'com.google.dagger:dagger-android-support:2.16'
     implementation 'org.jsoup:jsoup:1.11.3'
-
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.16'
-
     testImplementation 'junit:junit:4.12'
-
     androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.16'
-
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'org.mockito:mockito-core:2.18.3'
     androidTestImplementation 'org.mockito:mockito-android:2.18.3'
