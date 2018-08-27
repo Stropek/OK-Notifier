@@ -202,21 +202,4 @@ public class MainActivityTests {
         onView(withText("name 2")).check(matches(isDisplayed()));
         onView(withText("name 3")).check(matches(isDisplayed()));
     }
-
-    @Test
-    public void navigateUp_fromContestActivity_takesUserBackToMainActivity() {
-        // given
-        List<Contest> contests = createContests(1);
-        when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
-
-        testRule.launchActivity(null);
-
-        onView(withId(R.id.contestItem_fl)).perform(click());
-
-        // when
-        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-
-        // then
-        onView(withText("id 1")).check(matches(isDisplayed()));
-    }
 }
