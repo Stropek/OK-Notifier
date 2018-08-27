@@ -22,6 +22,7 @@ import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.services.ContestIntentService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,19 +32,29 @@ public class MainActivity extends AppCompatActivity
         implements ContestsListFragment.OnContestsListEventsListener,
             ContestantsListFragment.OnContestantsListEventListener {
 
+    private boolean isBigScreen;
+
     private ContestsListFragment contestsListFragment;
     private ContestantsListFragment contestantsListFragment;
 
     private SortOrder sortOrder = SortOrder.SubscribedFirst;
     private List<Contestant> contestants;
-    private String selectedContestId = "";
-    private boolean isBigScreen;
+    private String contestId = "";
 
     @BindView(R.id.syncContests_pb) ProgressBar syncContestsProgressBar;
     @BindView(R.id.contestsList_fl) FrameLayout contestsListFrameLayout;
     @BindView(R.id.noContestSelected_tv) @Nullable TextView noContestSelectedTextView;
     @BindView(R.id.syncStandings_pb) @Nullable ProgressBar syncStandingsProgressBar;
     @BindView(R.id.contestantsList_fl) @Nullable FrameLayout contestantsListFrameLayout;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(Constants.BundleKeys.SortOrder, sortOrder);
+        outState.putString(Constants.BundleKeys.ContestId, contestId);
+        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, (ArrayList<Contestant>) contestants);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +65,15 @@ public class MainActivity extends AppCompatActivity
 
         isBigScreen = contestantsListFrameLayout != null;
 
-        if (savedInstanceState == null) {
-            loadContestsListFragment();
-        } else {
-            // TODO: retrieve saved instance state
-            if (isBigScreen && !selectedContestId.isEmpty()) {
-//                loadContestantsListFragment();
-            }
+        if (savedInstanceState != null) {
+            sortOrder = (SortOrder) savedInstanceState.getSerializable(Constants.BundleKeys.SortOrder);
+            contestId = savedInstanceState.getString(Constants.BundleKeys.ContestId);
+            contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants);
+        }
+
+        loadContestsListFragment();
+        if (isBigScreen && !contestId.isEmpty()) {
+            loadContestantsListFragment();
         }
 
         scheduleNotificationService();
@@ -118,7 +131,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onContestClicked(Contest contest) {
         if (isBigScreen) {
-            selectedContestId = contest.getContestId();
+            contestId = contest.getContestId();
             loadContestantsListFragment();
         } else {
             Intent contestIntent = new Intent(this, ContestActivity.class);
@@ -183,7 +196,7 @@ public class MainActivity extends AppCompatActivity
         ContestantsListFragment fragment = new ContestantsListFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BundleKeys.ContestId, selectedContestId);
+        bundle.putSerializable(Constants.BundleKeys.ContestId, contestId);
 
         fragment.setArguments(bundle);
         return fragment;

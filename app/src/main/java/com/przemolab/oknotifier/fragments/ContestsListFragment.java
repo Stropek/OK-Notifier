@@ -8,7 +8,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,7 +39,6 @@ public class ContestsListFragment extends Fragment
 
     public static final int CONTEST_LOADER_ID = 1;
     private SortOrder sortOrder = SortOrder.SubscribedFirst;
-    private int columnCount = 1;
 
     @BindView(R.id.contestsList_rv) public RecyclerView contestsRecyclerView;
     @BindView(R.id.empty_cl) public ConstraintLayout emptyLayout;
@@ -60,6 +58,13 @@ public class ContestsListFragment extends Fragment
     @OnClick(R.id.sync_ib)
     public void onSyncClicked() {
         new RetrieveContestsTask(openKattisService, notifierRepository, onContestListEventsListener).execute();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(Constants.BundleKeys.SortOrder, sortOrder);
     }
 
     @Override
@@ -83,20 +88,14 @@ public class ContestsListFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_contest_list, container, false);
         ButterKnife.bind(this, view);
 
         Context context = view.getContext();
 
-        if (columnCount <= 1) {
-            contestsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            contestsRecyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
-        }
-
+        contestsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         contestsRecyclerView.setAdapter(contestRecyclerViewAdapter);
 
         return view;

@@ -8,16 +8,12 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.przemolab.oknotifier.BuildConfig;
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
@@ -42,7 +38,6 @@ public class ContestantsListFragment extends Fragment
 
     public static final int CONTESTANT_LOADER_ID = 1;
     private String contestId;
-    private int mColumnCount = 1;
     private OnContestantsListEventListener onContestantsListEventsListener;
 
     @BindView(R.id.contestantsList_rv) public RecyclerView contestantsRecyclerView;
@@ -61,6 +56,13 @@ public class ContestantsListFragment extends Fragment
     @OnClick(R.id.sync_ib)
     public void onSyncClicked() {
         new RetrieveContestantsTask(openKattisService, notifierRepository, contestId, onContestantsListEventsListener).execute();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(Constants.BundleKeys.ContestId, contestId);
     }
 
     @Override
@@ -84,19 +86,13 @@ public class ContestantsListFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contestants_list, container, false);
         ButterKnife.bind(this, view);
 
         Context context = view.getContext();
 
-        if (mColumnCount <= 1) {
-            contestantsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            contestantsRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
-
+        contestantsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         contestantsRecyclerView.setAdapter(contestantRecyclerViewAdapter);
 
         return view;

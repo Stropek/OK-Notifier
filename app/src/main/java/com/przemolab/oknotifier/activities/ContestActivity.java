@@ -22,6 +22,7 @@ import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.services.ContestIntentService;
 import com.przemolab.oknotifier.widgets.ContestWidgetDataProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,6 +41,14 @@ public class ContestActivity extends AppCompatActivity
     @BindView(R.id.contestantsList_fl) FrameLayout contestantsListFrameLayout;
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(Constants.BundleKeys.ContestId, contestId);
+        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, (ArrayList<Contestant>) contestants);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contest);
@@ -53,10 +62,14 @@ public class ContestActivity extends AppCompatActivity
         }
 
         if (savedInstanceState == null) {
-            loadContestantsListFragment();
+            Intent intent = getIntent();
+            contestId = intent.getStringExtra(Constants.BundleKeys.ContestId);
         } else {
-            // TODO: retrieve saved instance state
+            contestId = savedInstanceState.getString(Constants.BundleKeys.ContestId);
+            contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants);
         }
+
+        loadContestantsListFragment();
 
         ButterKnife.bind(this);
     }
@@ -121,10 +134,7 @@ public class ContestActivity extends AppCompatActivity
     public ContestantsListFragment getContestantsListFragment() {
         ContestantsListFragment fragment = new ContestantsListFragment();
 
-        Intent intent = getIntent();
-
         Bundle bundle = new Bundle();
-        contestId = intent.getStringExtra(Constants.BundleKeys.ContestId);
         bundle.putSerializable(Constants.BundleKeys.ContestId, contestId);
 
         fragment.setArguments(bundle);

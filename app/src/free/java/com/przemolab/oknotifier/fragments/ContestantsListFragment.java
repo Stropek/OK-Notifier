@@ -42,7 +42,6 @@ public class ContestantsListFragment extends Fragment
 
     public static final int CONTESTANT_LOADER_ID = 1;
     private String contestId;
-    private int mColumnCount = 1;
     private OnContestantsListEventListener onContestantsListEventsListener;
 
     @BindView(R.id.contestantsList_rv) public RecyclerView contestantsRecyclerView;
@@ -95,12 +94,7 @@ public class ContestantsListFragment extends Fragment
 
         Context context = view.getContext();
 
-        if (mColumnCount <= 1) {
-            contestantsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            contestantsRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
-
+        contestantsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         contestantsRecyclerView.setAdapter(contestantRecyclerViewAdapter);
 
         return view;
