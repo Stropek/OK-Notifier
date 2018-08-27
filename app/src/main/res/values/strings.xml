@@ -59,4 +59,9 @@
     <!-- Notifications -->
     <string name="contest_notification_channel_name">contest notification channel</string>
 
+    <!-- AdMob -->
+    <string name="adMob_id">ca-app-pub-1062223867553661~1889097057</string>
+    <string name="adMob_unit_id">ca-app-pub-1062223867553661/5101992878</string>
+    <string name="adMob_test_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>

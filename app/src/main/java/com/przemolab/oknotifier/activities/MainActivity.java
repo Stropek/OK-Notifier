@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MobileAds.initialize(this, "ca-app-pub-1062223867553661~1889097057");
+        MobileAds.initialize(this, getString(R.string.adMob_id));
         ButterKnife.bind(this);
 
         isBigScreen = contestantsListFrameLayout != null;
