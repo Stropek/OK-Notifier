@@ -30,7 +30,7 @@ android {
         config {
             keyAlias 'OkNotifierKey'
             keyPassword 'password123'
-            storeFile file('C:/Users/p.s.curzytek/android.jks')
+            storeFile file('$rootDir/android.jks')
             storePassword 'password'
         }
     }
