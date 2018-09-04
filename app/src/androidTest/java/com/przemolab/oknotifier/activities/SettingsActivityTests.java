@@ -55,7 +55,7 @@ public class SettingsActivityTests {
         onView(withId(R.id.approved_tb)).check(matches(isDisplayed()));
         onView(withId(R.id.submitted_tb)).check(matches(isDisplayed()));
         onView(withId(R.id.rejected_tb)).check(matches(isDisplayed()));
-        onView(withId(R.id.list)).perform(RecyclerViewActions.scrollToPosition(9));
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.scrollToPosition(9));
         onView(withId(R.id.title_tv)).check(matches(isDisplayed()));
         onView(withId(R.id.value_sb)).check(matches(isDisplayed()));
         onView(withId(R.id.value_tv)).check(matches(isDisplayed()));
@@ -86,14 +86,14 @@ public class SettingsActivityTests {
         testRule.launchActivity(null);
 
         // when
-        onView(withId(R.id.list)).perform(RecyclerViewActions.scrollToPosition(9));
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.scrollToPosition(9));
         onView(withId(R.id.value_sb)).perform(setProgress(50));
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
         onView(withId(R.id.settings_menu_item)).perform(click());
 
         // then
-        onView(withId(R.id.list)).perform(RecyclerViewActions.scrollToPosition(9));
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.scrollToPosition(9));
         onView(withId(R.id.value_tv)).check(matches(withText("50m")));
     }
 }
