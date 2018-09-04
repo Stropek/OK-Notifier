@@ -68,7 +68,7 @@ android {
 }
 
 ext {
-    supportLibrary = '27.1.1'
+    supportLibrary = '28.+'
     dagger = '2.16'
     room = '1.1.1'
     mockito = '2.18.3'
