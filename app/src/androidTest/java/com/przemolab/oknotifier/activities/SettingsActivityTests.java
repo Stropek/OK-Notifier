@@ -9,6 +9,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.preference.PreferenceManager;
 
+import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.R;
 
 import org.junit.Before;
@@ -41,7 +42,7 @@ public class SettingsActivityTests {
     @Before
     public void setUp() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().clear().putBoolean("pref_notifications_switch", true).apply();
+        preferences.edit().clear().putBoolean(Constants.SharedPreferences.NotificationsSwitch, true).apply();
     }
 
     @Test

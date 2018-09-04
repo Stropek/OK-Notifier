@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.MenuItem;
 
+import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.activities.MainActivity;
 import com.przemolab.oknotifier.utils.SyncUtils;
@@ -39,9 +40,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onPause() {
         super.onPause();
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
 
-        SyncUtils.scheduleSync(getActivity());
+        if (sharedPreferences.getBoolean(Constants.SharedPreferences.NotificationsSwitch, false)) {
+            SyncUtils.scheduleSync(getActivity());
+        }
     }
 
     @Override
@@ -52,7 +56,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("pref_notifications_switch") && !sharedPreferences.getBoolean(key, false)) {
+        if (key.equals(Constants.SharedPreferences.NotificationsSwitch) && !sharedPreferences.getBoolean(key, false)) {
             SyncUtils.cancelSync(getActivity());
         }
     }
