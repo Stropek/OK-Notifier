@@ -19,7 +19,7 @@ import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.sync.RetrieveContestsTask;
 import com.przemolab.oknotifier.sync.SqliteContestLoader;
-import com.przemolab.oknotifier.data.ContestRecyclerViewAdapter;
+import com.przemolab.oknotifier.adapters.ContestRecyclerViewAdapter;
 import com.przemolab.oknotifier.enums.SortOrder;
 import com.przemolab.oknotifier.modules.NotifierRepository;
 import com.przemolab.oknotifier.models.Contest;

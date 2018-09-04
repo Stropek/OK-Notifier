@@ -14,13 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.przemolab.oknotifier.BuildConfig;
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.sync.RetrieveContestantsTask;
 import com.przemolab.oknotifier.sync.SqliteContestantLoader;
-import com.przemolab.oknotifier.data.ContestantRecyclerViewAdapter;
+import com.przemolab.oknotifier.adapters.ContestantRecyclerViewAdapter;
 import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.modules.NotifierRepository;
 import com.przemolab.oknotifier.modules.OpenKattisService;

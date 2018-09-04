@@ -1,4 +1,4 @@
-package com.przemolab.oknotifier.data;
+package com.przemolab.oknotifier.adapters;
 
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
