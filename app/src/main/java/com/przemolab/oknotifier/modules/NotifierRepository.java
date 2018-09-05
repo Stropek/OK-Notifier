@@ -181,7 +181,7 @@ public class NotifierRepository {
     private void updateContestant(Contestant contestant) {
         Uri uri = NotifierContract.ContestantEntry.CONTENT_URI;
 
-        Timber.d("Updating contest: %s [%s]", contestant.getName(), contestant.getContestId());
+        Timber.d("Updating contestant: %s [%s]", contestant.getName(), contestant.getContestId());
         context.getContentResolver().update(uri, contestant.toContentValues(),
                 NotifierContract.ContestantEntry._ID + "=?",
                 new String[] {String.valueOf(contestant.getId())});
