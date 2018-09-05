@@ -123,8 +123,9 @@ public class NotifierRepository {
                     .appendPath("byContestId")
                     .appendPath(contestId)
                     .build();
+            String sortOrder = NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED + " DESC, " + NotifierContract.ContestantEntry.COLUMN_TIME + " DESC";
             Cursor cursor = context.getContentResolver()
-                    .query(contestantsUri, null, null, null, null);
+                    .query(contestantsUri, null, null, null, sortOrder);
 
             if (cursor != null) {
                 while (cursor.moveToNext()) {
