@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 
 import com.firebase.jobdispatcher.JobService;
 import com.firebase.jobdispatcher.JobParameters;
+import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.models.Contest;
 import com.przemolab.oknotifier.models.Contestant;
@@ -37,34 +38,11 @@ public class OpenKattisJobService extends JobService {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                 Resources resources = context.getResources();
 
-                String contestsStates = sharedPreferences.getString("pref_contest_switches", resources.getString(R.string.default_contests_states));
-                String[] states = contestsStates.split(";");
-                boolean approved = Boolean.parseBoolean(states[0]);
-                boolean submitted = Boolean.parseBoolean(states[1]);
-                boolean rejected = Boolean.parseBoolean(states[2]);
+                SyncSubscribedContests(context, sharedPreferences, resources);
 
                 // TODO: implement ongoingContests / newProblems
 //                boolean ongoingContests = sharedPreferences.getBoolean("pref_upcoming_contests_switch", resources.getBoolean(R.bool.default_ongoing_contests_switch));
 //                boolean newProblems = sharedPreferences.getBoolean("pref_new_problems_switch", resources.getBoolean(R.bool.default_new_problems_switch));
-
-                if (approved || submitted || rejected) {
-                    OpenKattisService openKattisService = new OpenKattisService();
-                    NotifierRepository notifierRepository = new NotifierRepository(getApplicationContext());
-
-                    List<Contest> subscribedContests = notifierRepository.getSubscribed();
-                    for (Contest contest : subscribedContests) {
-                        List<Contestant> persistedStandings = notifierRepository.getAllContestants(contest.getContestId());
-                        List<Contestant> currentStandings = openKattisService.getContestStandings(contest.getContestId());
-
-                        List<String> newSubmissions = getNewSubmissions(persistedStandings, currentStandings, approved, submitted, rejected);
-                        if (!newSubmissions.isEmpty()) {
-                            NotificationUtils.notifyAboutContestUpdates(context, contest, newSubmissions);
-                        }
-                    }
-                }
-
-//                Timber.d("SyncTest: Just doing a mock job... approved: %s, submitted: %s, failed: %s, contests: %s, problems: %s ", approved, submitted, rejected, ongoingContests, newProblems);
-                Timber.d("SyncTest: Just doing a mock job... approved: %s, submitted: %s, failed: %s, contests: %s, problems: %s ", approved, submitted, rejected, false, false);
 
                 return null;
             }
@@ -87,6 +65,33 @@ public class OpenKattisJobService extends JobService {
             backgroundTask.cancel(true);
 
         return true;
+    }
+
+    private void SyncSubscribedContests(Context context, SharedPreferences sharedPreferences, Resources resources) {
+        String contestsStates = sharedPreferences.getString(Constants.SharedPreferences.ContestSwitches, resources.getString(R.string.default_contests_states));
+        String[] states = contestsStates.split(";");
+        boolean approved = Boolean.parseBoolean(states[0]);
+        boolean submitted = Boolean.parseBoolean(states[1]);
+        boolean rejected = Boolean.parseBoolean(states[2]);
+
+        if (approved || submitted || rejected) {
+            OpenKattisService openKattisService = new OpenKattisService();
+            NotifierRepository notifierRepository = new NotifierRepository(getApplicationContext());
+
+            List<Contest> subscribedContests = notifierRepository.getSubscribed();
+            for (Contest contest : subscribedContests) {
+                List<Contestant> persistedStandings = notifierRepository.getAllContestants(contest.getContestId());
+                List<Contestant> currentStandings = openKattisService.getContestStandings(contest.getContestId());
+
+                List<String> newSubmissions = getNewSubmissions(persistedStandings, currentStandings, approved, submitted, rejected);
+                if (!newSubmissions.isEmpty()) {
+                    NotificationUtils.notifyAboutContestUpdates(context, contest, newSubmissions);
+
+                    // persist current contest standings to prevent the same notifications from recurring
+                    notifierRepository.persistContestants(contest.getContestId(), currentStandings);
+                }
+            }
+        }
     }
 
     private List<String> getNewSubmissions(List<Contestant> persisted, List<Contestant> current, boolean approved, boolean submitted, boolean rejected) {

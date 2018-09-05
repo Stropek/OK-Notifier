@@ -13,5 +13,6 @@ public class Constants {
         public final static String Name = "contestWidgetSharedPreferences";
         public final static String BestContestant = "bestContestantKey";
         public final static String NotificationsSwitch = "pref_notifications_switch";
+        public final static String ContestSwitches = "pref_contest_switches";
     }
 }
