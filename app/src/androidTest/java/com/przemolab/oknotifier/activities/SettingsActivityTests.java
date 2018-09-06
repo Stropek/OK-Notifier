@@ -4,31 +4,27 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.matcher.PreferenceMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.preference.PreferenceManager;
 
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.R;
+import com.przemolab.oknotifier.viewActions.SeekBarViewActions;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.przemolab.oknotifier.viewActions.SeekBarViewActions.setProgress;
 import static org.hamcrest.CoreMatchers.not;
 
 @RunWith(AndroidJUnit4.class)
@@ -88,7 +84,7 @@ public class SettingsActivityTests {
 
         // when
         onView(withId(R.id.list)).perform(RecyclerViewActions.scrollToPosition(9));
-        onView(withId(R.id.value_sb)).perform(setProgress(50));
+        onView(withId(R.id.value_sb)).perform(SeekBarViewActions.Companion.setProgress(50));
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
         onView(withId(R.id.settings_menu_item)).perform(click());
