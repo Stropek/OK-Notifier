@@ -17,6 +17,7 @@ import com.przemolab.oknotifier.modules.NotifierRepository;
 import com.przemolab.oknotifier.modules.OpenKattisService;
 import com.przemolab.oknotifier.modules.TestNotifierRepositoryModule;
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
+import com.przemolab.oknotifier.utils.DataHelper;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -37,7 +38,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.przemolab.oknotifier.utils.DataHelper.createContestants;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -86,7 +86,7 @@ public class ContestActivityTests {
     @Test
     public void default_contestStandings_displaysContestStandings() {
         // given
-        List<Contestant> contestants = createContestants(5, "abc");
+        List<Contestant> contestants = DataHelper.Companion.createContestants(5, "abc");
         when(notifierRepository.getAllContestants("abc")).thenReturn(contestants);
 
         Intent startIntent = new Intent();
@@ -103,7 +103,7 @@ public class ContestActivityTests {
     @Test
     public void syncClicked_contestantsLoaded() {
         // given
-        final List<Contestant> contestants = createContestants(5, "abc");
+        final List<Contestant> contestants = DataHelper.Companion.createContestants(5, "abc");
         when(openKattisService.getContestStandings("abc"))
                 .thenAnswer(new Answer<List<Contestant>>() {
                     private int count = 0;

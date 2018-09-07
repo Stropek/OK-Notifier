@@ -11,6 +11,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.przemolab.oknotifier.data.NotifierContract;
+import com.przemolab.oknotifier.utils.DataHelper;
 import com.przemolab.oknotifier.utils.DateUtils;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
@@ -22,8 +23,6 @@ import org.junit.runner.RunWith;
 import java.text.ParseException;
 import java.util.Date;
 
-import static com.przemolab.oknotifier.utils.DataHelper.deleteTablesData;
-import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -34,12 +33,12 @@ public class ContestTests {
 
     @BeforeClass
     public static void setUp() {
-        deleteTablesData(context);
+        DataHelper.Companion.deleteTablesData(context);
     }
 
     @AfterClass
     public static void cleanUp() {
-        deleteTablesData(context);
+        DataHelper.Companion.deleteTablesData(context);
     }
 
     @Test
@@ -78,10 +77,10 @@ public class ContestTests {
     public void getFromCursor_getsContestObjectFromCursor() throws ParseException {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(NotifierContract.ContestEntry.COLUMN_NAME, "name");

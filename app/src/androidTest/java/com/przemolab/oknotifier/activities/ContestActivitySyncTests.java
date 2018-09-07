@@ -20,6 +20,7 @@ import com.przemolab.oknotifier.models.Contestant;
 import com.przemolab.oknotifier.modules.NotifierRepositoryModule;
 import com.przemolab.oknotifier.modules.OpenKattisService;
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule;
+import com.przemolab.oknotifier.utils.DataHelper;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
 import org.junit.After;
@@ -39,10 +40,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.przemolab.oknotifier.utils.DataHelper.createContestants;
-import static com.przemolab.oknotifier.utils.DataHelper.deleteTablesData;
-import static com.przemolab.oknotifier.utils.DataHelper.insertContestant;
-import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -72,19 +69,19 @@ public class ContestActivitySyncTests {
 
     @After
     public void cleanUp() {
-        deleteTablesData(context);
+        DataHelper.Companion.deleteTablesData(context);
     }
 
     @Test
     public void syncClicked_noContestantsInDatabase_addContestantsToDatabase() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
         Uri uri = NotifierContract.ContestantEntry.CONTENT_URI;
 
-        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        List<Contestant> contestants = createContestants(5, "abc");
+        List<Contestant> contestants = DataHelper.Companion.createContestants(5, "abc");
         when(openKattisService.getContestStandings("abc")).thenReturn(contestants);
 
         Intent startIntent = new Intent();
@@ -102,14 +99,14 @@ public class ContestActivitySyncTests {
     public void syncClicked_currentContestsInDatabase_updatesExistingContests() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
         Uri uri = NotifierContract.ContestantEntry.CONTENT_URI;
 
-        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        List<Contestant> existingContestants = createContestants(5, "abc");
+        List<Contestant> existingContestants = DataHelper.Companion.createContestants(5, "abc");
         for (Contestant contestant : existingContestants) {
-            insertContestant(contentResolver, uri, contestant.getContestId(), String.format("name %s", contestant.getId()));
+            DataHelper.Companion.insertContestant(contentResolver, uri, contestant.getContestId(), String.format("name %s", contestant.getId()));
         }
 
         Contestant modifiedContestant = existingContestants.get(existingContestants.size() - 1);

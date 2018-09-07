@@ -11,12 +11,12 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.przemolab.oknotifier.data.NotifierContract;
+import com.przemolab.oknotifier.utils.DataHelper;
 import com.przemolab.oknotifier.utils.TestContentObserver;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.przemolab.oknotifier.utils.DataHelper.setObservedUriOnContentResolver;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -59,11 +59,11 @@ public class ContestantTests {
     public void getFromCursor_getsContestObjectFromCursor() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
         Uri insertUri = NotifierContract.ContestantEntry.CONTENT_URI;
         Uri queryUri =  insertUri.buildUpon().appendPath("byContestId").appendPath("abc").build();
 
-        setObservedUriOnContentResolver(contentResolver, insertUri, contentObserver);
+        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, insertUri, contentObserver);
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_NAME, "name");
