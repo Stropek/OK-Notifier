@@ -93,7 +93,7 @@ public class MainActivityTests {
 
         // then
         onView(withText("id 1")).check(matches(isDisplayed()));
-        onView(withId(R.id.contestItem_fl)).check(matches(isNotSubscribed(context.getResources())));
+        onView(withId(R.id.contestItem_fl)).check(matches(isNotSubscribed(context)));
         }
 
     @Test
@@ -108,7 +108,7 @@ public class MainActivityTests {
 
         // then
         onView(withText("id 1")).check(matches(isDisplayed()));
-        onView(withId(R.id.contestItem_fl)).check(matches(isSubscribed(context.getResources())));
+        onView(withId(R.id.contestItem_fl)).check(matches(isSubscribed(context)));
     }
 
     @Test
@@ -124,7 +124,7 @@ public class MainActivityTests {
         onView(withId(R.id.subscribe_ib)).perform(click());
 
         // then
-        onView(withId(R.id.contestItem_fl)).check(matches(isSubscribed(context.getResources())));
+        onView(withId(R.id.contestItem_fl)).check(matches(isSubscribed(context)));
     }
 
     @Test

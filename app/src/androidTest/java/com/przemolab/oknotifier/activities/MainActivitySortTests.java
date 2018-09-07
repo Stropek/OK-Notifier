@@ -2,7 +2,6 @@ package com.przemolab.oknotifier.activities;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
@@ -80,16 +79,15 @@ public class MainActivitySortTests {
         onView(withText("Subscribed first")).perform(click());
 
         // then
-        Resources resources = context.getResources();
         onView(withRecyclerView(R.id.contestsList_rv).atPositionOnView(0, R.id.contestItem_fl))
-                .check(matches(isSubscribed(resources)));
+                .check(matches(isSubscribed(context)));
         onView(withRecyclerView(R.id.contestsList_rv).atPositionOnView(1, R.id.contestItem_fl))
-                .check(matches(isSubscribed(resources)));
+                .check(matches(isSubscribed(context)));
 
         onView(withRecyclerView(R.id.contestsList_rv).atPositionOnView(2, R.id.contestItem_fl))
-                .check(matches(isNotSubscribed(resources)));
+                .check(matches(isNotSubscribed(context)));
         onView(withRecyclerView(R.id.contestsList_rv).atPositionOnView(3, R.id.contestItem_fl))
-                .check(matches(isNotSubscribed(resources)));
+                .check(matches(isNotSubscribed(context)));
     }
 
     @Test

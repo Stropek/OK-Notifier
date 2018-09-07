@@ -178,6 +178,6 @@ public class MainActivitySyncTests {
 
         // then
         onView(withText("id 1 modified")).check(matches(isDisplayed()));
-        onView(withId(R.id.contestItem_fl)).check(matches(isSubscribed(context.getResources())));
+        onView(withId(R.id.contestItem_fl)).check(matches(isSubscribed(context)));
     }
 }
