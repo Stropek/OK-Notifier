@@ -33,12 +33,12 @@ public class ContestTests {
 
     @BeforeClass
     public static void setUp() {
-        DataHelper.Companion.deleteTablesData(context);
+        DataHelper.deleteTablesData(context);
     }
 
     @AfterClass
     public static void cleanUp() {
-        DataHelper.Companion.deleteTablesData(context);
+        DataHelper.deleteTablesData(context);
     }
 
     @Test
@@ -77,10 +77,10 @@ public class ContestTests {
     public void getFromCursor_getsContestObjectFromCursor() throws ParseException {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(NotifierContract.ContestEntry.COLUMN_NAME, "name");

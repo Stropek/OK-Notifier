@@ -15,7 +15,9 @@ import java.util.ArrayList
 
 class DataHelper {
     companion object {
+
         @JvmOverloads
+        @JvmStatic
         fun createContest(id: Int, subscribed: Boolean = false): Contest {
             val idString = String.format("id %s", id)
             val name = String.format("id %s", id)
@@ -28,6 +30,7 @@ class DataHelper {
             return contest
         }
 
+        @JvmStatic
         fun createContests(count: Int): List<Contest> {
             val contests = ArrayList<Contest>()
 
@@ -38,12 +41,14 @@ class DataHelper {
             return contests
         }
 
+        @JvmStatic
         fun createContestant(id: Int, contestId: String): Contestant {
             val name = String.format("name %s", id)
 
             return Contestant(id, name, contestId, 1, 2, 3, 4, 5)
         }
 
+        @JvmStatic
         fun createContestants(count: Int, contestId: String): List<Contestant> {
             val contestants = ArrayList<Contestant>()
 
@@ -54,8 +59,9 @@ class DataHelper {
             return contestants
         }
 
+        @JvmStatic
         fun insertContest(contentResolver: ContentResolver, uri: Uri, contest: Contest): Uri? {
-            return DataHelper.Companion.insertContest(contentResolver, uri,
+            return DataHelper.insertContest(contentResolver, uri,
                     contest.name,
                     contest.contestId,
                     DateUtils.formatDate(contest.startDate, DateUtils.SQLiteDateTimeFormat),
@@ -66,6 +72,7 @@ class DataHelper {
         }
 
         @JvmOverloads
+        @JvmStatic
         fun insertContest(contentResolver: ContentResolver, uri: Uri, name: String, id: String,
                           startDate: String, endDate: String, numOfContestants: Int, numOfProblems: Int,
                           isSubscribed: Boolean = false): Uri? {
@@ -84,6 +91,7 @@ class DataHelper {
         }
 
         @JvmOverloads
+        @JvmStatic
         fun insertContestant(contentResolver: ContentResolver, uri: Uri, contestId: String, name: String = "john doe"): Uri? {
             val contentValues = ContentValues()
 
@@ -98,6 +106,7 @@ class DataHelper {
             return contentResolver.insert(uri, contentValues)
         }
 
+        @JvmStatic
         fun setObservedUriOnContentResolver(contentResolver: ContentResolver, uri: Uri, contentObserver: ContentObserver) {
             contentResolver.registerContentObserver(
                     /* URI that we would like to observe changes to */
@@ -108,6 +117,7 @@ class DataHelper {
                     contentObserver)
         }
 
+        @JvmStatic
         fun deleteTablesData(context: Context) {
             val dbHelper = NotifierDbHelper(context)
             val database = dbHelper.writableDatabase

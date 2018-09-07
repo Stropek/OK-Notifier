@@ -55,7 +55,7 @@ public class MainActivitySyncTests {
 
     @Before
     public void setUp() {
-        DataHelper.Companion.deleteTablesData(context);
+        DataHelper.deleteTablesData(context);
 
         MockitoAnnotations.initMocks(this);
         NotifierApp app = (NotifierApp) context.getApplicationContext();
@@ -71,19 +71,19 @@ public class MainActivitySyncTests {
 
     @After
     public void cleanUp() {
-        DataHelper.Companion.deleteTablesData(context);
+        DataHelper.deleteTablesData(context);
     }
 
     @Test
     public void syncClicked_noContestsInDatabase_addContestToDatabase() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        List<Contest> ongoingContests = DataHelper.Companion.createContests(5);
+        List<Contest> ongoingContests = DataHelper.createContests(5);
         when(openKattisService.getOngoingContests()).thenReturn(ongoingContests);
 
         testRule.launchActivity(null);
@@ -100,14 +100,14 @@ public class MainActivitySyncTests {
     public void syncClicked_oldContestsInDatabase_removesOldContestsFromDatabase() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        List<Contest> existingContests = DataHelper.Companion.createContests(10);
+        List<Contest> existingContests = DataHelper.createContests(10);
         for (Contest contest : existingContests) {
-            DataHelper.Companion.insertContest(contentResolver, uri, contest);
+            DataHelper.insertContest(contentResolver, uri, contest);
         }
 
         when(openKattisService.getOngoingContests()).thenReturn(existingContests.subList(5, 10));
@@ -126,14 +126,14 @@ public class MainActivitySyncTests {
     public void syncClicked_currentContestsInDatabase_updatesExistingContests() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        List<Contest> existingContests = DataHelper.Companion.createContests(5);
+        List<Contest> existingContests = DataHelper.createContests(5);
         for (Contest contest : existingContests) {
-            DataHelper.Companion.insertContest(contentResolver, uri, contest);
+            DataHelper.insertContest(contentResolver, uri, contest);
         }
 
         for (Contest modifiedContest : existingContests) {
@@ -156,14 +156,14 @@ public class MainActivitySyncTests {
     public void syncClicked_contestSubscribed_contestStaysSubscribed() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        Contest subscribedContest = DataHelper.Companion.createContest(1);
+        Contest subscribedContest = DataHelper.createContest(1);
         subscribedContest.setSubscribed(true);
-        DataHelper.Companion.insertContest(contentResolver, uri, subscribedContest);
+        DataHelper.insertContest(contentResolver, uri, subscribedContest);
 
         subscribedContest.setName(subscribedContest.getName() + " modified");
         List<Contest> ongoingContests = new ArrayList<>();

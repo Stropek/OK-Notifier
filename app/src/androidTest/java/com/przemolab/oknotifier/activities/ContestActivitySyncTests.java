@@ -69,19 +69,19 @@ public class ContestActivitySyncTests {
 
     @After
     public void cleanUp() {
-        DataHelper.Companion.deleteTablesData(context);
+        DataHelper.deleteTablesData(context);
     }
 
     @Test
     public void syncClicked_noContestantsInDatabase_addContestantsToDatabase() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestantEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        List<Contestant> contestants = DataHelper.Companion.createContestants(5, "abc");
+        List<Contestant> contestants = DataHelper.createContestants(5, "abc");
         when(openKattisService.getContestStandings("abc")).thenReturn(contestants);
 
         Intent startIntent = new Intent();
@@ -99,14 +99,14 @@ public class ContestActivitySyncTests {
     public void syncClicked_currentContestsInDatabase_updatesExistingContests() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestantEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        List<Contestant> existingContestants = DataHelper.Companion.createContestants(5, "abc");
+        List<Contestant> existingContestants = DataHelper.createContestants(5, "abc");
         for (Contestant contestant : existingContestants) {
-            DataHelper.Companion.insertContestant(contentResolver, uri, contestant.getContestId(), String.format("name %s", contestant.getId()));
+            DataHelper.insertContestant(contentResolver, uri, contestant.getContestId(), String.format("name %s", contestant.getId()));
         }
 
         Contestant modifiedContestant = existingContestants.get(existingContestants.size() - 1);

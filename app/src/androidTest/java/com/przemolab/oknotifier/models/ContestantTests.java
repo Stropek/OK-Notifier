@@ -59,11 +59,11 @@ public class ContestantTests {
     public void getFromCursor_getsContestObjectFromCursor() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri insertUri = NotifierContract.ContestantEntry.CONTENT_URI;
         Uri queryUri =  insertUri.buildUpon().appendPath("byContestId").appendPath("abc").build();
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, insertUri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, insertUri, contentObserver);
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(NotifierContract.ContestantEntry.COLUMN_NAME, "name");

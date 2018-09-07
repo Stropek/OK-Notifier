@@ -40,7 +40,7 @@ public class MainActivitySortTests {
 
     @Before
     public void setUp() {
-        DataHelper.Companion.deleteTablesData(context);
+        DataHelper.deleteTablesData(context);
 
         NotifierApp app = (NotifierApp) context.getApplicationContext();
 
@@ -54,24 +54,24 @@ public class MainActivitySortTests {
 
     @After
     public void cleanUp() {
-        DataHelper.Companion.deleteTablesData(context);
+        DataHelper.deleteTablesData(context);
     }
 
     @Test
     public void sort_subscribedFirst_sortsContestsBySubscriptionFlag() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         String startDate = "2010-05-12 17:30:45";
         String endDate = "2010-05-12 17:30:45";
-        DataHelper.Companion.insertContest(contentResolver, uri, "subscribed", "1", startDate, endDate, 0, 0, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "not subscribed", "2", startDate, endDate, 0, 0, false);
-        DataHelper.Companion.insertContest(contentResolver, uri, "subscribed", "3", startDate, endDate, 0, 0, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "not subscribed", "4", startDate, endDate, 0, 0, false);
+        DataHelper.insertContest(contentResolver, uri, "subscribed", "1", startDate, endDate, 0, 0, true);
+        DataHelper.insertContest(contentResolver, uri, "not subscribed", "2", startDate, endDate, 0, 0, false);
+        DataHelper.insertContest(contentResolver, uri, "subscribed", "3", startDate, endDate, 0, 0, true);
+        DataHelper.insertContest(contentResolver, uri, "not subscribed", "4", startDate, endDate, 0, 0, false);
 
         testRule.launchActivity(null);
 
@@ -95,17 +95,17 @@ public class MainActivitySortTests {
     @Test
     public void sort_byName_sortsContestsByName() {
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         String startDate = "2010-05-12 17:30:45";
         String endDate = "2010-05-12 17:30:45";
-        DataHelper.Companion.insertContest(contentResolver, uri, "Bravo", "1", startDate, endDate, 0, 0, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "Alpha", "2", startDate, endDate, 0, 0, false);
-        DataHelper.Companion.insertContest(contentResolver, uri, "Zulu", "3", startDate, endDate, 0, 0, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "Gamma", "4", startDate, endDate, 0, 0, false);
+        DataHelper.insertContest(contentResolver, uri, "Bravo", "1", startDate, endDate, 0, 0, true);
+        DataHelper.insertContest(contentResolver, uri, "Alpha", "2", startDate, endDate, 0, 0, false);
+        DataHelper.insertContest(contentResolver, uri, "Zulu", "3", startDate, endDate, 0, 0, true);
+        DataHelper.insertContest(contentResolver, uri, "Gamma", "4", startDate, endDate, 0, 0, false);
 
         testRule.launchActivity(null);
 
@@ -127,16 +127,16 @@ public class MainActivitySortTests {
     @Test
     public void sort_byStartDate_sortsContestsByStartDate() {
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         String endDate = "2010-05-12 17:30:45";
-        DataHelper.Companion.insertContest(contentResolver, uri, "June", "1", "2010-06-12 17:30:45", endDate, 0, 0, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "August", "2", "2010-08-12 17:30:45", endDate, 0, 0, false);
-        DataHelper.Companion.insertContest(contentResolver, uri, "March", "3", "2010-03-12 17:30:45", endDate, 0, 0, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "January", "4", "2010-01-12 17:30:45", endDate, 0, 0, false);
+        DataHelper.insertContest(contentResolver, uri, "June", "1", "2010-06-12 17:30:45", endDate, 0, 0, true);
+        DataHelper.insertContest(contentResolver, uri, "August", "2", "2010-08-12 17:30:45", endDate, 0, 0, false);
+        DataHelper.insertContest(contentResolver, uri, "March", "3", "2010-03-12 17:30:45", endDate, 0, 0, true);
+        DataHelper.insertContest(contentResolver, uri, "January", "4", "2010-01-12 17:30:45", endDate, 0, 0, false);
 
         testRule.launchActivity(null);
 
@@ -158,17 +158,17 @@ public class MainActivitySortTests {
     @Test
     public void sort_byNumberOfContestants_sortsContestsByNumberOfContestants() {
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         String startDate = "2010-05-12 17:30:45";
         String endDate = "2010-05-12 17:30:45";
-        DataHelper.Companion.insertContest(contentResolver, uri, "2 contestants", "1", startDate, endDate, 2, 0, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "5 contestants", "2", startDate, endDate, 5, 0, false);
-        DataHelper.Companion.insertContest(contentResolver, uri, "10 contestants", "3", startDate, endDate, 10, 0, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "8 contestants", "4", startDate, endDate, 8, 0, false);
+        DataHelper.insertContest(contentResolver, uri, "2 contestants", "1", startDate, endDate, 2, 0, true);
+        DataHelper.insertContest(contentResolver, uri, "5 contestants", "2", startDate, endDate, 5, 0, false);
+        DataHelper.insertContest(contentResolver, uri, "10 contestants", "3", startDate, endDate, 10, 0, true);
+        DataHelper.insertContest(contentResolver, uri, "8 contestants", "4", startDate, endDate, 8, 0, false);
 
         testRule.launchActivity(null);
 
@@ -190,17 +190,17 @@ public class MainActivitySortTests {
     @Test
     public void sort_byNumberOfProblems_sortsContestsByNumberOfProblems() {
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         String startDate = "2010-05-12 17:30:45";
         String endDate = "2010-05-12 17:30:45";
-        DataHelper.Companion.insertContest(contentResolver, uri, "1 problem", "1", startDate, endDate, 0, 1, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "5 problems", "2", startDate, endDate, 0, 5, false);
-        DataHelper.Companion.insertContest(contentResolver, uri, "2 problems", "3", startDate, endDate, 0, 2, true);
-        DataHelper.Companion.insertContest(contentResolver, uri, "10 problems", "4", startDate, endDate, 0, 10, false);
+        DataHelper.insertContest(contentResolver, uri, "1 problem", "1", startDate, endDate, 0, 1, true);
+        DataHelper.insertContest(contentResolver, uri, "5 problems", "2", startDate, endDate, 0, 5, false);
+        DataHelper.insertContest(contentResolver, uri, "2 problems", "3", startDate, endDate, 0, 2, true);
+        DataHelper.insertContest(contentResolver, uri, "10 problems", "4", startDate, endDate, 0, 10, false);
 
         testRule.launchActivity(null);
 

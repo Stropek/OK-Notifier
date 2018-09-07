@@ -84,7 +84,7 @@ public class SettingsActivityTests {
 
         // when
         onView(withId(R.id.list)).perform(RecyclerViewActions.scrollToPosition(9));
-        onView(withId(R.id.value_sb)).perform(SeekBarViewActions.Companion.setProgress(50));
+        onView(withId(R.id.value_sb)).perform(SeekBarViewActions.setProgress(50));
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
         onView(withId(R.id.settings_menu_item)).perform(click());

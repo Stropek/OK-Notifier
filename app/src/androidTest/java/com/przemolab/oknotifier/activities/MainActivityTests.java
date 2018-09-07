@@ -85,7 +85,7 @@ public class MainActivityTests {
     public void default_contests_displaysOngoingContests() {
         // given
         List<Contest> contests = new ArrayList<>();
-        contests.add(DataHelper.Companion.createContest(1));
+        contests.add(DataHelper.createContest(1));
         when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         // when
@@ -100,7 +100,7 @@ public class MainActivityTests {
     public void default_contestsSubscribed_displaysContestWithAlternateColor() {
         // given
         List<Contest> contests = new ArrayList<>();
-        contests.add(DataHelper.Companion.createContest(1, true));
+        contests.add(DataHelper.createContest(1, true));
         when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         // when
@@ -115,7 +115,7 @@ public class MainActivityTests {
     public void toggleSubscription_contestNotSubscribed_displaysContestWithAlternateColor() {
         // given
         List<Contest> contests = new ArrayList<>();
-        contests.add(DataHelper.Companion.createContest(1));
+        contests.add(DataHelper.createContest(1));
         when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         testRule.launchActivity(null);
@@ -130,7 +130,7 @@ public class MainActivityTests {
     @Test
     public void toggleOrientation_displaysOngoingContests() {
         // given
-        List<Contest> contests = DataHelper.Companion.createContests(10);
+        List<Contest> contests = DataHelper.createContests(10);
         when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         testRule.launchActivity(null);
@@ -146,7 +146,7 @@ public class MainActivityTests {
     @Test
     public void toggleOrientationTwice_displaysOngoingContests() {
         // given
-        List<Contest> contests = DataHelper.Companion.createContests(10);
+        List<Contest> contests = DataHelper.createContests(10);
         when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
 
         testRule.launchActivity(null);
@@ -163,8 +163,8 @@ public class MainActivityTests {
     @Test
     public void contestClicked_contestantsInRepository_activityWithContestStandingsOpens() {
         // given
-        List<Contest> contests = DataHelper.Companion.createContests(1);
-        List<Contestant> contestants = DataHelper.Companion.createContestants(3, "id 1");
+        List<Contest> contests = DataHelper.createContests(1);
+        List<Contestant> contestants = DataHelper.createContestants(3, "id 1");
         when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
         when(notifierRepository.getAllContestants("id 1")).thenReturn(contestants);
 
@@ -182,11 +182,11 @@ public class MainActivityTests {
     @Test
     public void contestClicked_contestantsNotInRepository_activityLoadsContestStandingsFromOpenKattis() {
         // given
-        List<Contest> contests = DataHelper.Companion.createContests(1);
+        List<Contest> contests = DataHelper.createContests(1);
         when(notifierRepository.getAll(SortOrder.SubscribedFirst)).thenReturn(contests);
         when(notifierRepository.getAllContestants("id 1")).thenReturn(new ArrayList<Contestant>());
 
-        List<Contestant> contestants = DataHelper.Companion.createContestants(3, "id 1");
+        List<Contestant> contestants = DataHelper.createContestants(3, "id 1");
         when(openKattisService.getContestStandings("id 1")).thenReturn(contestants);
 
         testRule.launchActivity(null);

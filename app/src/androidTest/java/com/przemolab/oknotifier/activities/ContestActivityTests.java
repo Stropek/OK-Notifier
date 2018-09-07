@@ -86,7 +86,7 @@ public class ContestActivityTests {
     @Test
     public void default_contestStandings_displaysContestStandings() {
         // given
-        List<Contestant> contestants = DataHelper.Companion.createContestants(5, "abc");
+        List<Contestant> contestants = DataHelper.createContestants(5, "abc");
         when(notifierRepository.getAllContestants("abc")).thenReturn(contestants);
 
         Intent startIntent = new Intent();
@@ -103,7 +103,7 @@ public class ContestActivityTests {
     @Test
     public void syncClicked_contestantsLoaded() {
         // given
-        final List<Contestant> contestants = DataHelper.Companion.createContestants(5, "abc");
+        final List<Contestant> contestants = DataHelper.createContestants(5, "abc");
         when(openKattisService.getContestStandings("abc"))
                 .thenAnswer(new Answer<List<Contestant>>() {
                     private int count = 0;

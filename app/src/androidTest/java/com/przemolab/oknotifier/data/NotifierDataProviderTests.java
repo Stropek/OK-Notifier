@@ -31,12 +31,12 @@ public class NotifierDataProviderTests {
 
     @Before
     public void setUp() {
-        DataHelper.Companion.deleteTablesData(context);
+        DataHelper.deleteTablesData(context);
     }
 
     @AfterClass
     public static void cleanUp() {
-        DataHelper.Companion.deleteTablesData(context);
+        DataHelper.deleteTablesData(context);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class NotifierDataProviderTests {
     public void insert_unknownUri_shouldThrowUnsupportedOperationException() {
         // given
         Uri unknownUri = NotifierContract.BASE_CONTENT_URI.buildUpon().appendPath("unknown").build();
-        DataHelper.Companion.setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.Companion.getTestContentObserver());
+        DataHelper.setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
 
         // when
         context.getContentResolver().insert(unknownUri, new ContentValues());
@@ -67,14 +67,14 @@ public class NotifierDataProviderTests {
     public void insert_contest_shouldSucceed() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         // when
         Uri expectedUri = uri.buildUpon().appendPath("1").build();
-        Uri actualUri = DataHelper.Companion.insertContest(contentResolver, uri, "test contest", "abc",
+        Uri actualUri = DataHelper.insertContest(contentResolver, uri, "test contest", "abc",
                 "2018-07-30 18:00:00", "2018-08-15 18:00:00", 10, 20);
 
         // then
@@ -87,14 +87,14 @@ public class NotifierDataProviderTests {
     public void insert_contestant_shouldSucceed() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestantEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         // when
         Uri expectedUri = uri.buildUpon().appendPath("1").build();
-        Uri actualUri = DataHelper.Companion.insertContestant(contentResolver, uri, "abc");
+        Uri actualUri = DataHelper.insertContestant(contentResolver, uri, "abc");
 
         // then
         assertEquals(expectedUri, actualUri);
@@ -107,7 +107,7 @@ public class NotifierDataProviderTests {
     public void query_unknownUri_shouldThrowUnsupportedOperationException() {
         // given
         Uri unknownUri = NotifierContract.BASE_CONTENT_URI.buildUpon().appendPath("unknown").build();
-        DataHelper.Companion.setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.Companion.getTestContentObserver());
+        DataHelper.setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
 
         // when
         context.getContentResolver().query(unknownUri, null, null, null, null);
@@ -116,13 +116,13 @@ public class NotifierDataProviderTests {
     public void query_contests_returnsAllContests() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         for (int i = 0; i < 10; i++) {
-            DataHelper.Companion.insertContest(contentResolver, uri, "contest " + i, "abc" + i,
+            DataHelper.insertContest(contentResolver, uri, "contest " + i, "abc" + i,
                     "2010-10-16 16:00:00", "2010-10-26 18:00:00", i*3, i*2);
         }
 
@@ -137,18 +137,18 @@ public class NotifierDataProviderTests {
     public void query_contestantsByContestId_returnsAllContestantsOfSpecifiedContest() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        ContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri insertUri = NotifierContract.ContestantEntry.CONTENT_URI;
         Uri queryUri = insertUri.buildUpon().appendPath("byContestId").appendPath("abc").build();
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, insertUri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, insertUri, contentObserver);
 
         for (int i = 0; i < 10; i++) {
             String contestId = "abc";
             if (i % 2 == 0) {
                 contestId = "xyz";
             }
-            DataHelper.Companion.insertContestant(contentResolver, insertUri, contestId);
+            DataHelper.insertContestant(contentResolver, insertUri, contestId);
         }
 
         // when
@@ -165,7 +165,7 @@ public class NotifierDataProviderTests {
     public void delete_withUnknownUri_shouldThrowUnsupportedOperationException() {
         // given
         Uri unknownUri = NotifierContract.BASE_CONTENT_URI.buildUpon().appendPath("unknown").build();
-        DataHelper.Companion.setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.Companion.getTestContentObserver());
+        DataHelper.setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
 
         // when
         context.getContentResolver().delete(unknownUri, null, null);
@@ -174,14 +174,14 @@ public class NotifierDataProviderTests {
     public void delete_contestWithExistingId_shouldSucceed() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
         Uri existingUri = uri.buildUpon().appendPath("byContestIds").build();
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         for (int i = 0; i < 10; i++) {
-            DataHelper.Companion.insertContest(contentResolver, uri, "contest " + i, "abc" + i,
+            DataHelper.insertContest(contentResolver, uri, "contest " + i, "abc" + i,
                     "2010-10-16 16:00:00", "2010-10-26 18:00:00", i*3, i*2);
         }
 
@@ -201,7 +201,7 @@ public class NotifierDataProviderTests {
     public void update_withUnknownUri_shouldThrowUnsupportedOperationException() {
         // given
         Uri unknownUri = NotifierContract.BASE_CONTENT_URI.buildUpon().appendPath("unknown").build();
-        DataHelper.Companion.setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.Companion.getTestContentObserver());
+        DataHelper.setObservedUriOnContentResolver(context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
 
         // when
         context.getContentResolver().update(unknownUri, null, null, null);
@@ -210,12 +210,12 @@ public class NotifierDataProviderTests {
     public void update_contestWithExistingContestId_shouldOnlyUpdateNewValues() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestEntry.CONTENT_URI;
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        DataHelper.Companion.insertContest(contentResolver, uri, "test contest", "abc",
+        DataHelper.insertContest(contentResolver, uri, "test contest", "abc",
                 "2018-07-30 18:00:00", "2018-08-15 18:00:00", 10, 20);
 
         ContentValues newValues = new ContentValues();
@@ -239,14 +239,14 @@ public class NotifierDataProviderTests {
     public void update_contestantWithExistingContestantId_shouldOnlyUpdateNewValues() {
         // given
         ContentResolver contentResolver = context.getContentResolver();
-        TestContentObserver contentObserver = TestContentObserver.Companion.getTestContentObserver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
         Uri uri = NotifierContract.ContestantEntry.CONTENT_URI;
         Uri queryUri = uri.buildUpon().appendPath("byContestId").appendPath("abc").build();
 
-        DataHelper.Companion.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
-        DataHelper.Companion.insertContestant(contentResolver, uri, "abc");
-        DataHelper.Companion.insertContestant(contentResolver, uri, "abc");
+        DataHelper.insertContestant(contentResolver, uri, "abc");
+        DataHelper.insertContestant(contentResolver, uri, "abc");
 
         ContentValues newValues = new ContentValues();
         newValues.put(NotifierContract.ContestantEntry.COLUMN_NAME, "mark twain");

@@ -10,6 +10,7 @@ import org.hamcrest.Matcher
 
 class SeekBarViewActions {
     companion object {
+        @JvmStatic
         fun setProgress(progress: Int): ViewAction {
             return object : ViewAction {
                 override fun perform(uiController: UiController, view: View) {

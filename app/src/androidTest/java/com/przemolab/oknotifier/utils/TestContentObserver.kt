@@ -28,6 +28,7 @@ class TestContentObserver private constructor(private val _handlerThread: Handle
 
     companion object {
 
+        @JvmStatic
         val testContentObserver: TestContentObserver
             get() {
                 val ht = HandlerThread("ContentObserverThread")
