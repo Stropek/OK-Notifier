@@ -21,12 +21,14 @@ class NotifierRepositoryTests {
 
         private val context = InstrumentationRegistry.getTargetContext()
 
-        @BeforeClass @JvmStatic
+        @JvmStatic
+        @BeforeClass
         fun setUp() {
             DataHelper.deleteTablesData(context)
         }
 
-        @AfterClass @JvmStatic
+        @JvmStatic
+        @AfterClass
         fun cleanUp() {
             DataHelper.deleteTablesData(context)
         }
