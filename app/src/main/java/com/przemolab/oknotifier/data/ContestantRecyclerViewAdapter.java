@@ -23,7 +23,7 @@ public class ContestantRecyclerViewAdapter extends RecyclerView.Adapter<Contesta
 
 //    private final OnListFragmentInteractionListener mListener;
 
-    private List<Contestant> contestants;
+    private List<? extends Contestant> contestants;
 
     public ContestantRecyclerViewAdapter() {
 //        mListener = listener;
@@ -65,7 +65,7 @@ public class ContestantRecyclerViewAdapter extends RecyclerView.Adapter<Contesta
         return contestants.size();
     }
 
-    public void swapData(List<Contestant> data) {
+    public void swapData(List<? extends Contestant> data) {
         if (data == null)
             contestants = new ArrayList<>();
         else {

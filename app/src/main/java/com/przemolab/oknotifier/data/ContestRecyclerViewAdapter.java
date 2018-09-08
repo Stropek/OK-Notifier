@@ -25,7 +25,7 @@ public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecy
 
     private final OnContestsListEventsListener onContestClickedListener;
 
-    private List<Contest> contests;
+    private List<? extends Contest> contests;
 
     public ContestRecyclerViewAdapter(ContestsListFragment.OnContestsListEventsListener listener) {
         this.onContestClickedListener = listener;
@@ -86,7 +86,7 @@ public class ContestRecyclerViewAdapter extends RecyclerView.Adapter<ContestRecy
         return contests.size();
     }
 
-    public void swapData(List<Contest> data) {
+    public void swapData(List<? extends Contest> data) {
         if (data == null)
             contests = new ArrayList<>();
         else {

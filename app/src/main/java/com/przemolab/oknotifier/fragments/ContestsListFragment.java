@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ContestsListFragment extends Fragment
-    implements LoaderManager.LoaderCallbacks<List<Contest>> {
+    implements LoaderManager.LoaderCallbacks<List<? extends Contest>> {
 
     public static final int CONTEST_LOADER_ID = 1;
     private SortOrder sortOrder = SortOrder.SubscribedFirst;
@@ -120,12 +120,12 @@ public class ContestsListFragment extends Fragment
 
     @NonNull
     @Override
-    public Loader<List<Contest>> onCreateLoader(int id, @Nullable Bundle args) {
+    public Loader<List<? extends Contest>> onCreateLoader(int id, @Nullable Bundle args) {
         return new SqliteContestLoader(getActivity(), notifierRepository, sortOrder);
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<List<Contest>> loader, List<Contest> data) {
+    public void onLoadFinished(@NonNull Loader<List<? extends Contest>> loader, List<? extends Contest> data) {
         contestRecyclerViewAdapter.swapData(data);
 
         if (data.isEmpty()) {
@@ -138,7 +138,7 @@ public class ContestsListFragment extends Fragment
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<List<Contest>> loader) {
+    public void onLoaderReset(@NonNull Loader<List<? extends Contest>> loader) {
         contestRecyclerViewAdapter.swapData(null);
     }
 

@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.przemolab.oknotifier.BuildConfig;
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
@@ -35,7 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ContestantsListFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<List<Contestant>> {
+        implements LoaderManager.LoaderCallbacks<List<? extends Contestant>> {
 
     public static final int CONTESTANT_LOADER_ID = 1;
     private String contestId;
@@ -118,12 +117,12 @@ public class ContestantsListFragment extends Fragment
 
     @NonNull
     @Override
-    public Loader<List<Contestant>> onCreateLoader(int id, @Nullable Bundle args) {
+    public Loader<List<? extends Contestant>> onCreateLoader(int id, @Nullable Bundle args) {
         return new SqliteContestantLoader(getActivity(), notifierRepository, openKattisService, contestId, onContestantsListEventsListener);
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<List<Contestant>> loader, List<Contestant> data) {
+    public void onLoadFinished(@NonNull Loader<List<? extends Contestant>> loader, List<? extends Contestant> data) {
         contestantRecyclerViewAdapter.swapData(data);
 
         if (data.isEmpty()) {
@@ -136,7 +135,7 @@ public class ContestantsListFragment extends Fragment
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<List<Contestant>> loader) {
+    public void onLoaderReset(@NonNull Loader<List<? extends Contestant>> loader) {
         contestantRecyclerViewAdapter.swapData(null);
     }
 
