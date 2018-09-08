@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putSerializable(Constants.BundleKeys.SortOrder, sortOrder);
-        outState.putString(Constants.BundleKeys.ContestId, contestId);
-        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, new ArrayList<>(contestants));
+        outState.putSerializable(Constants.BundleKeys.INSTANCE.getSortOrder(), sortOrder);
+        outState.putString(Constants.BundleKeys.INSTANCE.getContestId(), contestId);
+        outState.putParcelableArrayList(Constants.BundleKeys.INSTANCE.getContestants(), new ArrayList<>(contestants));
     }
 
     @Override
@@ -66,9 +66,9 @@ public class MainActivity extends AppCompatActivity
         isBigScreen = contestantsListFrameLayout != null;
 
         if (savedInstanceState != null) {
-            sortOrder = (SortOrder) savedInstanceState.getSerializable(Constants.BundleKeys.SortOrder);
-            contestId = savedInstanceState.getString(Constants.BundleKeys.ContestId);
-            contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants);
+            sortOrder = (SortOrder) savedInstanceState.getSerializable(Constants.BundleKeys.INSTANCE.getSortOrder());
+            contestId = savedInstanceState.getString(Constants.BundleKeys.INSTANCE.getContestId());
+            contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.INSTANCE.getContestants());
         }
 
         loadContestsListFragment();
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
             loadContestantsListFragment();
         } else {
             Intent contestIntent = new Intent(this, ContestActivity.class);
-            contestIntent.putExtra(Constants.BundleKeys.ContestId, contest.getContestId());
+            contestIntent.putExtra(Constants.BundleKeys.INSTANCE.getContestId(), contest.getContestId());
             startActivity(contestIntent);
         }
     }
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity
         ContestsListFragment fragment = new ContestsListFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BundleKeys.SortOrder, sortOrder);
+        bundle.putSerializable(Constants.BundleKeys.INSTANCE.getSortOrder(), sortOrder);
 
         fragment.setArguments(bundle);
         return fragment;
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity
         ContestantsListFragment fragment = new ContestantsListFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BundleKeys.ContestId, contestId);
+        bundle.putSerializable(Constants.BundleKeys.INSTANCE.getContestId(), contestId);
 
         fragment.setArguments(bundle);
         return fragment;

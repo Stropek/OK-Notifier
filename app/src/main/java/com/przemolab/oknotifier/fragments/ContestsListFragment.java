@@ -64,7 +64,7 @@ public class ContestsListFragment extends Fragment
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putSerializable(Constants.BundleKeys.SortOrder, sortOrder);
+        outState.putSerializable(Constants.BundleKeys.INSTANCE.getSortOrder(), sortOrder);
     }
 
     @Override
@@ -72,14 +72,14 @@ public class ContestsListFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         NotifierApp app = (NotifierApp) Objects.requireNonNull(getActivity()).getApplication();
-        app.appComponent.inject(this);
+        app.getAppComponent().inject(this);
 
         Bundle arguments = getArguments();
         if (savedInstanceState == null) {
             assert arguments != null;
-            sortOrder = (SortOrder) arguments.get(Constants.BundleKeys.SortOrder);
+            sortOrder = (SortOrder) arguments.get(Constants.BundleKeys.INSTANCE.getSortOrder());
         } else {
-            sortOrder = (SortOrder) savedInstanceState.get(Constants.BundleKeys.SortOrder);
+            sortOrder = (SortOrder) savedInstanceState.get(Constants.BundleKeys.INSTANCE.getSortOrder());
         }
 
         contestRecyclerViewAdapter = new ContestRecyclerViewAdapter(onContestListEventsListener);

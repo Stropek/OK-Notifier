@@ -75,7 +75,7 @@ public class NotificationUtils {
 
     private static PendingIntent contentIntent(Context context, String contestId) {
         Intent contestActivityIntent = new Intent(context, ContestActivity.class);
-        contestActivityIntent.putExtra(Constants.BundleKeys.ContestId, contestId);
+        contestActivityIntent.putExtra(Constants.BundleKeys.INSTANCE.getContestId(), contestId);
 
         return PendingIntent.getActivity(context, CONTEST_PENDING_INTENT_ID, contestActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }

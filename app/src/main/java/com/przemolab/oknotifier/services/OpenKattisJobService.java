@@ -68,7 +68,7 @@ public class OpenKattisJobService extends JobService {
     }
 
     private void SyncSubscribedContests(Context context, SharedPreferences sharedPreferences, Resources resources) {
-        String contestsStates = sharedPreferences.getString(Constants.SharedPreferences.ContestSwitches, resources.getString(R.string.default_contests_states));
+        String contestsStates = sharedPreferences.getString(Constants.SharedPreferences.INSTANCE.getContestSwitches(), resources.getString(R.string.default_contests_states));
         String[] states = contestsStates.split(";");
         boolean approved = Boolean.parseBoolean(states[0]);
         boolean submitted = Boolean.parseBoolean(states[1]);

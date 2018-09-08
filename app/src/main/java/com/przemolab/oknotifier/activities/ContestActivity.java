@@ -44,8 +44,8 @@ public class ContestActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString(Constants.BundleKeys.ContestId, contestId);
-        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, new ArrayList<>(contestants));
+        outState.putString(Constants.BundleKeys.INSTANCE.getContestId(), contestId);
+        outState.putParcelableArrayList(Constants.BundleKeys.INSTANCE.getContestants(), new ArrayList<>(contestants));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ContestActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contest);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SharedPreferences.Name, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SharedPreferences.INSTANCE.getName(), Context.MODE_PRIVATE);
         contestWidgetDataProvider = new ContestWidgetDataProvider(sharedPreferences);
 
         ActionBar actionBar = getSupportActionBar();
@@ -63,10 +63,10 @@ public class ContestActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
-            contestId = intent.getStringExtra(Constants.BundleKeys.ContestId);
+            contestId = intent.getStringExtra(Constants.BundleKeys.INSTANCE.getContestId());
         } else {
-            contestId = savedInstanceState.getString(Constants.BundleKeys.ContestId);
-            contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants);
+            contestId = savedInstanceState.getString(Constants.BundleKeys.INSTANCE.getContestId());
+            contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.INSTANCE.getContestants());
         }
 
         loadContestantsListFragment();
@@ -135,7 +135,7 @@ public class ContestActivity extends AppCompatActivity
         ContestantsListFragment fragment = new ContestantsListFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BundleKeys.ContestId, contestId);
+        bundle.putSerializable(Constants.BundleKeys.INSTANCE.getContestId(), contestId);
 
         fragment.setArguments(bundle);
         return fragment;

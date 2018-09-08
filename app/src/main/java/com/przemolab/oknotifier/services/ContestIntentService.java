@@ -38,7 +38,7 @@ public class ContestIntentService extends IntentService {
     }
 
     private void handleActionUpdateRecipesWidgets() {
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SharedPreferences.Name, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SharedPreferences.INSTANCE.getName(), Context.MODE_PRIVATE);
         ContestWidgetDataProvider dataProvider = new ContestWidgetDataProvider(sharedPreferences);
         Contestant bestContestant = dataProvider.getBestContestant();
 
@@ -46,6 +46,6 @@ public class ContestIntentService extends IntentService {
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, ContestWidgetProvider.class));
 
         // update all widgets
-        ContestWidgetProvider.updateAppWidgets(this, appWidgetManager, appWidgetIds, bestContestant);
+        ContestWidgetProvider.Companion.updateAppWidgets(this, appWidgetManager, appWidgetIds, bestContestant);
     }
 }

@@ -63,7 +63,7 @@ public class ContestantsListFragment extends Fragment
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString(Constants.BundleKeys.ContestId, contestId);
+        outState.putString(Constants.BundleKeys.INSTANCE.getContestId(), contestId);
     }
 
     @Override
@@ -71,14 +71,14 @@ public class ContestantsListFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         NotifierApp app = (NotifierApp) Objects.requireNonNull(getActivity()).getApplication();
-        app.appComponent.inject(this);
+        app.getAppComponent().inject(this);
 
         Bundle arguments = getArguments();
         if (savedInstanceState == null) {
             assert arguments != null;
-            contestId = arguments.getString(Constants.BundleKeys.ContestId);
+            contestId = arguments.getString(Constants.BundleKeys.INSTANCE.getContestId());
         } else {
-            contestId = savedInstanceState.getString(Constants.BundleKeys.ContestId);
+            contestId = savedInstanceState.getString(Constants.BundleKeys.INSTANCE.getContestId());
         }
 
         contestantRecyclerViewAdapter = new ContestantRecyclerViewAdapter();
