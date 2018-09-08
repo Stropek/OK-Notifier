@@ -78,10 +78,10 @@ public class OpenKattisService {
             if (startDateText.length() == 8) {
                 dateTimeFormat = "HH:mm:ss";
             }
-            Date startDate = DateUtils.getDate(startDateText, dateTimeFormat);
+            Date startDate = DateUtils.INSTANCE.getDate(startDateText, dateTimeFormat);
 
             String lengthText = cells.get(2).text();
-            Date endDate = DateUtils.addTimeToDate(startDate, lengthText);
+            Date endDate = DateUtils.INSTANCE.addTimeToDate(startDate, lengthText);
 
             Document standingsPageDocument = Jsoup.connect(contestUrl).timeout(0).get();
             int numberOfContestants = standingsPageDocument.select("#standings tbody tr").size() - 4;

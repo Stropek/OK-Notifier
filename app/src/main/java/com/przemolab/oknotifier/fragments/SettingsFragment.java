@@ -44,7 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
 
         if (sharedPreferences.getBoolean(Constants.SharedPreferences.INSTANCE.getNotificationsSwitch(), false)) {
-            SyncUtils.scheduleSync(getActivity());
+            SyncUtils.INSTANCE.scheduleSync(getActivity());
         }
     }
 
@@ -57,7 +57,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(Constants.SharedPreferences.INSTANCE.getNotificationsSwitch()) && !sharedPreferences.getBoolean(key, false)) {
-            SyncUtils.cancelSync(getActivity());
+            SyncUtils.INSTANCE.cancelSync(getActivity());
         }
     }
 }

@@ -85,7 +85,7 @@ public class OpenKattisJobService extends JobService {
 
                 List<String> newSubmissions = getNewSubmissions(persistedStandings, currentStandings, approved, submitted, rejected);
                 if (!newSubmissions.isEmpty()) {
-                    NotificationUtils.notifyAboutContestUpdates(context, contest, newSubmissions);
+                    NotificationUtils.INSTANCE.notifyAboutContestUpdates(context, contest, newSubmissions);
 
                     // persist current contest standings to prevent the same notifications from recurring
                     notifierRepository.persistContestants(contest.getContestId(), currentStandings);
