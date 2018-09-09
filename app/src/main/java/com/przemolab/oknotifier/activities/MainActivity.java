@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity
         contestsListFrameLayout.setVisibility(View.VISIBLE);
         syncContestsProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
-        getSupportLoaderManager().restartLoader(ContestsListFragment.CONTEST_LOADER_ID, null, contestsListFragment);
+        getSupportLoaderManager().restartLoader(ContestsListFragment.Companion.getCONTEST_LOADER_ID(), null, contestsListFragment);
     }
 
     @Override
