@@ -23,10 +23,10 @@ class Contest : Parcelable {
     var isSubscribed = false
 
     val startDateFormatted: String
-        get() = DateUtils.formatDate(startDate!!, DateUtils.DisplayFormat)
+        get() = DateUtils.formatDate(startDate, DateUtils.DisplayFormat)
 
     val endDateFormatted: String
-        get() = DateUtils.formatDate(endDate!!, DateUtils.DisplayFormat)
+        get() = DateUtils.formatDate(endDate, DateUtils.DisplayFormat)
 
     private constructor()
 
@@ -56,8 +56,8 @@ class Contest : Parcelable {
 
         values.put(NotifierContract.ContestEntry.COLUMN_NAME, this.name)
         values.put(NotifierContract.ContestEntry.COLUMN_CONTEST_ID, this.contestId)
-        values.put(NotifierContract.ContestEntry.COLUMN_START_DATE, DateUtils.formatDate(this.startDate!!, DateUtils.SQLiteDateTimeFormat))
-        values.put(NotifierContract.ContestEntry.COLUMN_END_DATE, DateUtils.formatDate(this.endDate!!, DateUtils.SQLiteDateTimeFormat))
+        values.put(NotifierContract.ContestEntry.COLUMN_START_DATE, DateUtils.formatDate(this.startDate, DateUtils.SQLiteDateTimeFormat))
+        values.put(NotifierContract.ContestEntry.COLUMN_END_DATE, DateUtils.formatDate(this.endDate, DateUtils.SQLiteDateTimeFormat))
         values.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, this.numberOfContestants)
         values.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS, this.numberOfProblems)
         values.put(NotifierContract.ContestEntry.COLUMN_IS_SUBSCRIBED, this.isSubscribed)
@@ -73,8 +73,8 @@ class Contest : Parcelable {
         dest.writeInt(id)
         dest.writeString(contestId)
         dest.writeString(name)
-        dest.writeLong(startDate!!.time)
-        dest.writeLong(endDate!!.time)
+        dest.writeLong(startDate.time)
+        dest.writeLong(endDate.time)
         dest.writeInt(numberOfContestants)
         dest.writeInt(numberOfProblems)
         dest.writeByte((if (isSubscribed) 1 else 0).toByte())

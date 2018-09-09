@@ -43,7 +43,7 @@ class OpenKattisJobService : JobService() {
                 return null
             }
 
-            override fun onPostExecute(o: Any) {
+            override fun onPostExecute(o: Any?) {
                 jobFinished(params, false)
             }
         }
