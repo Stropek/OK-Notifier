@@ -4,12 +4,12 @@ import android.content.Context
 import android.support.v4.content.AsyncTaskLoader
 
 import com.przemolab.oknotifier.enums.SortOrder
+import com.przemolab.oknotifier.interfaces.INotifierRepository
 import com.przemolab.oknotifier.models.Contest
-import com.przemolab.oknotifier.modules.NotifierRepository
 
 import timber.log.Timber
 
-class SqliteContestLoader(context: Context, private val notifierRepository: NotifierRepository, private val sortOrder: SortOrder) : AsyncTaskLoader<List<Contest>>(context) {
+class SqliteContestLoader(context: Context, private val notifierRepository: INotifierRepository, private val sortOrder: SortOrder) : AsyncTaskLoader<List<Contest>>(context) {
 
     private var contests: List<Contest>? = null
 

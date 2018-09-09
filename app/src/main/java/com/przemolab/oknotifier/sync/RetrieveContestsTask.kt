@@ -3,13 +3,13 @@ package com.przemolab.oknotifier.sync
 import android.os.AsyncTask
 
 import com.przemolab.oknotifier.fragments.ContestsListFragment
+import com.przemolab.oknotifier.interfaces.INotifierRepository
+import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import com.przemolab.oknotifier.models.Contest
-import com.przemolab.oknotifier.modules.NotifierRepository
-import com.przemolab.oknotifier.modules.OpenKattisService
 
 import timber.log.Timber
 
-class RetrieveContestsTask(private val openKattisService: OpenKattisService, private val notifierRepository: NotifierRepository,
+class RetrieveContestsTask(private val openKattisService: IOpenKattisService, private val notifierRepository: INotifierRepository,
                            private val onContestsListEventsListener: ContestsListFragment.OnContestsListEventsListener) : AsyncTask<Void, Void, List<Contest>>() {
 
     override fun onPreExecute() {

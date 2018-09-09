@@ -10,11 +10,7 @@ import com.przemolab.oknotifier.DaggerTestAppComponent
 import com.przemolab.oknotifier.NotifierApp
 import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.enums.SortOrder
-import com.przemolab.oknotifier.modules.NotifierRepository
-import com.przemolab.oknotifier.modules.TestNotifierRepositoryModule
-import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule
 import com.przemolab.oknotifier.models.Contest
-import com.przemolab.oknotifier.modules.OpenKattisService
 import com.przemolab.oknotifier.utils.DataHelper
 
 import org.junit.Before
@@ -34,8 +30,11 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
+import com.przemolab.oknotifier.interfaces.INotifierRepository
+import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import com.przemolab.oknotifier.matchers.Matchers.isNotSubscribed
 import com.przemolab.oknotifier.matchers.Matchers.isSubscribed
+import com.przemolab.oknotifier.modules.*
 import org.mockito.Mockito.`when`
 
 @RunWith(AndroidJUnit4::class)
@@ -49,10 +48,10 @@ class MainActivityTests {
 
     @Inject
     @JvmField
-    var openKattisService: OpenKattisService? = null
+    var openKattisService: IOpenKattisService? = null
     @Inject
     @JvmField
-    var notifierRepository: NotifierRepository? = null
+    var notifierRepository: INotifierRepository? = null
 
     @Before
     fun setUp() {

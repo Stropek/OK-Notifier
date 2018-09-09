@@ -12,7 +12,6 @@ import com.przemolab.oknotifier.NotifierApp
 import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.modules.NotifierRepositoryModule
-import com.przemolab.oknotifier.modules.OpenKattisService
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule
 import com.przemolab.oknotifier.utils.DataHelper
 import com.przemolab.oknotifier.utils.TestContentObserver
@@ -33,6 +32,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
+import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import org.mockito.Mockito.`when`
 
 @RunWith(AndroidJUnit4::class)
@@ -46,7 +46,7 @@ class ContestActivitySyncTests {
 
     @Inject
     @JvmField
-    internal var openKattisService: OpenKattisService? = null
+    internal var openKattisService: IOpenKattisService? = null
 
     @Before
     fun setUp() {

@@ -1,5 +1,6 @@
 package com.przemolab.oknotifier.modules
 
+import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import javax.inject.Singleton
 
 import dagger.Module
@@ -10,7 +11,7 @@ open class OpenKattisServiceModule {
 
     @Provides
     @Singleton
-    open fun provideOpenKattisService(): OpenKattisService {
+    open fun provideOpenKattisService(): IOpenKattisService {
         return OpenKattisService()
     }
 }

@@ -11,8 +11,6 @@ import com.przemolab.oknotifier.R;
 import com.przemolab.oknotifier.activities.MainActivity;
 import com.przemolab.oknotifier.utils.SyncUtils;
 
-import timber.log.Timber;
-
 public class SettingsFragment extends PreferenceFragmentCompat
     implements SharedPreferences.OnSharedPreferenceChangeListener {
 

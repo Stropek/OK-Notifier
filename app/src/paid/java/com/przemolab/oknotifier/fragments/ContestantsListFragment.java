@@ -17,12 +17,12 @@ import android.view.ViewGroup;
 import com.przemolab.oknotifier.Constants;
 import com.przemolab.oknotifier.NotifierApp;
 import com.przemolab.oknotifier.R;
+import com.przemolab.oknotifier.interfaces.INotifierRepository;
+import com.przemolab.oknotifier.interfaces.IOpenKattisService;
 import com.przemolab.oknotifier.sync.RetrieveContestantsTask;
 import com.przemolab.oknotifier.sync.SqliteContestantLoader;
 import com.przemolab.oknotifier.data.ContestantRecyclerViewAdapter;
 import com.przemolab.oknotifier.models.Contestant;
-import com.przemolab.oknotifier.modules.NotifierRepository;
-import com.przemolab.oknotifier.modules.OpenKattisService;
 
 import java.util.List;
 import java.util.Objects;
@@ -44,9 +44,9 @@ public class ContestantsListFragment extends Fragment
     @BindView(R.id.empty_cl) public ConstraintLayout emptyLayout;
 
     @Inject
-    public NotifierRepository notifierRepository;
+    public INotifierRepository notifierRepository;
     @Inject
-    public OpenKattisService openKattisService;
+    public IOpenKattisService openKattisService;
 
     private ContestantRecyclerViewAdapter contestantRecyclerViewAdapter = null;
 
