@@ -128,7 +128,7 @@ public class ContestActivity extends AppCompatActivity
             getSupportLoaderManager().restartLoader(ContestantsListFragment.CONTESTANT_LOADER_ID, null, contestantsListFragment);
         }
 
-        ContestIntentService.startActionUpdateContestWidgets(this);
+        ContestIntentService.Companion.startActionUpdateContestWidgets(this);
     }
 
     public ContestantsListFragment getContestantsListFragment() {
