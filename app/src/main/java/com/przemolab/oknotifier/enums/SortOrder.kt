@@ -1,6 +1,6 @@
-package com.przemolab.oknotifier.enums;
+package com.przemolab.oknotifier.enums
 
-public enum SortOrder {
+enum class SortOrder {
     SubscribedFirst,
     ByName,
     ByStartDate,
