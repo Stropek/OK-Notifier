@@ -62,7 +62,7 @@ class ContestsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<Cont
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val app = Objects.requireNonNull<FragmentActivity>(activity).getApplication() as NotifierApp
+        val app = Objects.requireNonNull<FragmentActivity>(activity).application as NotifierApp
         app.appComponent.inject(this)
 
         val arguments = arguments
