@@ -1,17 +1,22 @@
 package com.przemolab.oknotifier
 
 class Constants {
-    object BundleKeys {
-        val SortOrder = "sortOrderKey"
-        val ContestId = "contestIdKey"
-        val Contestants = "contestantsKey"
-        val ContestantsListFragment = "contestantsListFragmentKey"
+
+    class BundleKeys {
+        companion object {
+            const val SortOrder = "sortOrderKey"
+            const val ContestId = "contestIdKey"
+            const val Contestants = "contestantsKey"
+            const val ContestantsListFragment = "contestantsListFragmentKey"
+        }
     }
 
-    object SharedPreferences {
-        val Name = "contestWidgetSharedPreferences"
-        val BestContestant = "bestContestantKey"
-        val NotificationsSwitch = "pref_notifications_switch"
-        val ContestSwitches = "pref_contest_switches"
+    class SharedPreferences {
+        companion object {
+            const val Name = "contestWidgetSharedPreferences"
+            const val BestContestant = "bestContestantKey"
+            const val NotificationsSwitch = "pref_notifications_switch"
+            const val ContestSwitches = "pref_contest_switches"
+        }
     }
 }
