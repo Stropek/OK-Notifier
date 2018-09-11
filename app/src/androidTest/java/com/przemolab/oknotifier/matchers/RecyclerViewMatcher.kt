@@ -19,11 +19,11 @@ class RecyclerViewMatcher(private val recyclerViewId: Int) {
             override fun describeTo(description: Description) {
                 var idDescription = Integer.toString(recyclerViewId)
                 if (this.resources != null) {
-                    try {
-                        idDescription = this.resources!!.getResourceName(recyclerViewId)
+                    idDescription = try {
+                        this.resources!!.getResourceName(recyclerViewId)
                     } catch (var4: Resources.NotFoundException) {
-                        idDescription = String.format("%s (resource name not found)",
-                                *arrayOf<Any>(Integer.valueOf(recyclerViewId)))
+                        String.format("%s (resource name not found)",
+                                Integer.valueOf(recyclerViewId))
                     }
 
                 }
@@ -38,19 +38,18 @@ class RecyclerViewMatcher(private val recyclerViewId: Int) {
                 if (childView == null) {
                     val recyclerView = view.rootView.findViewById<RecyclerView>(recyclerViewId)
                     if (recyclerView != null && recyclerView.id == recyclerViewId) {
-                        childView = recyclerView.findViewHolderForAdapterPosition(position).itemView
+                        childView = recyclerView.findViewHolderForAdapterPosition(position)?.itemView
                     } else {
                         return false
                     }
                 }
 
-                if (targetViewId == -1) {
-                    return view === childView
+                return if (targetViewId == -1) {
+                    view === childView
                 } else {
                     val targetView = childView!!.findViewById<View>(targetViewId)
-                    return view === targetView
+                    view === targetView
                 }
-
             }
         }
     }
