@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
 
 tasks.withType(Test) {
@@ -67,22 +69,15 @@ android {
     }
 }
 
-ext {
-    supportLibrary = '28.+'
-    dagger = '2.16'
-    room = '1.1.1'
-    mockito = '2.18.3'
-    espresso = '3.0.2'
-}
-
 dependencies {
-    implementation "com.android.support:appcompat-v7:$supportLibrary"
-    implementation "com.android.support:exifinterface:$supportLibrary"
-    implementation "com.android.support:cardview-v7:$supportLibrary"
-    implementation "com.android.support:support-v4:$supportLibrary"
-    implementation "com.android.support:recyclerview-v7:$supportLibrary"
-    implementation "com.android.support:preference-v7:$supportLibrary"
-    implementation "com.android.support:customtabs:$supportLibrary"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$supportLibrary_version"
+    implementation "com.android.support:exifinterface:$supportLibrary_version"
+    implementation "com.android.support:cardview-v7:$supportLibrary_version"
+    implementation "com.android.support:support-v4:$supportLibrary_version"
+    implementation "com.android.support:recyclerview-v7:$supportLibrary_version"
+    implementation "com.android.support:preference-v7:$supportLibrary_version"
+    implementation "com.android.support:customtabs:$supportLibrary_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
     implementation 'com.google.firebase:firebase-core:16.0.3'
@@ -92,27 +87,33 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.github.kevinsawicki:http-request:6.0'
     implementation 'com.google.code.gson:gson:2.8.4'
-    implementation "com.google.dagger:dagger:$dagger"
-    implementation "com.google.dagger:dagger-android:$dagger"
-    implementation "com.google.dagger:dagger-android-support:$dagger"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
     implementation 'org.jsoup:jsoup:1.11.3'
-    implementation "android.arch.persistence.room:runtime:$room"
+    implementation "android.arch.persistence.room:runtime:$room_version"
 
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger"
-    annotationProcessor "android.arch.persistence.room:compiler:$room"
+    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
 
     testImplementation 'junit:junit:4.12'
 
-    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation "org.mockito:mockito-core:$mockito"
-    androidTestImplementation "org.mockito:mockito-android:$mockito"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espresso"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espresso"
+    androidTestImplementation "org.mockito:mockito-core:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espresso_version"
+
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.16'
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+repositories {
+    mavenCentral()
+}
