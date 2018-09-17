@@ -52,7 +52,7 @@ class MainActivitySyncTests {
 
     @Before
     fun setUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesDataOld(context)
 
         MockitoAnnotations.initMocks(this)
         val app = context.applicationContext as NotifierApp
@@ -68,7 +68,7 @@ class MainActivitySyncTests {
 
     @After
     fun cleanUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesDataOld(context)
     }
 
     @Test

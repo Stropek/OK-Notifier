@@ -27,13 +27,13 @@ class NotifierDataProviderTests {
         @AfterClass
         @JvmStatic
         fun cleanUp() {
-            DataHelper.deleteTablesData(context)
+            DataHelper.deleteTablesDataOld(context)
         }
     }
 
     @Before
     fun setUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesDataOld(context)
     }
 
     @Test

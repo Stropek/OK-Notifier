@@ -5,6 +5,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.ContentObserver
 import android.net.Uri
+import com.przemolab.oknotifier.data.AppDatabase
+import com.przemolab.oknotifier.data.ContestEntry
 
 import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.data.NotifierDbHelper
@@ -16,7 +18,6 @@ import java.util.ArrayList
 class DataHelper {
     companion object {
 
-        @JvmOverloads
         @JvmStatic
         fun createContest(id: Int, subscribed: Boolean = false, contestId: String = ""): Contest {
             val idString = if (contestId.isEmpty()) String.format("id %s", id) else contestId
@@ -31,6 +32,18 @@ class DataHelper {
         }
 
         @JvmStatic
+        fun createContestEntry(id: Int, subscribed: Boolean = false, contestId: String = ""): ContestEntry {
+            val contestEntry = ContestEntry()
+            contestEntry.id = id
+            contestEntry.contestId = if (contestId.isEmpty()) String.format("id %s", id) else contestId
+            contestEntry.name = String.format("id %s", id)
+            contestEntry.startDate = DateUtils.getDate(2000 + id, id, id, id, id, 0)
+            contestEntry.endDate = DateUtils.getDate(2001 + id, id + 1, id + 1, id + 1, id + 1, 0)
+            contestEntry.subscribed = subscribed
+            return contestEntry
+        }
+
+        @JvmStatic
         fun createContests(count: Int): List<Contest> {
             val contests = ArrayList<Contest>()
 
@@ -39,6 +52,17 @@ class DataHelper {
             }
 
             return contests
+        }
+
+        @JvmStatic
+        fun createContestEntries(count: Int): List<ContestEntry> {
+            val contestsEntries = ArrayList<ContestEntry>()
+
+            for (i in 1..count) {
+                contestsEntries.add(createContestEntry(i))
+            }
+
+            return contestsEntries
         }
 
         @JvmStatic
@@ -116,15 +140,15 @@ class DataHelper {
                     /* The observer to register (that will receive notifyChange callbacks) */
                     contentObserver)
         }
-//
-//        @JvmStatic
-//        fun deleteTablesData() {
-//            // cleanup data before tests start
-//
-//        }
 
         @JvmStatic
-        fun deleteTablesData(context: Context) {
+        fun deleteTablesData(db: AppDatabase) {
+            // cleanup data before tests start
+            db.contestDao().deleteAll()
+        }
+
+        @JvmStatic
+        fun deleteTablesDataOld(context: Context) {
             val dbHelper = NotifierDbHelper(context)
             val database = dbHelper.writableDatabase
 

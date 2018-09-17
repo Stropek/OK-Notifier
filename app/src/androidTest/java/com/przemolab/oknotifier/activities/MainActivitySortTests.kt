@@ -35,7 +35,7 @@ class MainActivitySortTests {
 
     @Before
     fun setUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesDataOld(context)
 
         val app = context.applicationContext as NotifierApp
 
@@ -49,7 +49,7 @@ class MainActivitySortTests {
 
     @After
     fun cleanUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesDataOld(context)
     }
 
     @Test

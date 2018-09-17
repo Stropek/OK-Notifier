@@ -37,7 +37,6 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
                 Timber.e(ex)
                 return null
             }
-
         }
 
     override fun getAll(sortOrder: SortOrder): List<Contest>? {

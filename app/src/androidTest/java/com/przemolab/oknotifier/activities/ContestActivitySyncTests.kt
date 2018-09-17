@@ -65,7 +65,7 @@ class ContestActivitySyncTests {
 
     @After
     fun cleanUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesDataOld(context)
     }
 
     @Test

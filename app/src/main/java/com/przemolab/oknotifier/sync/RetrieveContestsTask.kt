@@ -9,7 +9,8 @@ import com.przemolab.oknotifier.models.Contest
 
 import timber.log.Timber
 
-class RetrieveContestsTask(private val openKattisService: IOpenKattisService, private val notifierRepository: INotifierRepository,
+class RetrieveContestsTask(private val openKattisService: IOpenKattisService,
+                           private val notifierRepository: INotifierRepository,
                            private val onContestsListEventsListener: ContestsListFragment.OnContestsListEventsListener) : AsyncTask<Void, Void, List<Contest>>() {
 
     override fun onPreExecute() {
