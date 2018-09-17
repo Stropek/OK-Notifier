@@ -7,7 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
@@ -16,6 +16,7 @@ import com.przemolab.oknotifier.Constants
 import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.activities.ContestActivity
 import com.przemolab.oknotifier.models.Contest
+import android.graphics.drawable.BitmapDrawable
 
 object NotificationUtils {
 
@@ -74,8 +75,18 @@ object NotificationUtils {
     }
 
     private fun notificationIcon(context: Context): Bitmap {
-        val resources = context.resources
-        // TODO: change icon
-        return BitmapFactory.decodeResource(resources, R.drawable.ic_add)
+        val drawable = ContextCompat.getDrawable(context, R.drawable.ic_add)
+
+        return if (drawable is BitmapDrawable) {
+            drawable.bitmap
+        } else {
+            val bitmap = Bitmap.createBitmap(drawable!!.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+
+            return bitmap
+        }
     }
 }

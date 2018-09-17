@@ -33,6 +33,7 @@ import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
+import org.junit.Assert.assertEquals
 import org.mockito.Mockito.`when`
 
 @RunWith(AndroidJUnit4::class)
@@ -91,7 +92,7 @@ class ContestActivitySyncTests {
     }
 
     @Test
-    fun syncClicked_currentContestsInDatabase_updatesExistingContests() {
+    fun syncClicked_currentContestsantsInDatabase_updatesExistingContestsants() {
         // given
         val contentResolver = context.contentResolver
         val contentObserver = TestContentObserver.testContentObserver
@@ -128,5 +129,39 @@ class ContestActivitySyncTests {
         onView(withText("103")).check(matches(isDisplayed()))
         onView(withText("104")).check(matches(isDisplayed()))
         onView(withText("105")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun syncClicked_newContestants_updatesNumberOfContestantsForContest() {
+        // given
+        val contentResolver = context.contentResolver
+        val contentObserver = TestContentObserver.testContentObserver
+        val contestUri = NotifierContract.ContestEntry.CONTENT_URI
+        val contestantUri = NotifierContract.ContestantEntry.CONTENT_URI
+
+        DataHelper.setObservedUriOnContentResolver(contentResolver, contestantUri, contentObserver)
+
+        val existingContest = DataHelper.insertContest(contentResolver, contestUri, DataHelper.createContest(1, contestId = "abc"))
+
+        val contestants = DataHelper.createContestants(5, "abc")
+        `when`(openKattisService!!.getContestStandings("abc")).thenReturn(contestants)
+
+        val startIntent = Intent()
+        startIntent.putExtra(Constants.BundleKeys.ContestId, "abc")
+
+        testRule.launchActivity(startIntent)
+
+        // when
+        onView(withId(R.id.sync_menu_item)).perform(click())
+
+        // then
+        val updatedContest = contentResolver.query(contestUri,
+                null,
+                "${NotifierContract.ContestEntry._ID}=?",
+                arrayOf(existingContest?.lastPathSegment),
+                null)
+        updatedContest.moveToFirst()
+        assertEquals(5, updatedContest.getInt(updatedContest.getColumnIndex(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS)))
+        assertEquals("abc", updatedContest.getString(updatedContest.getColumnIndex(NotifierContract.ContestEntry.COLUMN_CONTEST_ID)))
     }
 }

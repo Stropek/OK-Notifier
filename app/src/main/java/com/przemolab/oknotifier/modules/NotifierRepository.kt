@@ -1,5 +1,6 @@
 package com.przemolab.oknotifier.modules
 
+import android.content.ContentValues
 import android.content.Context
 
 import com.przemolab.oknotifier.data.NotifierContract
@@ -149,15 +150,15 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
     }
 
     override fun persistContestants(contestId: String, contestants: List<Contestant>?) {
-        Timber.d("Creating contest")
+        Timber.d("Persisting contestants")
         try {
-            val persistedContestants = getAllContestants(contestId)
+            val persistedContestants = getAllContestants(contestId)!!
 
             for (contestant in contestants!!) {
                 var exists = false
                 val contestantId = String.format("%s - %s", contestant.name, contestant.contestId)
 
-                for (persistedContestant in persistedContestants!!) {
+                for (persistedContestant in persistedContestants) {
                     val persistedContestantId = String.format("%s - %s", persistedContestant.name, persistedContestant.contestId)
                     if (persistedContestantId == contestantId) {
                         contestant.id = persistedContestant.id
@@ -172,10 +173,31 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
                     createContestant(contestant)
                 }
             }
+
+            if (contestants.size > persistedContestants.size) {
+                updateNumberOfContestants(contestId, contestants.size)
+            }
         } catch (ex: Exception) {
             Timber.e(ex)
         }
+    }
 
+    private fun updateNumberOfContestants(contestId: String, numberOfContestants: Int) {
+        val uri = NotifierContract.ContestEntry.CONTENT_URI
+
+        Timber.d("Updating # of contestants in contest: %s [%s]", contestId, numberOfContestants)
+
+        val contest = context.contentResolver.query(uri, null,
+                NotifierContract.ContestEntry.COLUMN_CONTEST_ID + "=?",
+                arrayOf(contestId), null)
+        contest.moveToFirst()
+        val contentValues = ContentValues()
+        contentValues.put(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS, numberOfContestants)
+        contest.close()
+
+        context.contentResolver.update(uri, contentValues,
+                NotifierContract.ContestEntry.COLUMN_CONTEST_ID + "=?",
+                arrayOf(contestId))
     }
 
     private fun createContestant(contestant: Contestant) {

@@ -92,21 +92,26 @@ class OpenKattisJobService : JobService() {
         val submissions = ArrayList<String>()
 
         for (contestant in current) {
-            for (persistedContestant in persisted!!) {
-                if (contestant.name == persistedContestant.name) {
-                    if (approved && contestant.problemsSolved > persistedContestant.problemsSolved) {
-                        submissions.add(String.format("%s solved %s new problems!!! :D",
-                                contestant.name, contestant.problemsSolved - persistedContestant.problemsSolved))
-                    }
-                    if (submitted && contestant.problemsSubmitted > persistedContestant.problemsSubmitted) {
-                        submissions.add(String.format("%s submitted %s new problems",
-                                contestant.name, contestant.problemsSubmitted - persistedContestant.problemsSubmitted))
-                    }
-                    if (rejected && contestant.problemsFailed > persistedContestant.problemsFailed) {
-                        submissions.add(String.format("%s failed to solve %s problems :(",
-                                contestant.name, contestant.problemsFailed - persistedContestant.problemsFailed))
-                    }
-                }
+            val persistedContestant = persisted!!.find { it -> it.name == contestant.name }
+
+            val newSolved =
+                    if (persistedContestant == null) contestant.problemsSolved
+                    else contestant.problemsSolved - persistedContestant.problemsSolved
+            val newSubmitted =
+                    if (persistedContestant == null) contestant.problemsSubmitted
+                    else contestant.problemsSubmitted - persistedContestant.problemsSubmitted
+            val newFailed =
+                    if (persistedContestant == null) contestant.problemsFailed
+                    else contestant.problemsFailed - persistedContestant.problemsFailed
+
+            if (approved && newSolved > 0) {
+                submissions.add(String.format("%s solved %s new problems!!! :D", contestant.name, newSolved))
+            }
+            if (submitted && newSubmitted > 0) {
+                submissions.add(String.format("%s submitted %s new problems", contestant.name, newSubmitted))
+            }
+            if (rejected && newFailed > 0) {
+                submissions.add(String.format("%s failed to solve %s problems :(", contestant.name, newFailed))
             }
         }
         return submissions

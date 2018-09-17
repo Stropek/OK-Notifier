@@ -18,8 +18,8 @@ class DataHelper {
 
         @JvmOverloads
         @JvmStatic
-        fun createContest(id: Int, subscribed: Boolean = false): Contest {
-            val idString = String.format("id %s", id)
+        fun createContest(id: Int, subscribed: Boolean = false, contestId: String = ""): Contest {
+            val idString = if (contestId.isEmpty()) String.format("id %s", id) else contestId
             val name = String.format("id %s", id)
             val startDate = DateUtils.getDate(2000 + id, id, id, id, id, 0)
             val endDate = DateUtils.getDate(2001 + id, id + 1, id + 1, id + 1, id + 1, 0)
@@ -116,13 +116,19 @@ class DataHelper {
                     /* The observer to register (that will receive notifyChange callbacks) */
                     contentObserver)
         }
+//
+//        @JvmStatic
+//        fun deleteTablesData() {
+//            // cleanup data before tests start
+//
+//        }
 
         @JvmStatic
         fun deleteTablesData(context: Context) {
             val dbHelper = NotifierDbHelper(context)
             val database = dbHelper.writableDatabase
 
-            // cleanup contests before tests start
+            // cleanup data before tests start
             database.delete(NotifierContract.ContestEntry.TABLE_NAME, null, null)
             database.delete(NotifierContract.ContestantEntry.TABLE_NAME, null, null)
         }
