@@ -56,20 +56,19 @@ class DataHelper {
 
         @JvmStatic
         fun createContestEntries(count: Int): List<ContestEntry> {
-            val contestsEntries = ArrayList<ContestEntry>()
+            val contestEntries = ArrayList<ContestEntry>()
 
             for (i in 1..count) {
-                contestsEntries.add(createContestEntry(i))
+                contestEntries.add(createContestEntry(i))
             }
 
-            return contestsEntries
+            return contestEntries
         }
 
         @JvmStatic
-        fun createContestant(id: Int, contestId: String): Contestant {
-            val name = String.format("name %s", id)
-
-            return Contestant(id, name, contestId, 1, 2, 3, 4, 5)
+        fun createContestant(id: Int, contestId: String, name: String = "", problemsSolved: Int = 1, time: Int = 5): Contestant {
+            val contestantName = if (name.isEmpty()) String.format("name %s", id) else name
+            return Contestant(id, contestantName, contestId, problemsSolved, 2, 3, 4, time)
         }
 
         @JvmStatic

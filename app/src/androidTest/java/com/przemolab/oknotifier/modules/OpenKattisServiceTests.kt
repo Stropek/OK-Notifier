@@ -30,7 +30,7 @@ class OpenKattisServiceTests {
 
         if (!contests!!.isEmpty()) {
             // when
-            val result = service.getContestStandings(contests[0].contestId)
+            val result = service.getContestStandings(contests[0].contestId!!)
 
             // then
             assertNotNull(result)

@@ -24,6 +24,7 @@ import java.util.ArrayList
 
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.przemolab.oknotifier.data.ContestEntry
 
 class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEventsListener, ContestantsListFragment.OnContestantsListEventListener {
 
@@ -106,18 +107,18 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
         return true
     }
 
-    override fun onSubscribedClicked(contest: Contest) {
-        contest.isSubscribed = !contest.isSubscribed
-        contestsListFragment!!.toggleSubscription(contest)
+    override fun onSubscribedClicked(contestEntry: ContestEntry) {
+        contestEntry.subscribed = !contestEntry.subscribed
+        contestsListFragment!!.toggleSubscription(contestEntry)
     }
 
-    override fun onContestClicked(contest: Contest) {
+    override fun onContestClicked(contestEntry: ContestEntry) {
         if (isBigScreen) {
-            contestId = contest.contestId
+            contestId = contestEntry.contestId
             loadContestantsListFragment()
         } else {
             val contestIntent = Intent(this, ContestActivity::class.java)
-            contestIntent.putExtra(Constants.BundleKeys.ContestId, contest.contestId)
+            contestIntent.putExtra(Constants.BundleKeys.ContestId, contestEntry.contestId)
             startActivity(contestIntent)
         }
     }
@@ -127,7 +128,7 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
         contestsListFrameLayout!!.visibility = View.INVISIBLE
     }
 
-    override fun onContestSyncFinished(contests: List<Contest>) {
+    override fun onContestSyncFinished(contestEntries: List<ContestEntry>) {
         contestsListFrameLayout!!.visibility = View.VISIBLE
         syncContestsProgressBar!!.visibility = ProgressBar.INVISIBLE
 

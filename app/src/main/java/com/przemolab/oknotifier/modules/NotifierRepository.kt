@@ -2,6 +2,8 @@ package com.przemolab.oknotifier.modules
 
 import android.content.ContentValues
 import android.content.Context
+import com.przemolab.oknotifier.data.AppDatabase
+import com.przemolab.oknotifier.data.ContestEntry
 
 import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.enums.SortOrder
@@ -10,11 +12,12 @@ import com.przemolab.oknotifier.models.Contest
 import com.przemolab.oknotifier.models.Contestant
 
 import java.util.ArrayList
-import java.util.Arrays
 
 import timber.log.Timber
 
 class NotifierRepository(private val context: Context) : INotifierRepository {
+
+    val db = AppDatabase.getInstance(context)!!
 
     override val subscribed: List<Contest>?
         get() {
@@ -39,40 +42,33 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
             }
         }
 
-    override fun getAll(sortOrder: SortOrder): List<Contest>? {
-        try {
-            val contests = ArrayList<Contest>()
-            val contestsUri = NotifierContract.ContestEntry.CONTENT_URI
-            val cursor = context.contentResolver
-                    .query(contestsUri, null, null, null, getSortOrder(sortOrder))
-
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    contests.add(Contest.getFromCursor(cursor))
-                }
-
-                cursor.close()
+    override fun getAll(sortOrder: SortOrder): List<ContestEntry>? {
+        return try {
+            when (sortOrder) {
+                SortOrder.SubscribedFirst,
+                SortOrder.ByNumberOfProblems,
+                SortOrder.ByNumberOfContestants ->
+                    db.contestDao().getAll().sortedByDescending { sortOrder }
+                else ->
+                    db.contestDao().getAll().sortedBy { sortOrder }
             }
-
-            return contests
         } catch (ex: Exception) {
             Timber.e(ex)
-            return null
+            null
         }
-
     }
 
-    override fun persistContests(contests: List<Contest>?) {
+    override fun persistContests(contestEntries: List<ContestEntry>?) {
         try {
             val persistedContests = getAll(SortOrder.SubscribedFirst)
-            val updatedContests = ArrayList<Contest>()
+            val updatedContests = ArrayList<ContestEntry>()
 
-            for (contest in contests!!) {
+            for (contest in contestEntries!!) {
                 var exists = false
 
                 for (persistedContest in persistedContests!!) {
                     if (persistedContest.contestId == contest.contestId) {
-                        contest.isSubscribed = persistedContest.isSubscribed
+                        contest.subscribed = persistedContest.subscribed
                         exists = true
                         break
                     }
@@ -86,7 +82,7 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
                 }
             }
 
-            val contestsToDelete = ArrayList<Contest>()
+            val contestsToDelete = ArrayList<ContestEntry>()
             for (persistedContest in persistedContests!!) {
                 var toDelete = true
 
@@ -109,16 +105,11 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
         } catch (ex: Exception) {
             Timber.e(ex)
         }
-
     }
 
-    override fun updateContest(contest: Contest) {
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        Timber.d("Updating contest: %s [%s]", contest.name, contest.contestId)
-        context.contentResolver.update(uri, contest.toContentValues(),
-                NotifierContract.ContestEntry.COLUMN_CONTEST_ID + "=?",
-                arrayOf(contest.contestId))
+    override fun updateContest(contestEntry: ContestEntry) {
+        Timber.d("Updating contest: %s [%s]", contestEntry.name, contestEntry.contestId)
+        db.contestDao().update(contestEntry)
     }
 
     override fun getAllContestants(contestId: String): List<Contestant>? {
@@ -215,35 +206,13 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
                 arrayOf(contestant.id.toString()))
     }
 
-    private fun createContest(contest: Contest) {
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        Timber.d("Creating contest: %s [%s]", contest.name, contest.contestId)
-        context.contentResolver.insert(uri, contest.toContentValues())
+    private fun createContest(contestEntry: ContestEntry) {
+        Timber.d("Creating contest: %s [%s]", contestEntry.name, contestEntry.contestId)
+        db.contestDao().insert(contestEntry)
     }
 
-    private fun deleteContests(contestsToDelete: List<Contest>) {
-        val deleteUri = NotifierContract.ContestEntry.CONTENT_URI
-                .buildUpon().appendPath("byContestIds").build()
-
-        val contestsIds = arrayOfNulls<String>(contestsToDelete.size)
-        for (i in contestsToDelete.indices) {
-            contestsIds[i] = contestsToDelete[i].contestId
-        }
-
-        Timber.d("Deleting contests: %s", Arrays.toString(contestsIds))
-        context.contentResolver.delete(deleteUri, null, contestsIds)
-    }
-
-    private fun getSortOrder(sortOrder: SortOrder): String {
-        var orderBy = NotifierContract.ContestEntry.COLUMN_IS_SUBSCRIBED + " DESC"
-        when (sortOrder) {
-            SortOrder.ByName -> orderBy = NotifierContract.ContestEntry.COLUMN_NAME
-            SortOrder.ByStartDate -> orderBy = NotifierContract.ContestEntry.COLUMN_START_DATE
-            SortOrder.ByNumberOfProblems -> orderBy = NotifierContract.ContestEntry.COLUMN_NUM_OF_PROBLEMS + " DESC"
-            SortOrder.ByNumberOfContestants -> orderBy = NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS + " DESC"
-        }
-
-        return orderBy
+    private fun deleteContests(contestsToDelete: List<ContestEntry>) {
+        Timber.d("Deleting contests: %s", contestsToDelete.map { it -> it.contestId })
+        db.contestDao().deleteMany(contestsToDelete)
     }
 }

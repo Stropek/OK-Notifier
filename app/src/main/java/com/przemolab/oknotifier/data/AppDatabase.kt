@@ -1,11 +1,13 @@
 package com.przemolab.oknotifier.data
 
+import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.*
+import android.arch.persistence.room.migration.Migration
 import android.content.Context
 import com.przemolab.oknotifier.data.converters.DateConverter
 import timber.log.Timber
 
-@Database(entities = [ContestEntry::class], version = 1, exportSchema = false)
+@Database(entities = [ContestEntry::class], version = 2, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -19,11 +21,19 @@ abstract class AppDatabase: RoomDatabase() {
                 synchronized(AppDatabase::class.java) {
                     if (instance == null) {
                         Timber.d("Creating new database instance")
-                        instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DbName).build()
+                        instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DbName)
+                                .addMigrations(Migration1())
+                                .build()
                     }
                 }
             }
             return instance
+        }
+
+        class Migration1 : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // TODO: nothing
+            }
         }
     }
 

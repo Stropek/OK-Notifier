@@ -21,13 +21,17 @@ import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
+import com.przemolab.oknotifier.data.AppDatabase
+import com.przemolab.oknotifier.data.ContestEntry
 import com.przemolab.oknotifier.matchers.Matchers.isNotSubscribed
 import com.przemolab.oknotifier.matchers.Matchers.isSubscribed
 import com.przemolab.oknotifier.matchers.Matchers.withRecyclerView
+import com.przemolab.oknotifier.utils.DateUtils
 
 class MainActivitySortTests {
 
     private val context = InstrumentationRegistry.getTargetContext()
+    private val db = AppDatabase.getInstance(context)!!
 
     @Rule
     @JvmField
@@ -35,7 +39,7 @@ class MainActivitySortTests {
 
     @Before
     fun setUp() {
-        DataHelper.deleteTablesDataOld(context)
+        DataHelper.deleteTablesData(db)
 
         val app = context.applicationContext as NotifierApp
 
@@ -49,24 +53,22 @@ class MainActivitySortTests {
 
     @After
     fun cleanUp() {
-        DataHelper.deleteTablesDataOld(context)
+        DataHelper.deleteTablesData(db)
     }
 
     @Test
     fun sort_subscribedFirst_sortsContestsBySubscriptionFlag() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
+        val startDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val endDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
 
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val startDate = "2010-05-12 17:30:45"
-        val endDate = "2010-05-12 17:30:45"
-        DataHelper.insertContest(contentResolver, uri, "subscribed", "1", startDate, endDate, 0, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "not subscribed", "2", startDate, endDate, 0, 0, false)
-        DataHelper.insertContest(contentResolver, uri, "subscribed", "3", startDate, endDate, 0, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "not subscribed", "4", startDate, endDate, 0, 0, false)
+        val contests = listOf(
+                ContestEntry(contestId = "1", name = "subscribed", subscribed = true, startDate = startDate, endDate = endDate, numberOfProblems = 0, numberOfContestants = 0),
+                ContestEntry(contestId = "2", name = "not subscribed", subscribed = false, startDate = startDate, endDate = endDate, numberOfProblems = 0, numberOfContestants = 0),
+                ContestEntry(contestId = "3", name = "subscribed", subscribed = true, startDate = startDate, endDate = endDate, numberOfProblems = 0, numberOfContestants = 0),
+                ContestEntry(contestId = "4", name = "not subscribed", subscribed = false, startDate = startDate, endDate = endDate, numberOfProblems = 0, numberOfContestants = 0)
+        )
+        db.contestDao().insertMany(contests)
 
         testRule.launchActivity(null)
 

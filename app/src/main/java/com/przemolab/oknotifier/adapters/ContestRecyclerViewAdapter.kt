@@ -12,18 +12,18 @@ import android.widget.TextView
 import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.fragments.ContestsListFragment
 import com.przemolab.oknotifier.fragments.ContestsListFragment.OnContestsListEventsListener
-import com.przemolab.oknotifier.models.Contest
 
 import java.util.ArrayList
 
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.przemolab.oknotifier.data.ContestEntry
 
 class ContestRecyclerViewAdapter(listener: ContestsListFragment.OnContestsListEventsListener?) : RecyclerView.Adapter<ContestRecyclerViewAdapter.ViewHolder>() {
 
     private val onContestClickedListener: OnContestsListEventsListener? = listener
 
-    private var contests: List<Contest>? = null
+    private var contests: List<ContestEntry>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -33,9 +33,9 @@ class ContestRecyclerViewAdapter(listener: ContestsListFragment.OnContestsListEv
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val context = holder.view.context
-        val contest = contests!![position]
+        val contestEntry = contests!![position]
 
-        if (contest.isSubscribed) {
+        if (contestEntry.subscribed) {
             holder.item!!.setBackgroundColor(ContextCompat.getColor(context, R.color.lightGreen))
             holder.subscribeButton!!.setBackgroundColor(ContextCompat.getColor(context, R.color.lightGreen))
             holder.subscribeButton!!.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_remove))
@@ -45,16 +45,16 @@ class ContestRecyclerViewAdapter(listener: ContestsListFragment.OnContestsListEv
             holder.subscribeButton!!.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_add))
         }
 
-        holder.name!!.text = contest.name
-        holder.dates!!.text = String.format("%s - %s", contest.startDateFormatted, contest.endDateFormatted)
-        holder.contestantsNumber!!.text = contest.numberOfContestants.toString()
-        holder.problemsNumber!!.text = contest.numberOfProblems.toString()
+        holder.name!!.text = contestEntry.name
+        holder.dates!!.text = String.format("%s - %s", contestEntry.startDateFormatted, contestEntry.endDateFormatted)
+        holder.contestantsNumber!!.text = contestEntry.numberOfContestants.toString()
+        holder.problemsNumber!!.text = contestEntry.numberOfProblems.toString()
 
         holder.view.setOnClickListener {
-            onContestClickedListener?.onContestClicked(contest)
+            onContestClickedListener?.onContestClicked(contestEntry)
         }
         holder.subscribeButton!!.setOnClickListener {
-            onContestClickedListener?.onSubscribedClicked(contest)
+            onContestClickedListener?.onSubscribedClicked(contestEntry)
         }
     }
 
@@ -64,7 +64,7 @@ class ContestRecyclerViewAdapter(listener: ContestsListFragment.OnContestsListEv
         } else contests!!.size
     }
 
-    fun swapData(data: List<Contest>?) {
+    fun swapData(data: List<ContestEntry>?) {
         if (data == null)
             contests = ArrayList()
         else {

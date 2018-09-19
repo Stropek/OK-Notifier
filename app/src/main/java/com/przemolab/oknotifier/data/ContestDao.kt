@@ -1,8 +1,6 @@
 package com.przemolab.oknotifier.data
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 
 @Dao
 interface ContestDao {
@@ -13,6 +11,21 @@ interface ContestDao {
     @Query("DELETE FROM ${NotifierContract.ContestEntry.TABLE_NAME}")
     fun deleteAll()
 
+    @Delete
+    fun delete(contestEntry: ContestEntry)
+
+    @Delete
+    fun deleteMany(contestEntries: List<ContestEntry>)
+
     @Insert
-    fun insertAll(contest: List<ContestEntry>)
+    fun insert(contestEntry: ContestEntry)
+
+    @Insert
+    fun insertMany(contestEntries: List<ContestEntry>)
+
+    @Update
+    fun update(contestEntry: ContestEntry)
+
+    @Update
+    fun updateMany(contestEntries: List<ContestEntry>)
 }

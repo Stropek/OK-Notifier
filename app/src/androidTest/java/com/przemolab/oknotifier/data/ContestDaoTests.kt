@@ -43,7 +43,7 @@ class ContestDaoTests {
     fun getAll_contestsInDatabase_returnsContestsList() {
         // given
         val existingContests = DataHelper.createContestEntries(10)
-        db.contestDao().insertAll(existingContests)
+        db.contestDao().insertMany(existingContests)
 
         // when
         val contests = db.contestDao().getAll()

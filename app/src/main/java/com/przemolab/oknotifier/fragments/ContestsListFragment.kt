@@ -22,7 +22,6 @@ import com.przemolab.oknotifier.sync.RetrieveContestsTask
 import com.przemolab.oknotifier.sync.SqliteContestLoader
 import com.przemolab.oknotifier.adapters.ContestRecyclerViewAdapter
 import com.przemolab.oknotifier.enums.SortOrder
-import com.przemolab.oknotifier.models.Contest
 import java.util.Objects
 
 import javax.inject.Inject
@@ -30,8 +29,9 @@ import javax.inject.Inject
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.przemolab.oknotifier.data.ContestEntry
 
-class ContestsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<Contest>> {
+class ContestsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<ContestEntry>> {
     private var sortOrder = SortOrder.SubscribedFirst
 
     @BindView(R.id.contestsList_rv) @JvmField
@@ -105,11 +105,11 @@ class ContestsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<Cont
         onContestListEventsListener = null
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<Contest>> {
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<ContestEntry>> {
         return SqliteContestLoader(activity!!, notifierRepository!!, sortOrder)
     }
 
-    override fun onLoadFinished(loader: Loader<List<Contest>>, data: List<Contest>) {
+    override fun onLoadFinished(loader: Loader<List<ContestEntry>>, data: List<ContestEntry>) {
         contestRecyclerViewAdapter!!.swapData(data)
 
         if (data.isEmpty()) {
@@ -121,28 +121,27 @@ class ContestsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<Cont
         }
     }
 
-    override fun onLoaderReset(loader: Loader<List<Contest>>) {
+    override fun onLoaderReset(loader: Loader<List<ContestEntry>>) {
         contestRecyclerViewAdapter!!.swapData(null)
     }
 
-    fun toggleSubscription(contest: Contest) {
-        notifierRepository!!.updateContest(contest)
+    fun toggleSubscription(contestEntry: ContestEntry) {
+        notifierRepository!!.updateContest(contestEntry)
         loaderManager.restartLoader(CONTEST_LOADER_ID, null, this)
     }
 
     interface OnContestsListEventsListener {
 
-        fun onSubscribedClicked(contest: Contest)
+        fun onSubscribedClicked(contestEntry: ContestEntry)
 
-        fun onContestClicked(contest: Contest)
+        fun onContestClicked(contestEntry: ContestEntry)
 
         fun onContestSyncStarted()
 
-        fun onContestSyncFinished(contests: List<Contest>)
+        fun onContestSyncFinished(contestEntries: List<ContestEntry>)
     }
 
     companion object {
-
-        val CONTEST_LOADER_ID = 1
+        const val CONTEST_LOADER_ID = 1
     }
 }
