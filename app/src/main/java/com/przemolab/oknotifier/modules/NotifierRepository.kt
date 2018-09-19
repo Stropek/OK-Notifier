@@ -128,7 +128,7 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
                     .appendPath("byContestId")
                     .appendPath(contestId)
                     .build()
-            val sortOrder = NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED + " DESC, " + NotifierContract.ContestantEntry.COLUMN_TIME + " DESC"
+            val sortOrder = NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED + " DESC, " + NotifierContract.ContestantEntry.COLUMN_TIME + " ASC"
             val cursor = context.contentResolver
                     .query(contestantsUri, null, null, null, sortOrder)
 
@@ -145,7 +145,6 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
             Timber.e(ex)
             return null
         }
-
     }
 
     override fun persistContestants(contestId: String, contestants: List<Contestant>?) {
