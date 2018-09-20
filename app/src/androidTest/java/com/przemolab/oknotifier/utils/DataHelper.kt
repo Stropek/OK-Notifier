@@ -42,10 +42,10 @@ class DataHelper {
         }
 
         @JvmStatic
-        fun createContestant(id: Int, contestId: String): Contestant {
-            val name = String.format("name %s", id)
+        fun createContestant(id: Int, contestId: String, name: String = "", problemsSolved: Int = 1, time: Int = 5): Contestant {
+            val contestantName = if (name.isEmpty()) String.format("name %s", id) else name
 
-            return Contestant(id, name, contestId, 1, 2, 3, 4, 5)
+            return Contestant(id, contestantName, contestId, problemsSolved, 2, 3, 4, time)
         }
 
         @JvmStatic
@@ -92,16 +92,16 @@ class DataHelper {
 
         @JvmOverloads
         @JvmStatic
-        fun insertContestant(contentResolver: ContentResolver, uri: Uri, contestId: String, name: String = "john doe"): Uri? {
+        fun insertContestant(contentResolver: ContentResolver, uri: Uri, contestId: String, name: String = "john doe", problemsSolved: Int = 1, time: Int = 5): Uri? {
             val contentValues = ContentValues()
 
             contentValues.put(NotifierContract.ContestantEntry.COLUMN_NAME, name)
             contentValues.put(NotifierContract.ContestantEntry.COLUMN_CONTEST_ID, contestId)
-            contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED, 1)
+            contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED, problemsSolved)
             contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SUBMITTED, 2)
             contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_FAILED, 3)
             contentValues.put(NotifierContract.ContestantEntry.COLUMN_PROBLEMS_NOT_TRIED, 4)
-            contentValues.put(NotifierContract.ContestantEntry.COLUMN_TIME, 5)
+            contentValues.put(NotifierContract.ContestantEntry.COLUMN_TIME, time)
 
             return contentResolver.insert(uri, contentValues)
         }

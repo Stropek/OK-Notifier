@@ -33,6 +33,7 @@ import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
+import com.przemolab.oknotifier.matchers.Matchers
 import org.mockito.Mockito.`when`
 
 @RunWith(AndroidJUnit4::class)
@@ -128,5 +129,34 @@ class ContestActivitySyncTests {
         onView(withText("103")).check(matches(isDisplayed()))
         onView(withText("104")).check(matches(isDisplayed()))
         onView(withText("105")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun default_contestStandings_contestantsOrderedBySolvedProblemsDescThenTimeAsc() {
+        // given
+        val contentResolver = context.contentResolver
+        val contentObserver = TestContentObserver.testContentObserver
+        val uri = NotifierContract.ContestantEntry.CONTENT_URI
+
+        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
+
+        DataHelper.insertContestant(contentResolver, uri, "abc", "First", 5, 10)
+        DataHelper.insertContestant(contentResolver, uri, "abc", "Second", 5, 100)
+        DataHelper.insertContestant(contentResolver, uri, "abc", "Fifth", 2, 10000)
+        DataHelper.insertContestant(contentResolver, uri, "abc", "Fourth", 2, 1000)
+        DataHelper.insertContestant(contentResolver, uri, "abc", "Third", 3, 1000000)
+
+        val startIntent = Intent()
+        startIntent.putExtra(Constants.BundleKeys.ContestId, "abc")
+
+        // when
+        testRule.launchActivity(startIntent)
+
+        // then
+        onView(Matchers.withRecyclerView(R.id.contestantsList_rv).atPositionOnView(0, R.id.userName_tv)).check(matches(withText("First")))
+        onView(Matchers.withRecyclerView(R.id.contestantsList_rv).atPositionOnView(1, R.id.userName_tv)).check(matches(withText("Second")))
+        onView(Matchers.withRecyclerView(R.id.contestantsList_rv).atPositionOnView(2, R.id.userName_tv)).check(matches(withText("Third")))
+        onView(Matchers.withRecyclerView(R.id.contestantsList_rv).atPositionOnView(3, R.id.userName_tv)).check(matches(withText("Fourth")))
+        onView(Matchers.withRecyclerView(R.id.contestantsList_rv).atPositionOnView(4, R.id.userName_tv)).check(matches(withText("Fifth")))
     }
 }
