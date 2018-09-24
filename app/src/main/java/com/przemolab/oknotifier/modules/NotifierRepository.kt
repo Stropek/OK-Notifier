@@ -45,12 +45,12 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
     override fun getAll(sortOrder: SortOrder): List<ContestEntry>? {
         return try {
             when (sortOrder) {
-                SortOrder.SubscribedFirst,
-                SortOrder.ByNumberOfProblems,
-                SortOrder.ByNumberOfContestants ->
-                    db.contestDao().getAll().sortedByDescending { sortOrder }
+                SortOrder.SubscribedFirst -> db.contestDao().getAll().sortedByDescending { it -> it.subscribed }
+                SortOrder.ByNumberOfProblems -> db.contestDao().getAll().sortedByDescending { it -> it.numberOfProblems }
+                SortOrder.ByNumberOfContestants -> db.contestDao().getAll().sortedByDescending { it -> it.numberOfContestants }
+                SortOrder.ByStartDate -> db.contestDao().getAll().sortedBy { it -> it.startDate }
                 else ->
-                    db.contestDao().getAll().sortedBy { sortOrder }
+                    db.contestDao().getAll().sortedBy { it -> it.name }
             }
         } catch (ex: Exception) {
             Timber.e(ex)
