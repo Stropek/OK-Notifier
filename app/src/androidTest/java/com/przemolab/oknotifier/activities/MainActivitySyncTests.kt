@@ -8,11 +8,9 @@ import android.support.test.runner.AndroidJUnit4
 import com.przemolab.oknotifier.DaggerTestAppComponent
 import com.przemolab.oknotifier.NotifierApp
 import com.przemolab.oknotifier.R
-import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.modules.NotifierRepositoryModule
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule
 import com.przemolab.oknotifier.utils.DataHelper
-import com.przemolab.oknotifier.utils.TestContentObserver
 
 import org.junit.After
 import org.junit.Before
@@ -70,18 +68,12 @@ class MainActivitySyncTests {
 
     @After
     fun cleanUp() {
-        DataHelper.deleteTablesDataOld(context)
+        DataHelper.deleteTablesData(db)
     }
 
     @Test
     fun syncClicked_noContestsInDatabase_addContestToDatabase() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
         val ongoingContests = DataHelper.createContestEntries(5)
         `when`(openKattisService!!.ongoingContests).thenReturn(ongoingContests)
 
@@ -98,10 +90,10 @@ class MainActivitySyncTests {
     @Test
     fun syncClicked_oldContestsInDatabase_removesOldContestsFromDatabase() {
         // given
-        val existingContests = DataHelper.createContestEntries(10)
+        val existingContests = DataHelper.createContestEntries(8)
         db.contestDao().insertMany(existingContests)
 
-        `when`(openKattisService!!.ongoingContests).thenReturn(existingContests.subList(5, 10))
+        `when`(openKattisService!!.ongoingContests).thenReturn(existingContests.subList(4, 8))
 
         testRule.launchActivity(null)
 
@@ -109,8 +101,8 @@ class MainActivitySyncTests {
         onView(withId(R.id.sync_menu_item)).perform(click())
 
         // then
-        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(4))
-        onView(withText("id 10")).check(matches(isDisplayed()))
+        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(3))
+        onView(withText("id 8")).check(matches(isDisplayed()))
     }
 
     @Test
