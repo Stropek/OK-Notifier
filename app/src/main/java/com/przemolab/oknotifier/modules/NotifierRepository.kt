@@ -136,7 +136,6 @@ class NotifierRepository(private val context: Context) : INotifierRepository {
             Timber.e(ex)
             return null
         }
-
     }
 
     override fun persistContestants(contestId: String, contestants: List<Contestant>?) {

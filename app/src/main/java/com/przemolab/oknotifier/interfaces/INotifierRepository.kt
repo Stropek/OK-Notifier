@@ -9,7 +9,7 @@ interface INotifierRepository {
 
     val subscribed: List<Contest>?
 
-    fun getAll(sortOrder: SortOrder): List<ContestEntry>?
+    fun getAll(sortOrder: SortOrder = SortOrder.SubscribedFirst): List<ContestEntry>?
 
     fun updateContest(contestEntry: ContestEntry)
 

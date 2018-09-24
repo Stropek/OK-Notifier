@@ -2,56 +2,42 @@ package com.przemolab.oknotifier.modules
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import com.przemolab.oknotifier.data.AppDatabase
 
 import com.przemolab.oknotifier.data.NotifierContract
-import com.przemolab.oknotifier.enums.SortOrder
 import com.przemolab.oknotifier.utils.DataHelper
 import com.przemolab.oknotifier.utils.TestContentObserver
 
-import org.junit.AfterClass
-import org.junit.BeforeClass
-import org.junit.Test
 import org.junit.runner.RunWith
 
 import junit.framework.Assert.assertEquals
+import org.junit.*
 
 @RunWith(AndroidJUnit4::class)
 class NotifierRepositoryTests {
-    companion object {
 
-        private val context = InstrumentationRegistry.getTargetContext()
+    private val context = InstrumentationRegistry.getTargetContext()
+    private val db = AppDatabase.getInstance(context)!!
 
-        @JvmStatic
-        @BeforeClass
-        fun setUp() {
-            DataHelper.deleteTablesDataOld(context)
-        }
+    @Before
+    fun setUp() {
+        DataHelper.deleteTablesData(db)
+    }
 
-        @JvmStatic
-        @AfterClass
-        fun cleanUp() {
-            DataHelper.deleteTablesDataOld(context)
-        }
+    @After
+    fun cleanUp() {
+        DataHelper.deleteTablesData(db)
     }
 
     @Test
-    fun getAll_returnsAllContest() {
+    fun getAll_returnsAllContests() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        for (i in 0..9) {
-            DataHelper.insertContest(contentResolver, uri, "contest $i", "abc$i",
-                    "2010-10-16 16:00:00", "2010-10-26 18:00:00", i * 3, i * 2)
-        }
+        db.contestDao().insertMany(DataHelper.createContestEntries(10))
 
         val notifierRepository = NotifierRepository(context)
 
         // when
-        val result = notifierRepository.getAll(SortOrder.SubscribedFirst)
+        val result = notifierRepository.getAll()
 
         // then
         assertEquals(10, result!!.size)

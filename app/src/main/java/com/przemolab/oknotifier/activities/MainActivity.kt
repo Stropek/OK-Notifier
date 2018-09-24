@@ -16,7 +16,6 @@ import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.enums.SortOrder
 import com.przemolab.oknotifier.fragments.ContestantsListFragment
 import com.przemolab.oknotifier.fragments.ContestsListFragment
-import com.przemolab.oknotifier.models.Contest
 import com.przemolab.oknotifier.models.Contestant
 import com.przemolab.oknotifier.services.ContestIntentService
 
