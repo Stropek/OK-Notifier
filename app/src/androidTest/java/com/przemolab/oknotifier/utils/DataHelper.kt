@@ -6,30 +6,16 @@ import android.content.Context
 import android.database.ContentObserver
 import android.net.Uri
 import com.przemolab.oknotifier.data.AppDatabase
-import com.przemolab.oknotifier.data.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestEntry
 
 import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.data.NotifierDbHelper
-import com.przemolab.oknotifier.models.Contest
 import com.przemolab.oknotifier.models.Contestant
 
 import java.util.ArrayList
 
 class DataHelper {
     companion object {
-
-        @JvmStatic
-        fun createContest(id: Int, subscribed: Boolean = false, contestId: String = ""): Contest {
-            val idString = if (contestId.isEmpty()) String.format("id %s", id) else contestId
-            val name = String.format("id %s", id)
-            val startDate = DateUtils.getDate(2000 + id, id, id, id, id, 0)
-            val endDate = DateUtils.getDate(2001 + id, id + 1, id + 1, id + 1, id + 1, 0)
-
-            val contest = Contest(idString, name, startDate, endDate, id, id)
-            contest.isSubscribed = subscribed
-
-            return contest
-        }
 
         @JvmStatic
         fun createContestEntry(id: Int, subscribed: Boolean = false, contestId: String = ""): ContestEntry {
@@ -41,17 +27,6 @@ class DataHelper {
             contestEntry.endDate = DateUtils.getDate(2001 + id, id + 1, id + 1, id + 1, id + 1, 0)
             contestEntry.subscribed = subscribed
             return contestEntry
-        }
-
-        @JvmStatic
-        fun createContests(count: Int): List<Contest> {
-            val contests = ArrayList<Contest>()
-
-            for (i in 1..count) {
-                contests.add(createContest(i))
-            }
-
-            return contests
         }
 
         @JvmStatic
@@ -80,18 +55,6 @@ class DataHelper {
             }
 
             return contestants
-        }
-
-        @JvmStatic
-        fun insertContest(contentResolver: ContentResolver, uri: Uri, contest: Contest): Uri? {
-            return DataHelper.insertContest(contentResolver, uri,
-                    contest.name,
-                    contest.contestId,
-                    DateUtils.formatDate(contest.startDate, DateUtils.SQLiteDateTimeFormat),
-                    DateUtils.formatDate(contest.endDate, DateUtils.SQLiteDateTimeFormat),
-                    contest.numberOfContestants,
-                    contest.numberOfProblems,
-                    contest.isSubscribed)
         }
 
         @JvmOverloads

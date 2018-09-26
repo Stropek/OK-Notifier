@@ -31,7 +31,7 @@ import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
 import com.przemolab.oknotifier.data.AppDatabase
-import com.przemolab.oknotifier.data.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestEntry
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import com.przemolab.oknotifier.matchers.Matchers.isSubscribed
 import org.mockito.Mockito.`when`

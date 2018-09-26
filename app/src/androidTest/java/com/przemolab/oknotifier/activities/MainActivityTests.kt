@@ -29,7 +29,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
-import com.przemolab.oknotifier.data.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestEntry
 import com.przemolab.oknotifier.interfaces.INotifierRepository
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import com.przemolab.oknotifier.matchers.Matchers.isNotSubscribed
@@ -71,7 +71,7 @@ class MainActivityTests {
     fun default_noContests_displaysEmptyView() {
         // given
         val contestsEntries = ArrayList<ContestEntry>()
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contestsEntries)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestsEntries)
 
         // when
         testRule.launchActivity(null)
@@ -85,7 +85,7 @@ class MainActivityTests {
         // given
         val contestEntries = ArrayList<ContestEntry>()
         contestEntries.add(DataHelper.createContestEntry(1))
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
 
         // when
         testRule.launchActivity(null)
@@ -100,7 +100,7 @@ class MainActivityTests {
         // given
         val contestsEntries = ArrayList<ContestEntry>()
         contestsEntries.add(DataHelper.createContestEntry(1, true))
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contestsEntries)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestsEntries)
 
         // when
         testRule.launchActivity(null)
@@ -115,7 +115,7 @@ class MainActivityTests {
         // given
         val contestEntries = ArrayList<ContestEntry>()
         contestEntries.add(DataHelper.createContestEntry(1))
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
 
         testRule.launchActivity(null)
 
@@ -130,7 +130,7 @@ class MainActivityTests {
     fun toggleOrientation_displaysOngoingContests() {
         // given
         val contestEntries = DataHelper.createContestEntries(10)
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
 
         testRule.launchActivity(null)
 
@@ -146,7 +146,7 @@ class MainActivityTests {
     fun toggleOrientationTwice_displaysOngoingContests() {
         // given
         val contestEntries = DataHelper.createContestEntries(10)
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
 
         testRule.launchActivity(null)
 
@@ -164,7 +164,7 @@ class MainActivityTests {
         // given
         val contests = DataHelper.createContestEntries(1)
         val contestants = DataHelper.createContestants(3, "id 1")
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contests)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contests)
         `when`(notifierRepository!!.getAllContestants("id 1")).thenReturn(contestants)
 
         testRule.launchActivity(null)
@@ -182,7 +182,7 @@ class MainActivityTests {
     fun contestClicked_contestantsNotInRepository_activityLoadsContestStandingsFromOpenKattis() {
         // given
         val contestEntries = DataHelper.createContestEntries(1)
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
         `when`(notifierRepository!!.getAllContestants("id 1")).thenReturn(ArrayList())
 
         val contestants = DataHelper.createContestants(3, "id 1")

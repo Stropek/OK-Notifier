@@ -74,15 +74,15 @@ class OpenKattisJobService : JobService() {
 
             val subscribedContests = notifierRepository.subscribed
             for (contest in subscribedContests!!) {
-                val persistedStandings = notifierRepository.getAllContestants(contest.contestId)
-                val currentStandings = openKattisService.getContestStandings(contest.contestId)
+                val persistedStandings = notifierRepository.getAllContestants(contest.contestId!!)
+                val currentStandings = openKattisService.getContestStandings(contest.contestId!!)
 
                 val newSubmissions = getNewSubmissions(persistedStandings, currentStandings!!, approved, submitted, rejected)
                 if (!newSubmissions.isEmpty()) {
                     NotificationUtils.notifyAboutContestUpdates(context, contest, newSubmissions)
 
                     // persist current contest standings to prevent the same notifications from recurring
-                    notifierRepository.persistContestants(contest.contestId, currentStandings)
+                    notifierRepository.persistContestants(contest.contestId!!, currentStandings)
                 }
             }
         }

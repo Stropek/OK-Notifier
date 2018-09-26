@@ -1,12 +1,11 @@
 package com.przemolab.oknotifier.sync
 
 import android.os.AsyncTask
-import com.przemolab.oknotifier.data.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestEntry
 
 import com.przemolab.oknotifier.fragments.ContestsListFragment
 import com.przemolab.oknotifier.interfaces.INotifierRepository
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
-import com.przemolab.oknotifier.models.Contest
 
 import timber.log.Timber
 

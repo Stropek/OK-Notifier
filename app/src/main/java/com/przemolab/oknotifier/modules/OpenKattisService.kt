@@ -1,6 +1,6 @@
 package com.przemolab.oknotifier.modules
 
-import com.przemolab.oknotifier.data.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestEntry
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import com.przemolab.oknotifier.models.Contestant
 import com.przemolab.oknotifier.utils.DateUtils

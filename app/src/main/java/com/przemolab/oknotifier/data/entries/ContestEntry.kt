@@ -1,9 +1,10 @@
-package com.przemolab.oknotifier.data
+package com.przemolab.oknotifier.data.entries
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.utils.DateUtils
 
 import java.util.Date

@@ -29,7 +29,7 @@ import javax.inject.Inject
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.przemolab.oknotifier.data.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestEntry
 
 class ContestsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<ContestEntry>> {
     private var sortOrder = SortOrder.SubscribedFirst

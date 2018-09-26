@@ -15,8 +15,8 @@ import android.support.v4.content.ContextCompat
 import com.przemolab.oknotifier.Constants
 import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.activities.ContestActivity
-import com.przemolab.oknotifier.models.Contest
 import android.graphics.drawable.BitmapDrawable
+import com.przemolab.oknotifier.data.entries.ContestEntry
 
 object NotificationUtils {
 
@@ -25,7 +25,7 @@ object NotificationUtils {
 
     private const val CONTEST_NOTIFICATION_CHANNEL_ID = "contest_notification_channel"
 
-    fun notifyAboutContestUpdates(context: Context, contest: Contest, newSubmissions: List<String>) {
+    fun notifyAboutContestUpdates(context: Context, contestEntry: ContestEntry, newSubmissions: List<String>) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -42,21 +42,21 @@ object NotificationUtils {
                 .setColor(ContextCompat.getColor(context, R.color.darkGreen))
                 .setSmallIcon(R.drawable.ic_add)
                 .setLargeIcon(notificationIcon(context))
-                .setContentTitle(contest.name)
+                .setContentTitle(contestEntry.name)
                 .setContentText(String.format("%s new updates!", newSubmissions.size))
                 .setStyle(
                         NotificationCompat.BigTextStyle()
                                 .bigText(formatSubmissions(newSubmissions))
                 )
                 .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setContentIntent(contentIntent(context, contest.contestId))
+                .setContentIntent(contentIntent(context, contestEntry.contestId!!))
                 .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             notificationBuilder.priority = NotificationCompat.PRIORITY_HIGH
         }
 
-        notificationManager.notify(CONTEST_NOTIFICATION_ID + contest.id, notificationBuilder.build())
+        notificationManager.notify(CONTEST_NOTIFICATION_ID + contestEntry.id, notificationBuilder.build())
     }
 
     private fun formatSubmissions(newSubmissions: List<String>): String {

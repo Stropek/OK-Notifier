@@ -32,6 +32,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
+import com.przemolab.oknotifier.data.AppDatabase
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import org.junit.Assert.assertEquals
 import org.mockito.Mockito.`when`
@@ -61,10 +62,16 @@ class ContestActivitySyncTests {
 
         app.appComponent = testAppComponent
         testAppComponent.inject(this)
+
+        DataHelper.deleteTablesData(AppDatabase.getInstance(context)!!)
+        // TODO: remove old way
+        DataHelper.deleteTablesDataOld(context)
     }
 
     @After
     fun cleanUp() {
+        DataHelper.deleteTablesData(AppDatabase.getInstance(context)!!)
+        // TODO: remove old way
         DataHelper.deleteTablesDataOld(context)
     }
 
@@ -92,7 +99,7 @@ class ContestActivitySyncTests {
     }
 
     @Test
-    fun syncClicked_currentContestsantsInDatabase_updatesExistingContestsants() {
+    fun syncClicked_currentContestantsInDatabase_updatesExistingContestsants() {
         // given
         val contentResolver = context.contentResolver
         val contentObserver = TestContentObserver.testContentObserver
@@ -134,14 +141,8 @@ class ContestActivitySyncTests {
     @Test
     fun syncClicked_newContestants_updatesNumberOfContestantsForContest() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val contestUri = NotifierContract.ContestEntry.CONTENT_URI
-        val contestantUri = NotifierContract.ContestantEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, contestantUri, contentObserver)
-
-        val existingContest = DataHelper.insertContest(contentResolver, contestUri, DataHelper.createContest(1, contestId = "abc"))
+        val db = AppDatabase.getInstance(context)!!
+        db.contestDao().insert(DataHelper.createContestEntry(1, contestId = "abc"))
 
         val contestants = DataHelper.createContestants(5, "abc")
         `when`(openKattisService!!.getContestStandings("abc")).thenReturn(contestants)
@@ -155,13 +156,8 @@ class ContestActivitySyncTests {
         onView(withId(R.id.sync_menu_item)).perform(click())
 
         // then
-        val updatedContest = contentResolver.query(contestUri,
-                null,
-                "${NotifierContract.ContestEntry._ID}=?",
-                arrayOf(existingContest?.lastPathSegment),
-                null)
-        updatedContest.moveToFirst()
-        assertEquals(5, updatedContest.getInt(updatedContest.getColumnIndex(NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS)))
-        assertEquals("abc", updatedContest.getString(updatedContest.getColumnIndex(NotifierContract.ContestEntry.COLUMN_CONTEST_ID)))
+        val updatedContest = db.contestDao().getAll().first { it -> it.id == 1 }
+        assertEquals(5, updatedContest.numberOfContestants)
+        assertEquals("abc", updatedContest.contestId)
     }
 }

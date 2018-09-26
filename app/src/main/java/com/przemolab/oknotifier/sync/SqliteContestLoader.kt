@@ -2,7 +2,7 @@ package com.przemolab.oknotifier.sync
 
 import android.content.Context
 import android.support.v4.content.AsyncTaskLoader
-import com.przemolab.oknotifier.data.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestEntry
 
 import com.przemolab.oknotifier.enums.SortOrder
 import com.przemolab.oknotifier.interfaces.INotifierRepository
@@ -18,7 +18,7 @@ class SqliteContestLoader(context: Context,
     override fun loadInBackground(): List<ContestEntry>? {
         return try {
             Timber.d("Loading contests from SQLite")
-            notifierRepository.getAll(sortOrder)
+            notifierRepository.getAllContests(sortOrder)
         } catch (ex: Exception) {
             Timber.e(ex)
             null

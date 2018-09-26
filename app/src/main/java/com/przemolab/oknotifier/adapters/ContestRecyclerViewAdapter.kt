@@ -17,7 +17,7 @@ import java.util.ArrayList
 
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.przemolab.oknotifier.data.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestEntry
 
 class ContestRecyclerViewAdapter(listener: ContestsListFragment.OnContestsListEventsListener?) : RecyclerView.Adapter<ContestRecyclerViewAdapter.ViewHolder>() {
 

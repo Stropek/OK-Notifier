@@ -20,7 +20,7 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import com.przemolab.oknotifier.data.AppDatabase
-import com.przemolab.oknotifier.data.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestEntry
 import com.przemolab.oknotifier.matchers.Matchers.isNotSubscribed
 import com.przemolab.oknotifier.matchers.Matchers.isSubscribed
 import com.przemolab.oknotifier.matchers.Matchers.withRecyclerView
