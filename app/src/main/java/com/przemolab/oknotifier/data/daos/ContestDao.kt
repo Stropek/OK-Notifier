@@ -1,8 +1,8 @@
-package com.przemolab.oknotifier.data
+package com.przemolab.oknotifier.data.daos
 
 import android.arch.persistence.room.*
+import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.data.entries.ContestEntry
-import java.sql.NClob
 
 @Dao
 interface ContestDao {

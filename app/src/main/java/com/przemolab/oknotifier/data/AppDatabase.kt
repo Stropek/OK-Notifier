@@ -5,6 +5,7 @@ import android.arch.persistence.room.*
 import android.arch.persistence.room.migration.Migration
 import android.content.Context
 import com.przemolab.oknotifier.data.converters.DateConverter
+import com.przemolab.oknotifier.data.daos.ContestDao
 import com.przemolab.oknotifier.data.entries.ContestEntry
 import timber.log.Timber
 
