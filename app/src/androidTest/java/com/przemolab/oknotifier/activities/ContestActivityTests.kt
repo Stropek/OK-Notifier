@@ -10,7 +10,6 @@ import com.przemolab.oknotifier.Constants
 import com.przemolab.oknotifier.DaggerTestAppComponent
 import com.przemolab.oknotifier.NotifierApp
 import com.przemolab.oknotifier.R
-import com.przemolab.oknotifier.models.Contestant
 import com.przemolab.oknotifier.utils.DataHelper
 
 import org.junit.Before
@@ -30,6 +29,7 @@ import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.v7.widget.RecyclerView
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 import com.przemolab.oknotifier.interfaces.INotifierRepository
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import com.przemolab.oknotifier.modules.*
@@ -68,7 +68,7 @@ class ContestActivityTests {
     @Test
     fun default_noContestants_displaysEmptyView() {
         // given
-        val contestants = ArrayList<Contestant>()
+        val contestants = ArrayList<ContestantEntry>()
         `when`(notifierRepository!!.getAllContestants("contestId")).thenReturn(contestants)
 
         val startIntent = Intent()
@@ -103,10 +103,10 @@ class ContestActivityTests {
         // given
         val contestants = DataHelper.createContestants(5, "abc")
         `when`(openKattisService!!.getContestStandings("abc"))
-                .thenAnswer(object : Answer<List<Contestant>> {
+                .thenAnswer(object : Answer<List<ContestantEntry>> {
                     private var count = 0
 
-                    override fun answer(invocation: InvocationOnMock): List<Contestant> {
+                    override fun answer(invocation: InvocationOnMock): List<ContestantEntry> {
                         count++
                         return if (count == 1) {
                             ArrayList()

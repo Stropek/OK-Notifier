@@ -49,7 +49,7 @@ object NotificationUtils {
                                 .bigText(formatSubmissions(newSubmissions))
                 )
                 .setDefaults(Notification.DEFAULT_VIBRATE)
-                .setContentIntent(contentIntent(context, contestEntry.contestId!!))
+                .setContentIntent(contentIntent(context, contestEntry.contestId))
                 .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {

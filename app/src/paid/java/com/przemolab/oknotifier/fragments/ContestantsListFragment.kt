@@ -21,7 +21,6 @@ import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import com.przemolab.oknotifier.sync.RetrieveContestantsTask
 import com.przemolab.oknotifier.sync.SqliteContestantLoader
 import com.przemolab.oknotifier.adapters.ContestantRecyclerViewAdapter
-import com.przemolab.oknotifier.models.Contestant
 import java.util.Objects
 
 import javax.inject.Inject
@@ -29,8 +28,9 @@ import javax.inject.Inject
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 
-class ContestantsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<Contestant>> {
+class ContestantsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<ContestantEntry>> {
     private var contestId: String? = null
     private var onContestantsListEventsListener: OnContestantsListEventListener? = null
 
@@ -102,11 +102,11 @@ class ContestantsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<C
         onContestantsListEventsListener = null
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<Contestant>> {
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<List<ContestantEntry>> {
         return SqliteContestantLoader(activity!!, notifierRepository!!, openKattisService!!, contestId!!, onContestantsListEventsListener!!)
     }
 
-    override fun onLoadFinished(loader: Loader<List<Contestant>>, data: List<Contestant>) {
+    override fun onLoadFinished(loader: Loader<List<ContestantEntry>>, data: List<ContestantEntry>) {
         contestantRecyclerViewAdapter!!.swapData(data)
 
         if (data.isEmpty()) {
@@ -118,7 +118,7 @@ class ContestantsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<C
         }
     }
 
-    override fun onLoaderReset(loader: Loader<List<Contestant>>) {
+    override fun onLoaderReset(loader: Loader<List<ContestantEntry>>) {
         contestantRecyclerViewAdapter!!.swapData(null)
     }
 
@@ -126,7 +126,7 @@ class ContestantsListFragment : Fragment(), LoaderManager.LoaderCallbacks<List<C
 
         fun onContestantsSyncStarted()
 
-        fun onContestantsSyncFinished(contestants: List<Contestant>?, restartLoader: Boolean)
+        fun onContestantsSyncFinished(contestants: List<ContestantEntry>?, restartLoader: Boolean)
     }
 
     companion object {

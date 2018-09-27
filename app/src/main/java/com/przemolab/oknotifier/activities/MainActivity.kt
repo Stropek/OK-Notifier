@@ -16,7 +16,6 @@ import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.enums.SortOrder
 import com.przemolab.oknotifier.fragments.ContestantsListFragment
 import com.przemolab.oknotifier.fragments.ContestsListFragment
-import com.przemolab.oknotifier.models.Contestant
 import com.przemolab.oknotifier.services.ContestIntentService
 
 import java.util.ArrayList
@@ -24,6 +23,7 @@ import java.util.ArrayList
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.przemolab.oknotifier.data.entries.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 
 class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEventsListener, ContestantsListFragment.OnContestantsListEventListener {
 
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
     private var contestantsListFragment: ContestantsListFragment? = null
 
     private var sortOrder = SortOrder.SubscribedFirst
-    private var contestants: List<Contestant>? = ArrayList()
+    private var contestants: List<ContestantEntry>? = ArrayList()
     private var contestId: String? = ""
 
     @BindView(R.id.syncContests_pb) @JvmField
@@ -52,7 +52,8 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
 
         outState.putSerializable(Constants.BundleKeys.SortOrder, sortOrder)
         outState.putString(Constants.BundleKeys.ContestId, contestId)
-        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, ArrayList(contestants!!))
+        // TODO:
+        // outState.putParcelableArrayList(Constants.BundleKeys.Contestants, ArrayList(contestants!!))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +67,8 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
         if (savedInstanceState != null) {
             sortOrder = savedInstanceState.getSerializable(Constants.BundleKeys.SortOrder) as SortOrder
             contestId = savedInstanceState.getString(Constants.BundleKeys.ContestId)
-            contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants)
+            // TODO:
+            // contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants)
         }
 
         loadContestsListFragment()
@@ -143,7 +145,7 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
         }
     }
 
-    override fun onContestantsSyncFinished(contestants: List<Contestant>?, restartLoader: Boolean) {
+    override fun onContestantsSyncFinished(contestants: List<ContestantEntry>?, restartLoader: Boolean) {
         if (isBigScreen) {
             this.contestants = contestants
 

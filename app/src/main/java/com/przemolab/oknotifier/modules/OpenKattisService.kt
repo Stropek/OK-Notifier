@@ -1,8 +1,8 @@
 package com.przemolab.oknotifier.modules
 
 import com.przemolab.oknotifier.data.entries.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
-import com.przemolab.oknotifier.models.Contestant
 import com.przemolab.oknotifier.utils.DateUtils
 
 import org.jsoup.Jsoup
@@ -39,9 +39,9 @@ class OpenKattisService : IOpenKattisService {
             }
         }
 
-    override fun getContestStandings(contestId: String): List<Contestant>? {
+    override fun getContestStandings(contestId: String): List<ContestantEntry>? {
         try {
-            val contestants = ArrayList<Contestant>()
+            val contestants = ArrayList<ContestantEntry>()
 
             val url = String.format("%s/contests/%s", _baseKattisUrl, contestId)
             val contestsPageDocument = Jsoup.connect(url).timeout(0).get()
@@ -94,7 +94,7 @@ class OpenKattisService : IOpenKattisService {
         }
     }
 
-    private fun getContestant(row: Element, contestId: String): Contestant? {
+    private fun getContestant(row: Element, contestId: String): ContestantEntry? {
         try {
             val cells = row.select("td")
 
@@ -128,7 +128,8 @@ class OpenKattisService : IOpenKattisService {
                     }
                 }
 
-                return Contestant(name, contestId, solved, submitted, failed, notTried, time)
+                return ContestantEntry(name = name, contestId = contestId, problemsSolved = solved, problemsSubmitted =  submitted,
+                        problemsFailed = failed, problemsNotTried = notTried, time = time)
             }
 
             return null
@@ -136,6 +137,5 @@ class OpenKattisService : IOpenKattisService {
             Timber.e(ex)
             return null
         }
-
     }
 }

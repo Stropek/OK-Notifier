@@ -12,10 +12,10 @@ import java.util.Date
 @Entity(tableName = NotifierContract.ContestEntry.TABLE_NAME)
 class ContestEntry(
         @PrimaryKey(autoGenerate = true) var id: Int = 0,
-        @ColumnInfo(name = NotifierContract.ContestEntry.COLUMN_CONTEST_ID) var contestId: String? = null,
+        @ColumnInfo(name = NotifierContract.ContestEntry.COLUMN_CONTEST_ID) var contestId: String,
         @ColumnInfo(name = NotifierContract.ContestEntry.COLUMN_CREATED_DATE) var createdDate: Date? = null,
         @ColumnInfo(name = NotifierContract.ContestEntry.COLUMN_LAST_MODIFIED_DATE) var lastModifiedDate: Date? = null,
-        @ColumnInfo(name = NotifierContract.ContestEntry.COLUMN_NAME) var name: String? = null,
+        @ColumnInfo(name = NotifierContract.ContestEntry.COLUMN_NAME) var name: String,
         @ColumnInfo(name = NotifierContract.ContestEntry.COLUMN_START_DATE) var startDate: Date? = null,
         @ColumnInfo(name = NotifierContract.ContestEntry.COLUMN_END_DATE) var endDate: Date? = null,
         @ColumnInfo(name = NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS) var numberOfContestants: Int = 0,

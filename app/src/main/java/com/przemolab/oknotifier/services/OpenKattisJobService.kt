@@ -11,7 +11,7 @@ import com.firebase.jobdispatcher.JobService
 import com.firebase.jobdispatcher.JobParameters
 import com.przemolab.oknotifier.Constants
 import com.przemolab.oknotifier.R
-import com.przemolab.oknotifier.models.Contestant
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 import com.przemolab.oknotifier.modules.NotifierRepository
 import com.przemolab.oknotifier.modules.OpenKattisService
 import com.przemolab.oknotifier.utils.NotificationUtils
@@ -74,21 +74,21 @@ class OpenKattisJobService : JobService() {
 
             val subscribedContests = notifierRepository.subscribed
             for (contest in subscribedContests!!) {
-                val persistedStandings = notifierRepository.getAllContestants(contest.contestId!!)
-                val currentStandings = openKattisService.getContestStandings(contest.contestId!!)
+                val persistedStandings = notifierRepository.getAllContestants(contest.contestId)
+                val currentStandings = openKattisService.getContestStandings(contest.contestId)
 
                 val newSubmissions = getNewSubmissions(persistedStandings, currentStandings!!, approved, submitted, rejected)
                 if (!newSubmissions.isEmpty()) {
                     NotificationUtils.notifyAboutContestUpdates(context, contest, newSubmissions)
 
                     // persist current contest standings to prevent the same notifications from recurring
-                    notifierRepository.persistContestants(contest.contestId!!, currentStandings)
+                    notifierRepository.persistContestants(contest.contestId, currentStandings)
                 }
             }
         }
     }
 
-    private fun getNewSubmissions(persisted: List<Contestant>?, current: List<Contestant>, approved: Boolean, submitted: Boolean, rejected: Boolean): List<String> {
+    private fun getNewSubmissions(persisted: List<ContestantEntry>?, current: List<ContestantEntry>, approved: Boolean, submitted: Boolean, rejected: Boolean): List<String> {
         val submissions = ArrayList<String>()
 
         for (contestant in current) {

@@ -37,14 +37,14 @@ internal abstract class PollingCheck(private val _timeout: Long) {
 
         @Throws(Exception::class)
         fun check(message: CharSequence, timeout: Long, condition: Callable<Boolean>) {
-            var timeout = timeout
-            while (timeout > 0) {
+            var _timeout = timeout
+            while (_timeout > 0) {
                 if (condition.call()) {
                     return
                 }
 
                 Thread.sleep(TIME_SLICE)
-                timeout -= TIME_SLICE
+                _timeout -= TIME_SLICE
             }
 
             Assert.fail(message.toString())
