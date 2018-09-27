@@ -20,4 +20,7 @@ interface ContestantDao {
 
     @Update
     fun update(contestantEntry: ContestantEntry)
+
+    @Query("DELETE FROM ${NotifierContract.ContestantEntry.TABLE_NAME}")
+    fun deleteAll()
 }

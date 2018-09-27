@@ -109,6 +109,7 @@ class DataHelper {
         fun deleteTablesData(db: AppDatabase) {
             // cleanup data before tests start
             db.contestDao().deleteAll()
+            db.contestantDao().deleteAll()
         }
 
         @JvmStatic
