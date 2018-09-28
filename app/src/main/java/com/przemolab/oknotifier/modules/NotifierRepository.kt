@@ -1,6 +1,7 @@
 package com.przemolab.oknotifier.modules
 
 import android.content.Context
+import com.przemolab.oknotifier.AppExecutors
 import com.przemolab.oknotifier.data.AppDatabase
 import com.przemolab.oknotifier.data.entries.ContestEntry
 
@@ -93,7 +94,11 @@ class NotifierRepository(context: Context) : INotifierRepository {
 
     override fun updateContest(contestEntry: ContestEntry) {
         Timber.d("Updating contest: %s [%s]", contestEntry.name, contestEntry.contestId)
-        db.contestDao().update(contestEntry)
+        AppExecutors.getInstance()?.diskIO?.execute {
+            kotlin.run {
+                db.contestDao().update(contestEntry)
+            }
+        }
     }
 
     override fun getAllContestants(contestId: String): List<ContestantEntry>? {
@@ -140,26 +145,46 @@ class NotifierRepository(context: Context) : INotifierRepository {
 
     private fun updateNumberOfContestants(contestId: String, numberOfContestants: Int) {
         Timber.d("Updating # of contestants in contest: %s [%s]", contestId, numberOfContestants)
-        db.contestDao().updateNumberOfContestants(contestId, numberOfContestants)
+        AppExecutors.getInstance()?.diskIO?.execute {
+            kotlin.run {
+                db.contestDao().updateNumberOfContestants(contestId, numberOfContestants)
+            }
+        }
     }
 
     private fun createContestant(contestantEntry: ContestantEntry) {
         Timber.d("Creating contestant: %s [%s]", contestantEntry.name, contestantEntry.contestId)
-        db.contestantDao().insert(contestantEntry)
+        AppExecutors.getInstance()?.diskIO?.execute {
+            kotlin.run {
+                db.contestantDao().insert(contestantEntry)
+            }
+        }
     }
 
     private fun updateContestant(contestantEntry: ContestantEntry) {
         Timber.d("Updating contestant: %s [%s]", contestantEntry.name, contestantEntry.contestId)
-        db.contestantDao().update(contestantEntry)
+        AppExecutors.getInstance()?.diskIO?.execute {
+            kotlin.run {
+                db.contestantDao().update(contestantEntry)
+            }
+        }
     }
 
     private fun createContest(contestEntry: ContestEntry) {
         Timber.d("Creating contest: %s [%s]", contestEntry.name, contestEntry.contestId)
-        db.contestDao().insert(contestEntry)
+        AppExecutors.getInstance()?.diskIO?.execute {
+            kotlin.run {
+                db.contestDao().insert(contestEntry)
+            }
+        }
     }
 
     private fun deleteContests(contestsToDelete: List<ContestEntry>) {
         Timber.d("Deleting contests: %s", contestsToDelete.map { it -> it.contestId })
-        db.contestDao().deleteMany(contestsToDelete)
+        AppExecutors.getInstance()?.diskIO?.execute {
+            kotlin.run {
+                db.contestDao().deleteMany(contestsToDelete)
+            }
+        }
     }
 }

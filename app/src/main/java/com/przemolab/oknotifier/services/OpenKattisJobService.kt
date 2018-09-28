@@ -26,7 +26,7 @@ class OpenKattisJobService : JobService() {
 
     @SuppressLint("StaticFieldLeak")
     override fun onStartJob(params: JobParameters): Boolean {
-        Timber.d("SyncTest: job service started.")
+        Timber.d("Sync: job service started.")
 
         backgroundTask = object : AsyncTask<Any, Any, Any>() {
             override fun doInBackground(objects: Array<Any>): Any? {
@@ -53,7 +53,7 @@ class OpenKattisJobService : JobService() {
     }
 
     override fun onStopJob(params: JobParameters): Boolean {
-        Timber.d("SyncTest: job cancelled before being completed.")
+        Timber.d("Sync: job cancelled before being completed.")
 
         if (backgroundTask != null)
             backgroundTask!!.cancel(true)
