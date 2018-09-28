@@ -65,7 +65,7 @@ class NotifierRepositoryTests {
     @Test
     fun getAllContestants_contestIdPassed_returnsAllContestantsWithGivenContestId() {
         // given
-        for (i in 0..9) {
+        for (i in 1..10) {
             db.contestantDao().insert(DataHelper.createContestantEntry(i, if (i % 2 == 0) "abc" else "xyz"))
         }
 

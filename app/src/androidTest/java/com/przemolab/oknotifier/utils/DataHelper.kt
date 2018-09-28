@@ -24,11 +24,11 @@ class DataHelper {
         }
 
         @JvmStatic
-        fun createContestEntries(count: Int): List<ContestEntry> {
+        fun createContestEntries(count: Int, subscribed: Boolean = false): List<ContestEntry> {
             val contestEntries = ArrayList<ContestEntry>()
 
             for (i in 1..count) {
-                contestEntries.add(createContestEntry(i))
+                contestEntries.add(createContestEntry(i, subscribed))
             }
 
             return contestEntries
