@@ -4,10 +4,8 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.przemolab.oknotifier.data.AppDatabase
 
-import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.data.entries.ContestEntry
 import com.przemolab.oknotifier.utils.DataHelper
-import com.przemolab.oknotifier.utils.TestContentObserver
 
 import org.junit.runner.RunWith
 
@@ -23,15 +21,11 @@ class NotifierRepositoryTests {
     @Before
     fun setUp() {
         DataHelper.deleteTablesData(db)
-        // TODO: remove when Contestant is also changed to ContestantEntry
-        DataHelper.deleteTablesDataOld(context)
     }
 
     @After
     fun cleanUp() {
         DataHelper.deleteTablesData(db)
-        // TODO: remove when Contestant is also changed to ContestantEntry
-        DataHelper.deleteTablesDataOld(context)
     }
 
     @Test
@@ -71,18 +65,8 @@ class NotifierRepositoryTests {
     @Test
     fun getAllContestants_contestIdPassed_returnsAllContestantsWithGivenContestId() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestantEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
         for (i in 0..9) {
-            if (i % 2 == 0) {
-                DataHelper.insertContestant(contentResolver, uri, "abc")
-            } else {
-                DataHelper.insertContestant(contentResolver, uri, "zxy")
-            }
+            db.contestantDao().insert(DataHelper.createContestantEntry(i, if (i % 2 == 0) "abc" else "xyz"))
         }
 
         val notifierRepository = NotifierRepository(context)

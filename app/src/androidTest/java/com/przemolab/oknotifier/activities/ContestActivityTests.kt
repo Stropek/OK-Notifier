@@ -84,7 +84,7 @@ class ContestActivityTests {
     @Test
     fun default_contestStandings_displaysContestStandings() {
         // given
-        val contestants = DataHelper.createContestants(5, "abc")
+        val contestants = DataHelper.createContestantEntries(5, "abc")
         `when`(notifierRepository!!.getAllContestants("abc")).thenReturn(contestants)
 
         val startIntent = Intent()
@@ -101,7 +101,7 @@ class ContestActivityTests {
     @Test
     fun syncClicked_contestantsLoaded() {
         // given
-        val contestants = DataHelper.createContestants(5, "abc")
+        val contestants = DataHelper.createContestantEntries(5, "abc")
         `when`(openKattisService!!.getContestStandings("abc"))
                 .thenAnswer(object : Answer<List<ContestantEntry>> {
                     private var count = 0

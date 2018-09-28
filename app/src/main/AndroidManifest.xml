@@ -32,10 +32,6 @@
             android:launchMode="singleTop"
             android:parentActivityName=".activities.MainActivity" />
 
-        <provider android:name=".data.NotifierDataProvider"
-            android:authorities="com.przemolab.oknotifier"
-            android:exported="false" />
-
         <service android:name=".services.OpenKattisJobService"
             android:exported="false">
             <intent-filter>

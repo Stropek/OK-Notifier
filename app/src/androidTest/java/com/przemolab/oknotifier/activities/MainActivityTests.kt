@@ -163,7 +163,7 @@ class MainActivityTests {
     fun contestClicked_contestantsInRepository_activityWithContestStandingsOpens() {
         // given
         val contests = DataHelper.createContestEntries(1)
-        val contestants = DataHelper.createContestants(3, "id 1")
+        val contestants = DataHelper.createContestantEntries(3, "id 1")
         `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contests)
         `when`(notifierRepository!!.getAllContestants("id 1")).thenReturn(contestants)
 
@@ -185,7 +185,7 @@ class MainActivityTests {
         `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
         `when`(notifierRepository!!.getAllContestants("id 1")).thenReturn(ArrayList())
 
-        val contestants = DataHelper.createContestants(3, "id 1")
+        val contestants = DataHelper.createContestantEntries(3, "id 1")
         `when`(openKattisService!!.getContestStandings("id 1")).thenReturn(contestants)
 
         testRule.launchActivity(null)
