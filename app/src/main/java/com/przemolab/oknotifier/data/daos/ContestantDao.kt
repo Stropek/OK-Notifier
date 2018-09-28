@@ -15,12 +15,15 @@ interface ContestantDao {
             "ORDER BY ${NotifierContract.ContestantEntry.COLUMN_PROBLEMS_SOLVED} DESC, ${NotifierContract.ContestantEntry.COLUMN_TIME}")
     fun getByContestId(contestId: String): List<ContestantEntry>
 
+    @Query("DELETE FROM ${NotifierContract.ContestantEntry.TABLE_NAME}")
+    fun deleteAll()
+
     @Insert
     fun insert(contestantEntry: ContestantEntry)
 
+    @Insert
+    fun insertMany(contestantEntries: List<ContestantEntry>)
+
     @Update
     fun update(contestantEntry: ContestantEntry)
-
-    @Query("DELETE FROM ${NotifierContract.ContestantEntry.TABLE_NAME}")
-    fun deleteAll()
 }

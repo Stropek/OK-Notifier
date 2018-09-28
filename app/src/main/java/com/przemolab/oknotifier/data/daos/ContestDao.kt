@@ -17,9 +17,6 @@ interface ContestDao {
     fun deleteAll()
 
     @Delete
-    fun delete(contestEntry: ContestEntry)
-
-    @Delete
     fun deleteMany(contestEntries: List<ContestEntry>)
 
     @Insert
@@ -35,7 +32,4 @@ interface ContestDao {
             "SET ${NotifierContract.ContestEntry.COLUMN_NUM_OF_CONTESTANTS} = :numberOfContestants " +
             "WHERE ${NotifierContract.ContestEntry.COLUMN_CONTEST_ID} = :contestId")
     fun updateNumberOfContestants(contestId: String, numberOfContestants: Int)
-
-    @Update
-    fun updateMany(contestEntries: List<ContestEntry>)
 }
