@@ -6,10 +6,8 @@ import android.support.test.rule.ActivityTestRule
 import com.przemolab.oknotifier.DaggerTestAppComponent
 import com.przemolab.oknotifier.NotifierApp
 import com.przemolab.oknotifier.R
-import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.modules.NotifierRepositoryModule
 import com.przemolab.oknotifier.utils.DataHelper
-import com.przemolab.oknotifier.utils.TestContentObserver
 
 import org.junit.After
 import org.junit.Before
@@ -21,13 +19,17 @@ import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
+import com.przemolab.oknotifier.data.AppDatabase
+import com.przemolab.oknotifier.data.entries.ContestEntry
 import com.przemolab.oknotifier.matchers.Matchers.isNotSubscribed
 import com.przemolab.oknotifier.matchers.Matchers.isSubscribed
 import com.przemolab.oknotifier.matchers.Matchers.withRecyclerView
+import com.przemolab.oknotifier.utils.DateUtils
 
 class MainActivitySortTests {
 
     private val context = InstrumentationRegistry.getTargetContext()
+    private val db = AppDatabase.getInstance(context)!!
 
     @Rule
     @JvmField
@@ -35,7 +37,7 @@ class MainActivitySortTests {
 
     @Before
     fun setUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesData(db)
 
         val app = context.applicationContext as NotifierApp
 
@@ -49,24 +51,21 @@ class MainActivitySortTests {
 
     @After
     fun cleanUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesData(db)
     }
 
     @Test
     fun sort_subscribedFirst_sortsContestsBySubscriptionFlag() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val startDate = "2010-05-12 17:30:45"
-        val endDate = "2010-05-12 17:30:45"
-        DataHelper.insertContest(contentResolver, uri, "subscribed", "1", startDate, endDate, 0, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "not subscribed", "2", startDate, endDate, 0, 0, false)
-        DataHelper.insertContest(contentResolver, uri, "subscribed", "3", startDate, endDate, 0, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "not subscribed", "4", startDate, endDate, 0, 0, false)
+        val startDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val endDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val contests = listOf(
+                ContestEntry(contestId = "1", name = "subscribed", subscribed = true, startDate = startDate, endDate = endDate, numberOfProblems = 0, numberOfContestants = 0),
+                ContestEntry(contestId = "2", name = "not subscribed", subscribed = false, startDate = startDate, endDate = endDate, numberOfProblems = 0, numberOfContestants = 0),
+                ContestEntry(contestId = "3", name = "subscribed", subscribed = true, startDate = startDate, endDate = endDate, numberOfProblems = 0, numberOfContestants = 0),
+                ContestEntry(contestId = "4", name = "not subscribed", subscribed = false, startDate = startDate, endDate = endDate, numberOfProblems = 0, numberOfContestants = 0)
+        )
+        db.contestDao().insertMany(contests)
 
         testRule.launchActivity(null)
 
@@ -88,18 +87,16 @@ class MainActivitySortTests {
 
     @Test
     fun sort_byName_sortsContestsByName() {
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val startDate = "2010-05-12 17:30:45"
-        val endDate = "2010-05-12 17:30:45"
-        DataHelper.insertContest(contentResolver, uri, "Bravo", "1", startDate, endDate, 0, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "Alpha", "2", startDate, endDate, 0, 0, false)
-        DataHelper.insertContest(contentResolver, uri, "Zulu", "3", startDate, endDate, 0, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "Gamma", "4", startDate, endDate, 0, 0, false)
+        // given
+        val startDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val endDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val contests = listOf(
+                ContestEntry(contestId = "1", name = "Bravo", subscribed = true, startDate = startDate, endDate = endDate),
+                ContestEntry(contestId = "2", name = "Alpha", subscribed = false, startDate = startDate, endDate = endDate),
+                ContestEntry(contestId = "3", name = "Zulu", subscribed = true, startDate = startDate, endDate = endDate),
+                ContestEntry(contestId = "4", name = "Gamma", subscribed = false, startDate = startDate, endDate = endDate)
+        )
+        db.contestDao().insertMany(contests)
 
         testRule.launchActivity(null)
 
@@ -120,17 +117,15 @@ class MainActivitySortTests {
 
     @Test
     fun sort_byStartDate_sortsContestsByStartDate() {
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val endDate = "2010-05-12 17:30:45"
-        DataHelper.insertContest(contentResolver, uri, "June", "1", "2010-06-12 17:30:45", endDate, 0, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "August", "2", "2010-08-12 17:30:45", endDate, 0, 0, false)
-        DataHelper.insertContest(contentResolver, uri, "March", "3", "2010-03-12 17:30:45", endDate, 0, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "January", "4", "2010-01-12 17:30:45", endDate, 0, 0, false)
+        // given
+        val endDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val contests = listOf(
+                ContestEntry(contestId = "1", name = "June", subscribed = true, startDate = DateUtils.getDate("2010-06-12 17:30:45", DateUtils.SQLiteDateTimeFormat), endDate = endDate),
+                ContestEntry(contestId = "2", name = "August", subscribed = false, startDate = DateUtils.getDate("2010-08-12 17:30:45", DateUtils.SQLiteDateTimeFormat), endDate = endDate),
+                ContestEntry(contestId = "3", name = "March", subscribed = true, startDate = DateUtils.getDate("2010-03-12 17:30:45", DateUtils.SQLiteDateTimeFormat), endDate = endDate),
+                ContestEntry(contestId = "4", name = "January", subscribed = false, startDate = DateUtils.getDate("2010-01-12 17:30:45", DateUtils.SQLiteDateTimeFormat), endDate = endDate)
+        )
+        db.contestDao().insertMany(contests)
 
         testRule.launchActivity(null)
 
@@ -151,18 +146,15 @@ class MainActivitySortTests {
 
     @Test
     fun sort_byNumberOfContestants_sortsContestsByNumberOfContestants() {
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val startDate = "2010-05-12 17:30:45"
-        val endDate = "2010-05-12 17:30:45"
-        DataHelper.insertContest(contentResolver, uri, "2 contestants", "1", startDate, endDate, 2, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "5 contestants", "2", startDate, endDate, 5, 0, false)
-        DataHelper.insertContest(contentResolver, uri, "10 contestants", "3", startDate, endDate, 10, 0, true)
-        DataHelper.insertContest(contentResolver, uri, "8 contestants", "4", startDate, endDate, 8, 0, false)
+        val startDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val endDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val contests = listOf(
+                ContestEntry(contestId = "1", name = "2 contestants", subscribed = true, startDate = startDate, endDate = endDate, numberOfContestants = 2),
+                ContestEntry(contestId = "2", name = "5 contestants", subscribed = false, startDate = startDate, endDate = endDate, numberOfContestants = 5),
+                ContestEntry(contestId = "3", name = "10 contestants", subscribed = true, startDate = startDate, endDate = endDate, numberOfContestants = 10),
+                ContestEntry(contestId = "4", name = "8 contestants", subscribed = false, startDate = startDate, endDate = endDate, numberOfContestants = 8)
+        )
+        db.contestDao().insertMany(contests)
 
         testRule.launchActivity(null)
 
@@ -183,18 +175,16 @@ class MainActivitySortTests {
 
     @Test
     fun sort_byNumberOfProblems_sortsContestsByNumberOfProblems() {
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val startDate = "2010-05-12 17:30:45"
-        val endDate = "2010-05-12 17:30:45"
-        DataHelper.insertContest(contentResolver, uri, "1 problem", "1", startDate, endDate, 0, 1, true)
-        DataHelper.insertContest(contentResolver, uri, "5 problems", "2", startDate, endDate, 0, 5, false)
-        DataHelper.insertContest(contentResolver, uri, "2 problems", "3", startDate, endDate, 0, 2, true)
-        DataHelper.insertContest(contentResolver, uri, "10 problems", "4", startDate, endDate, 0, 10, false)
+        // given
+        val startDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val endDate = DateUtils.getDate("2010-05-12 17:30:45", DateUtils.SQLiteDateTimeFormat)
+        val contests = listOf(
+                ContestEntry(contestId = "1", name = "1 problem", subscribed = true, startDate = startDate, endDate = endDate, numberOfProblems = 1),
+                ContestEntry(contestId = "2", name = "5 problems", subscribed = false, startDate = startDate, endDate = endDate, numberOfProblems = 5),
+                ContestEntry(contestId = "3", name = "2 problems", subscribed = true, startDate = startDate, endDate = endDate, numberOfProblems = 2),
+                ContestEntry(contestId = "4", name = "10 problems", subscribed = false, startDate = startDate, endDate = endDate, numberOfProblems = 10)
+        )
+        db.contestDao().insertMany(contests)
 
         testRule.launchActivity(null)
 

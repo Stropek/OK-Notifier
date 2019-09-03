@@ -1,20 +1,20 @@
 package com.przemolab.oknotifier.interfaces
 
+import com.przemolab.oknotifier.data.entries.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 import com.przemolab.oknotifier.enums.SortOrder
-import com.przemolab.oknotifier.models.Contest
-import com.przemolab.oknotifier.models.Contestant
 
 interface INotifierRepository {
 
-    val subscribed: List<Contest>?
+    val subscribed: List<ContestEntry>?
 
-    fun getAll(sortOrder: SortOrder): List<Contest>?
+    fun getAllContests(sortOrder: SortOrder = SortOrder.SubscribedFirst): List<ContestEntry>?
 
-    fun updateContest(contest: Contest)
+    fun updateContest(contestEntry: ContestEntry)
 
-    fun persistContests(contests: List<Contest>?)
+    fun persistContests(contestEntries: List<ContestEntry>?)
 
-    fun getAllContestants(contestId: String): List<Contestant>?
+    fun getAllContestants(contestId: String): List<ContestantEntry>?
 
-    fun persistContestants(contestId: String, contestants: List<Contestant>?)
+    fun persistContestants(contestId: String, contestants: List<ContestantEntry>?)
 }

@@ -1,8 +1,8 @@
 package com.przemolab.oknotifier.modules
 
+import com.przemolab.oknotifier.data.entries.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
-import com.przemolab.oknotifier.models.Contest
-import com.przemolab.oknotifier.models.Contestant
 import com.przemolab.oknotifier.utils.DateUtils
 
 import org.jsoup.Jsoup
@@ -16,10 +16,10 @@ class OpenKattisService : IOpenKattisService {
 
     private val _baseKattisUrl = "https://open.kattis.com"
 
-    override val ongoingContests: List<Contest>?
+    override val ongoingContests: List<ContestEntry>?
         get() {
             try {
-                val contests = ArrayList<Contest>()
+                val contests = ArrayList<ContestEntry>()
 
                 val url = String.format("%s/contests", _baseKattisUrl)
                 val contestsPageDocument = Jsoup.connect(url).timeout(0).get()
@@ -37,12 +37,11 @@ class OpenKattisService : IOpenKattisService {
                 Timber.e(ex)
                 return null
             }
-
         }
 
-    override fun getContestStandings(contestId: String): List<Contestant>? {
+    override fun getContestStandings(contestId: String): List<ContestantEntry>? {
         try {
-            val contestants = ArrayList<Contestant>()
+            val contestants = ArrayList<ContestantEntry>()
 
             val url = String.format("%s/contests/%s", _baseKattisUrl, contestId)
             val contestsPageDocument = Jsoup.connect(url).timeout(0).get()
@@ -63,14 +62,14 @@ class OpenKattisService : IOpenKattisService {
 
     }
 
-    private fun getContest(row: Element): Contest? {
+    private fun getContest(row: Element): ContestEntry? {
         try {
             val cells = row.select("td")
 
             val name = cells[0].select("a").text()
             val contestUrl = String.format("%s%s", _baseKattisUrl, cells[0].select("a").attr("href"))
             val parts = contestUrl.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            val id = parts[parts.size - 1]
+            val contestId = parts[parts.size - 1]
 
             val startDateText = cells[3].text().replace(" CEST", "")
 
@@ -87,15 +86,15 @@ class OpenKattisService : IOpenKattisService {
             val numberOfContestants = standingsPageDocument.select("#standings tbody tr").size - 4
             val numberOfProblems = standingsPageDocument.select("#standings thead th.problemcolheader-standings").size
 
-            return Contest(id, name, startDate, endDate, numberOfContestants, numberOfProblems)
+            return ContestEntry(contestId = contestId, name = name, startDate = startDate, endDate = endDate,
+                    numberOfContestants = numberOfContestants, numberOfProblems = numberOfProblems)
         } catch (ex: Exception) {
             Timber.e(ex)
             return null
         }
-
     }
 
-    private fun getContestant(row: Element, contestId: String): Contestant? {
+    private fun getContestant(row: Element, contestId: String): ContestantEntry? {
         try {
             val cells = row.select("td")
 
@@ -129,7 +128,8 @@ class OpenKattisService : IOpenKattisService {
                     }
                 }
 
-                return Contestant(name, contestId, solved, submitted, failed, notTried, time)
+                return ContestantEntry(name = name, contestId = contestId, problemsSolved = solved, problemsSubmitted =  submitted,
+                        problemsFailed = failed, problemsNotTried = notTried, time = time)
             }
 
             return null
@@ -137,6 +137,5 @@ class OpenKattisService : IOpenKattisService {
             Timber.e(ex)
             return null
         }
-
     }
 }

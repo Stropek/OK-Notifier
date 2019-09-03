@@ -11,7 +11,7 @@ import com.firebase.jobdispatcher.JobService
 import com.firebase.jobdispatcher.JobParameters
 import com.przemolab.oknotifier.Constants
 import com.przemolab.oknotifier.R
-import com.przemolab.oknotifier.models.Contestant
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 import com.przemolab.oknotifier.modules.NotifierRepository
 import com.przemolab.oknotifier.modules.OpenKattisService
 import com.przemolab.oknotifier.utils.NotificationUtils
@@ -26,7 +26,7 @@ class OpenKattisJobService : JobService() {
 
     @SuppressLint("StaticFieldLeak")
     override fun onStartJob(params: JobParameters): Boolean {
-        Timber.d("SyncTest: job service started.")
+        Timber.d("Sync: job service started.")
 
         backgroundTask = object : AsyncTask<Any, Any, Any>() {
             override fun doInBackground(objects: Array<Any>): Any? {
@@ -53,7 +53,7 @@ class OpenKattisJobService : JobService() {
     }
 
     override fun onStopJob(params: JobParameters): Boolean {
-        Timber.d("SyncTest: job cancelled before being completed.")
+        Timber.d("Sync: job cancelled before being completed.")
 
         if (backgroundTask != null)
             backgroundTask!!.cancel(true)
@@ -88,25 +88,30 @@ class OpenKattisJobService : JobService() {
         }
     }
 
-    private fun getNewSubmissions(persisted: List<Contestant>?, current: List<Contestant>, approved: Boolean, submitted: Boolean, rejected: Boolean): List<String> {
+    private fun getNewSubmissions(persisted: List<ContestantEntry>?, current: List<ContestantEntry>, approved: Boolean, submitted: Boolean, rejected: Boolean): List<String> {
         val submissions = ArrayList<String>()
 
         for (contestant in current) {
-            for (persistedContestant in persisted!!) {
-                if (contestant.name == persistedContestant.name) {
-                    if (approved && contestant.problemsSolved > persistedContestant.problemsSolved) {
-                        submissions.add(String.format("%s solved %s new problems!!! :D",
-                                contestant.name, contestant.problemsSolved - persistedContestant.problemsSolved))
-                    }
-                    if (submitted && contestant.problemsSubmitted > persistedContestant.problemsSubmitted) {
-                        submissions.add(String.format("%s submitted %s new problems",
-                                contestant.name, contestant.problemsSubmitted - persistedContestant.problemsSubmitted))
-                    }
-                    if (rejected && contestant.problemsFailed > persistedContestant.problemsFailed) {
-                        submissions.add(String.format("%s failed to solve %s problems :(",
-                                contestant.name, contestant.problemsFailed - persistedContestant.problemsFailed))
-                    }
-                }
+            val persistedContestant = persisted!!.find { it -> it.name == contestant.name }
+
+            val newSolved =
+                    if (persistedContestant == null) contestant.problemsSolved
+                    else contestant.problemsSolved - persistedContestant.problemsSolved
+            val newSubmitted =
+                    if (persistedContestant == null) contestant.problemsSubmitted
+                    else contestant.problemsSubmitted - persistedContestant.problemsSubmitted
+            val newFailed =
+                    if (persistedContestant == null) contestant.problemsFailed
+                    else contestant.problemsFailed - persistedContestant.problemsFailed
+
+            if (approved && newSolved > 0) {
+                submissions.add(String.format("%s solved %s new problems!!! :D", contestant.name, newSolved))
+            }
+            if (submitted && newSubmitted > 0) {
+                submissions.add(String.format("%s submitted %s new problems", contestant.name, newSubmitted))
+            }
+            if (rejected && newFailed > 0) {
+                submissions.add(String.format("%s failed to solve %s problems :(", contestant.name, newFailed))
             }
         }
         return submissions

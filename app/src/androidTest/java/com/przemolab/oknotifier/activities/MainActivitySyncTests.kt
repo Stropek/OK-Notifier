@@ -8,12 +8,9 @@ import android.support.test.runner.AndroidJUnit4
 import com.przemolab.oknotifier.DaggerTestAppComponent
 import com.przemolab.oknotifier.NotifierApp
 import com.przemolab.oknotifier.R
-import com.przemolab.oknotifier.data.NotifierContract
-import com.przemolab.oknotifier.models.Contest
 import com.przemolab.oknotifier.modules.NotifierRepositoryModule
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule
 import com.przemolab.oknotifier.utils.DataHelper
-import com.przemolab.oknotifier.utils.TestContentObserver
 
 import org.junit.After
 import org.junit.Before
@@ -33,6 +30,8 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
+import com.przemolab.oknotifier.data.AppDatabase
+import com.przemolab.oknotifier.data.entries.ContestEntry
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import com.przemolab.oknotifier.matchers.Matchers.isSubscribed
 import org.mockito.Mockito.`when`
@@ -41,6 +40,7 @@ import org.mockito.Mockito.`when`
 class MainActivitySyncTests {
 
     private val context = InstrumentationRegistry.getTargetContext()
+    private val db = AppDatabase.getInstance(context)!!
 
     @Rule
     @JvmField
@@ -52,7 +52,7 @@ class MainActivitySyncTests {
 
     @Before
     fun setUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesData(db)
 
         MockitoAnnotations.initMocks(this)
         val app = context.applicationContext as NotifierApp
@@ -68,19 +68,13 @@ class MainActivitySyncTests {
 
     @After
     fun cleanUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesData(db)
     }
 
     @Test
     fun syncClicked_noContestsInDatabase_addContestToDatabase() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val ongoingContests = DataHelper.createContests(5)
+        val ongoingContests = DataHelper.createContestEntries(5)
         `when`(openKattisService!!.ongoingContests).thenReturn(ongoingContests)
 
         testRule.launchActivity(null)
@@ -96,18 +90,10 @@ class MainActivitySyncTests {
     @Test
     fun syncClicked_oldContestsInDatabase_removesOldContestsFromDatabase() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
+        val existingContests = DataHelper.createContestEntries(8)
+        db.contestDao().insertMany(existingContests)
 
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val existingContests = DataHelper.createContests(10)
-        for (contest in existingContests) {
-            DataHelper.insertContest(contentResolver, uri, contest)
-        }
-
-        `when`(openKattisService!!.ongoingContests).thenReturn(existingContests.subList(5, 10))
+        `when`(openKattisService!!.ongoingContests).thenReturn(existingContests.subList(4, 8))
 
         testRule.launchActivity(null)
 
@@ -115,23 +101,15 @@ class MainActivitySyncTests {
         onView(withId(R.id.sync_menu_item)).perform(click())
 
         // then
-        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(4))
-        onView(withText("id 10")).check(matches(isDisplayed()))
+        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(3))
+        onView(withText("id 8")).check(matches(isDisplayed()))
     }
 
     @Test
     fun syncClicked_currentContestsInDatabase_updatesExistingContests() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val existingContests = DataHelper.createContests(5)
-        for (contest in existingContests) {
-            DataHelper.insertContest(contentResolver, uri, contest)
-        }
+        val existingContests = DataHelper.createContestEntries(5)
+        db.contestDao().insertMany(existingContests)
 
         for (modifiedContest in existingContests) {
             modifiedContest.name = modifiedContest.name + " modified"
@@ -152,18 +130,12 @@ class MainActivitySyncTests {
     @Test
     fun syncClicked_contestSubscribed_contestStaysSubscribed() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val subscribedContest = DataHelper.createContest(1)
-        subscribedContest.isSubscribed = true
-        DataHelper.insertContest(contentResolver, uri, subscribedContest)
+        val subscribedContest = DataHelper.createContestEntry(1)
+        subscribedContest.subscribed = true
+        db.contestDao().insert(subscribedContest)
 
         subscribedContest.name = subscribedContest.name + " modified"
-        val ongoingContests = ArrayList<Contest>()
+        val ongoingContests = ArrayList<ContestEntry>()
         ongoingContests.add(subscribedContest)
 
         `when`(openKattisService!!.ongoingContests).thenReturn(ongoingContests)

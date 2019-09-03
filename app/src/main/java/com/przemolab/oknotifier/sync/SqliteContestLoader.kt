@@ -2,21 +2,23 @@ package com.przemolab.oknotifier.sync
 
 import android.content.Context
 import android.support.v4.content.AsyncTaskLoader
+import com.przemolab.oknotifier.data.entries.ContestEntry
 
 import com.przemolab.oknotifier.enums.SortOrder
 import com.przemolab.oknotifier.interfaces.INotifierRepository
-import com.przemolab.oknotifier.models.Contest
 
 import timber.log.Timber
 
-class SqliteContestLoader(context: Context, private val notifierRepository: INotifierRepository, private val sortOrder: SortOrder) : AsyncTaskLoader<List<Contest>>(context) {
+class SqliteContestLoader(context: Context,
+                          private val notifierRepository: INotifierRepository,
+                          private val sortOrder: SortOrder) : AsyncTaskLoader<List<ContestEntry>>(context) {
 
-    private var contests: List<Contest>? = null
+    private var contests: List<ContestEntry>? = null
 
-    override fun loadInBackground(): List<Contest>? {
+    override fun loadInBackground(): List<ContestEntry>? {
         return try {
             Timber.d("Loading contests from SQLite")
-            notifierRepository.getAll(sortOrder)
+            notifierRepository.getAllContests(sortOrder)
         } catch (ex: Exception) {
             Timber.e(ex)
             null
@@ -31,7 +33,7 @@ class SqliteContestLoader(context: Context, private val notifierRepository: INot
         }
     }
 
-    override fun deliverResult(data: List<Contest>?) {
+    override fun deliverResult(data: List<ContestEntry>?) {
         contests = data
         super.deliverResult(data)
     }
