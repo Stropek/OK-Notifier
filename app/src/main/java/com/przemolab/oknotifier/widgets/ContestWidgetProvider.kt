@@ -10,7 +10,7 @@ import android.widget.RemoteViews
 import com.przemolab.oknotifier.Constants
 import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.activities.ContestActivity
-import com.przemolab.oknotifier.models.Contestant
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 import com.przemolab.oknotifier.services.ContestIntentService
 
 class ContestWidgetProvider : AppWidgetProvider() {
@@ -21,13 +21,13 @@ class ContestWidgetProvider : AppWidgetProvider() {
 
     companion object {
 
-        fun updateAppWidgets(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray, contestant: Contestant) {
+        fun updateAppWidgets(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray, contestant: ContestantEntry) {
             for (appWidgetId in appWidgetIds) {
                 updateAppWidget(context, appWidgetManager, appWidgetId, contestant)
             }
         }
 
-        private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, contestant: Contestant) {
+        private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, contestant: ContestantEntry) {
 
             val views = RemoteViews(context.packageName, R.layout.contest_widget_provider)
 

@@ -1,4 +1,4 @@
-package com.przemolab.oknotifier.data
+package com.przemolab.oknotifier.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,17 +9,17 @@ import android.widget.ImageButton
 import android.widget.TextView
 
 import com.przemolab.oknotifier.R
-import com.przemolab.oknotifier.models.Contestant
 
 import java.util.ArrayList
 
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 
 class ContestantRecyclerViewAdapter : RecyclerView.Adapter<ContestantRecyclerViewAdapter.ViewHolder>() {
 
-    private var contestants: List<Contestant>? = null
+    private var contestants: List<ContestantEntry>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -49,7 +49,7 @@ class ContestantRecyclerViewAdapter : RecyclerView.Adapter<ContestantRecyclerVie
         } else contestants!!.size
     }
 
-    fun swapData(data: List<Contestant>?) {
+    fun swapData(data: List<ContestantEntry>?) {
         if (data == null)
             contestants = ArrayList()
         else {

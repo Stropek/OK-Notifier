@@ -10,11 +10,9 @@ import com.przemolab.oknotifier.Constants
 import com.przemolab.oknotifier.DaggerTestAppComponent
 import com.przemolab.oknotifier.NotifierApp
 import com.przemolab.oknotifier.R
-import com.przemolab.oknotifier.data.NotifierContract
 import com.przemolab.oknotifier.modules.NotifierRepositoryModule
 import com.przemolab.oknotifier.modules.TestOpenKattisServiceModule
 import com.przemolab.oknotifier.utils.DataHelper
-import com.przemolab.oknotifier.utils.TestContentObserver
 
 import org.junit.After
 import org.junit.Before
@@ -32,13 +30,16 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
+import com.przemolab.oknotifier.data.AppDatabase
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
+import org.junit.Assert.assertEquals
 import org.mockito.Mockito.`when`
 
 @RunWith(AndroidJUnit4::class)
 class ContestActivitySyncTests {
 
     private val context = InstrumentationRegistry.getTargetContext()
+    private val db = AppDatabase.getInstance(context)!!
 
     @Rule
     @JvmField
@@ -60,23 +61,19 @@ class ContestActivitySyncTests {
 
         app.appComponent = testAppComponent
         testAppComponent.inject(this)
+
+        DataHelper.deleteTablesData(db)
     }
 
     @After
     fun cleanUp() {
-        DataHelper.deleteTablesData(context)
+        DataHelper.deleteTablesData(db)
     }
 
     @Test
     fun syncClicked_noContestantsInDatabase_addContestantsToDatabase() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestantEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val contestants = DataHelper.createContestants(5, "abc")
+        val contestants = DataHelper.createContestantEntries(5, "abc")
         `when`(openKattisService!!.getContestStandings("abc")).thenReturn(contestants)
 
         val startIntent = Intent()
@@ -91,17 +88,11 @@ class ContestActivitySyncTests {
     }
 
     @Test
-    fun syncClicked_currentContestsInDatabase_updatesExistingContests() {
+    fun syncClicked_currentContestantsInDatabase_updatesExistingContestants() {
         // given
-        val contentResolver = context.contentResolver
-        val contentObserver = TestContentObserver.testContentObserver
-        val uri = NotifierContract.ContestantEntry.CONTENT_URI
-
-        DataHelper.setObservedUriOnContentResolver(contentResolver, uri, contentObserver)
-
-        val existingContestants = DataHelper.createContestants(5, "abc")
+        val existingContestants = DataHelper.createContestantEntries(5, "abc")
         for (contestant in existingContestants) {
-            DataHelper.insertContestant(contentResolver, uri, contestant.contestId, String.format("name %s", contestant.id))
+            db.contestantDao().insert(contestant)
         }
 
         val modifiedContestant = existingContestants[existingContestants.size - 1]
@@ -128,5 +119,28 @@ class ContestActivitySyncTests {
         onView(withText("103")).check(matches(isDisplayed()))
         onView(withText("104")).check(matches(isDisplayed()))
         onView(withText("105")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun syncClicked_newContestants_updatesNumberOfContestantsForContest() {
+        // given
+        val db = AppDatabase.getInstance(context)!!
+        db.contestDao().insert(DataHelper.createContestEntry(1, contestId = "abc"))
+
+        val contestants = DataHelper.createContestantEntries(5, "abc")
+        `when`(openKattisService!!.getContestStandings("abc")).thenReturn(contestants)
+
+        val startIntent = Intent()
+        startIntent.putExtra(Constants.BundleKeys.ContestId, "abc")
+
+        testRule.launchActivity(startIntent)
+
+        // when
+        onView(withId(R.id.sync_menu_item)).perform(click())
+
+        // then
+        val updatedContest = db.contestDao().getAll().first { it -> it.id == 1 }
+        assertEquals(5, updatedContest.numberOfContestants)
+        assertEquals("abc", updatedContest.contestId)
     }
 }

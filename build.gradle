@@ -1,14 +1,22 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.61'
+
+    ext {
+        supportLibrary_version = '27.1.1'
+        dagger_version = '2.16'
+        room_version = '1.1.1'
+        mockito_version = '2.18.3'
+        espresso_version = '3.0.2'
+        kotlin_version = '1.2.61'
+    }
 
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
         classpath 'org.codehaus.groovy:groovy-all:2.4.12'
         classpath 'com.google.gms:google-services:4.0.1'

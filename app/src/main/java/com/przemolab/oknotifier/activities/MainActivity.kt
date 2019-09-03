@@ -16,14 +16,14 @@ import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.enums.SortOrder
 import com.przemolab.oknotifier.fragments.ContestantsListFragment
 import com.przemolab.oknotifier.fragments.ContestsListFragment
-import com.przemolab.oknotifier.models.Contest
-import com.przemolab.oknotifier.models.Contestant
 import com.przemolab.oknotifier.services.ContestIntentService
 
 import java.util.ArrayList
 
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.przemolab.oknotifier.data.entries.ContestEntry
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 
 class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEventsListener, ContestantsListFragment.OnContestantsListEventListener {
 
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
     private var contestantsListFragment: ContestantsListFragment? = null
 
     private var sortOrder = SortOrder.SubscribedFirst
-    private var contestants: List<Contestant>? = ArrayList()
+    private var contestants: List<ContestantEntry>? = ArrayList()
     private var contestId: String? = ""
 
     @BindView(R.id.syncContests_pb) @JvmField
@@ -52,7 +52,8 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
 
         outState.putSerializable(Constants.BundleKeys.SortOrder, sortOrder)
         outState.putString(Constants.BundleKeys.ContestId, contestId)
-        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, ArrayList(contestants!!))
+        // TODO:
+        // outState.putParcelableArrayList(Constants.BundleKeys.Contestants, ArrayList(contestants!!))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +67,8 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
         if (savedInstanceState != null) {
             sortOrder = savedInstanceState.getSerializable(Constants.BundleKeys.SortOrder) as SortOrder
             contestId = savedInstanceState.getString(Constants.BundleKeys.ContestId)
-            contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants)
+            // TODO:
+            // contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants)
         }
 
         loadContestsListFragment()
@@ -106,18 +108,18 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
         return true
     }
 
-    override fun onSubscribedClicked(contest: Contest) {
-        contest.isSubscribed = !contest.isSubscribed
-        contestsListFragment!!.toggleSubscription(contest)
+    override fun onSubscribedClicked(contestEntry: ContestEntry) {
+        contestEntry.subscribed = !contestEntry.subscribed
+        contestsListFragment!!.toggleSubscription(contestEntry)
     }
 
-    override fun onContestClicked(contest: Contest) {
+    override fun onContestClicked(contestEntry: ContestEntry) {
         if (isBigScreen) {
-            contestId = contest.contestId
+            contestId = contestEntry.contestId
             loadContestantsListFragment()
         } else {
             val contestIntent = Intent(this, ContestActivity::class.java)
-            contestIntent.putExtra(Constants.BundleKeys.ContestId, contest.contestId)
+            contestIntent.putExtra(Constants.BundleKeys.ContestId, contestEntry.contestId)
             startActivity(contestIntent)
         }
     }
@@ -127,7 +129,7 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
         contestsListFrameLayout!!.visibility = View.INVISIBLE
     }
 
-    override fun onContestSyncFinished(contests: List<Contest>) {
+    override fun onContestSyncFinished(contestEntries: List<ContestEntry>) {
         contestsListFrameLayout!!.visibility = View.VISIBLE
         syncContestsProgressBar!!.visibility = ProgressBar.INVISIBLE
 
@@ -143,7 +145,7 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
         }
     }
 
-    override fun onContestantsSyncFinished(contestants: List<Contestant>?, restartLoader: Boolean) {
+    override fun onContestantsSyncFinished(contestants: List<ContestantEntry>?, restartLoader: Boolean) {
         if (isBigScreen) {
             this.contestants = contestants
 
@@ -185,7 +187,7 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-        fragmentTransaction.replace(R.id.contestsList_fl, contestsListFragment)
+        fragmentTransaction.replace(R.id.contestsList_fl, contestsListFragment as ContestsListFragment)
         fragmentTransaction.commit()
     }
 
@@ -197,7 +199,7 @@ class MainActivity : AppCompatActivity(), ContestsListFragment.OnContestsListEve
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-        fragmentTransaction.replace(R.id.contestantsList_fl, contestantsListFragment)
+        fragmentTransaction.replace(R.id.contestantsList_fl, contestantsListFragment as ContestantsListFragment)
         fragmentTransaction.commit()
     }
 

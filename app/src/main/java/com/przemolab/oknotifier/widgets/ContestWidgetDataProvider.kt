@@ -4,14 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 
 import com.przemolab.oknotifier.Constants
-import com.przemolab.oknotifier.models.Contestant
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 import com.przemolab.oknotifier.services.ContestIntentService
 
 class ContestWidgetDataProvider(private val sharedPreferences: SharedPreferences) {
 
-    val bestContestant: Contestant
+    val bestContestant: ContestantEntry
         get() {
-            val bestContestant = Contestant("-", "-", 0, 0, 0, 0, 0)
+            val bestContestant = ContestantEntry(name = "-", contestId =  "-")
             val bestContestantString = sharedPreferences.getString(Constants.SharedPreferences.BestContestant, null)
 
             if (bestContestantString != null) {
@@ -27,7 +27,7 @@ class ContestWidgetDataProvider(private val sharedPreferences: SharedPreferences
             return bestContestant
         }
 
-    fun toggleSource(context: Context, contestant: Contestant, setAsSource: Boolean) {
+    fun toggleSource(context: Context, contestant: ContestantEntry, setAsSource: Boolean) {
         val editor = sharedPreferences.edit()
         editor.remove(Constants.SharedPreferences.BestContestant)
 

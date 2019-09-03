@@ -10,7 +10,6 @@ import com.przemolab.oknotifier.DaggerTestAppComponent
 import com.przemolab.oknotifier.NotifierApp
 import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.enums.SortOrder
-import com.przemolab.oknotifier.models.Contest
 import com.przemolab.oknotifier.utils.DataHelper
 
 import org.junit.Before
@@ -30,6 +29,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.v7.widget.RecyclerView
+import com.przemolab.oknotifier.data.entries.ContestEntry
 import com.przemolab.oknotifier.interfaces.INotifierRepository
 import com.przemolab.oknotifier.interfaces.IOpenKattisService
 import com.przemolab.oknotifier.matchers.Matchers.isNotSubscribed
@@ -70,8 +70,8 @@ class MainActivityTests {
     @Test
     fun default_noContests_displaysEmptyView() {
         // given
-        val contests = ArrayList<Contest>()
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contests)
+        val contestsEntries = ArrayList<ContestEntry>()
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestsEntries)
 
         // when
         testRule.launchActivity(null)
@@ -83,9 +83,9 @@ class MainActivityTests {
     @Test
     fun default_contests_displaysOngoingContests() {
         // given
-        val contests = ArrayList<Contest>()
-        contests.add(DataHelper.createContest(1))
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contests)
+        val contestEntries = ArrayList<ContestEntry>()
+        contestEntries.add(DataHelper.createContestEntry(1))
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
 
         // when
         testRule.launchActivity(null)
@@ -98,9 +98,9 @@ class MainActivityTests {
     @Test
     fun default_contestsSubscribed_displaysContestWithAlternateColor() {
         // given
-        val contests = ArrayList<Contest>()
-        contests.add(DataHelper.createContest(1, true))
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contests)
+        val contestsEntries = ArrayList<ContestEntry>()
+        contestsEntries.add(DataHelper.createContestEntry(1, true))
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestsEntries)
 
         // when
         testRule.launchActivity(null)
@@ -113,9 +113,9 @@ class MainActivityTests {
     @Test
     fun toggleSubscription_contestNotSubscribed_displaysContestWithAlternateColor() {
         // given
-        val contests = ArrayList<Contest>()
-        contests.add(DataHelper.createContest(1))
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contests)
+        val contestEntries = ArrayList<ContestEntry>()
+        contestEntries.add(DataHelper.createContestEntry(1))
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
 
         testRule.launchActivity(null)
 
@@ -129,8 +129,8 @@ class MainActivityTests {
     @Test
     fun toggleOrientation_displaysOngoingContests() {
         // given
-        val contests = DataHelper.createContests(10)
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contests)
+        val contestEntries = DataHelper.createContestEntries(10)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
 
         testRule.launchActivity(null)
 
@@ -138,15 +138,15 @@ class MainActivityTests {
         testRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         // then
-        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(contests.size - 1))
+        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(contestEntries.size - 1))
         onView(withText("id 10")).check(matches(isDisplayed()))
     }
 
     @Test
     fun toggleOrientationTwice_displaysOngoingContests() {
         // given
-        val contests = DataHelper.createContests(10)
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contests)
+        val contestEntries = DataHelper.createContestEntries(10)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
 
         testRule.launchActivity(null)
 
@@ -155,16 +155,16 @@ class MainActivityTests {
         testRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         // then
-        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(contests.size - 1))
+        onView(withId(R.id.contestsList_rv)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(contestEntries.size - 1))
         onView(withText("id 10")).check(matches(isDisplayed()))
     }
 
     @Test
     fun contestClicked_contestantsInRepository_activityWithContestStandingsOpens() {
         // given
-        val contests = DataHelper.createContests(1)
-        val contestants = DataHelper.createContestants(3, "id 1")
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contests)
+        val contests = DataHelper.createContestEntries(1)
+        val contestants = DataHelper.createContestantEntries(3, "id 1")
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contests)
         `when`(notifierRepository!!.getAllContestants("id 1")).thenReturn(contestants)
 
         testRule.launchActivity(null)
@@ -181,11 +181,11 @@ class MainActivityTests {
     @Test
     fun contestClicked_contestantsNotInRepository_activityLoadsContestStandingsFromOpenKattis() {
         // given
-        val contests = DataHelper.createContests(1)
-        `when`(notifierRepository!!.getAll(SortOrder.SubscribedFirst)).thenReturn(contests)
+        val contestEntries = DataHelper.createContestEntries(1)
+        `when`(notifierRepository!!.getAllContests(SortOrder.SubscribedFirst)).thenReturn(contestEntries)
         `when`(notifierRepository!!.getAllContestants("id 1")).thenReturn(ArrayList())
 
-        val contestants = DataHelper.createContestants(3, "id 1")
+        val contestants = DataHelper.createContestantEntries(3, "id 1")
         `when`(openKattisService!!.getContestStandings("id 1")).thenReturn(contestants)
 
         testRule.launchActivity(null)
