@@ -20,7 +20,7 @@ object SyncUtils {
 
     @Synchronized
     fun scheduleSync(context: Context) {
-        Timber.d("SyncTest: scheduling sync")
+        Timber.d("Sync: scheduling sync")
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -48,7 +48,7 @@ object SyncUtils {
 
     @Synchronized
     fun cancelSync(context: Context) {
-        Timber.d("SyncTest: cancelling sync")
+        Timber.d("Sync: cancelling sync")
 
         val driver = GooglePlayDriver(context)
         val dispatcher = FirebaseJobDispatcher(driver)

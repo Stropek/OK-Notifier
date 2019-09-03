@@ -14,7 +14,6 @@ import android.widget.ProgressBar
 import com.przemolab.oknotifier.Constants
 import com.przemolab.oknotifier.R
 import com.przemolab.oknotifier.fragments.ContestantsListFragment
-import com.przemolab.oknotifier.models.Contestant
 import com.przemolab.oknotifier.services.ContestIntentService
 import com.przemolab.oknotifier.widgets.ContestWidgetDataProvider
 
@@ -22,6 +21,7 @@ import java.util.ArrayList
 
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.przemolab.oknotifier.data.entries.ContestantEntry
 
 class ContestActivity : AppCompatActivity(), ContestantsListFragment.OnContestantsListEventListener {
 
@@ -29,7 +29,7 @@ class ContestActivity : AppCompatActivity(), ContestantsListFragment.OnContestan
     private var contestWidgetDataProvider: ContestWidgetDataProvider? = null
 
     private var contestId: String? = null
-    private var contestants: List<Contestant>? = ArrayList()
+    private var contestants: List<ContestantEntry>? = ArrayList()
 
     @BindView(R.id.syncStandings_pb) @JvmField
     internal var syncStandingsProgressBar: ProgressBar? = null
@@ -40,7 +40,9 @@ class ContestActivity : AppCompatActivity(), ContestantsListFragment.OnContestan
         super.onSaveInstanceState(outState)
 
         outState.putString(Constants.BundleKeys.ContestId, contestId)
-        outState.putParcelableArrayList(Constants.BundleKeys.Contestants, ArrayList(contestants!!))
+
+        // TODO: how to save array of contestant entries to outState
+        // outState.putParcelableArrayList(Constants.BundleKeys.Contestants, ArrayList(contestants!!))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +60,9 @@ class ContestActivity : AppCompatActivity(), ContestantsListFragment.OnContestan
             contestId = intent.getStringExtra(Constants.BundleKeys.ContestId)
         } else {
             contestId = savedInstanceState.getString(Constants.BundleKeys.ContestId)
-            contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants)
+
+            // TODO:
+            // contestants = savedInstanceState.getParcelableArrayList(Constants.BundleKeys.Contestants)
         }
 
         loadContestantsListFragment()
@@ -73,7 +77,7 @@ class ContestActivity : AppCompatActivity(), ContestantsListFragment.OnContestan
         val checkBox = menu.findItem(R.id.set_widget_menu_item).actionView as CheckBox
         checkBox.isChecked = contestWidgetDataProvider!!.isCurrentSource(contestId!!)
         checkBox.setOnCheckedChangeListener { _, isChecked ->
-            var bestContestant = Contestant("", contestId!!, 0, 0, 0, 0, 0)
+            var bestContestant = ContestantEntry(contestId = contestId!!)
 
             if (!contestants!!.isEmpty()) {
                 bestContestant = contestants!![0]
@@ -99,7 +103,7 @@ class ContestActivity : AppCompatActivity(), ContestantsListFragment.OnContestan
         contestantsListFrameLayout!!.visibility = View.INVISIBLE
     }
 
-    override fun onContestantsSyncFinished(contestants: List<Contestant>?, restartLoader: Boolean) {
+    override fun onContestantsSyncFinished(contestants: List<ContestantEntry>?, restartLoader: Boolean) {
         this.contestants = contestants
 
         contestantsListFrameLayout!!.visibility = View.VISIBLE
@@ -127,7 +131,7 @@ class ContestActivity : AppCompatActivity(), ContestantsListFragment.OnContestan
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-        fragmentTransaction.replace(R.id.contestantsList_fl, contestantsListFragment)
+        fragmentTransaction.replace(R.id.contestantsList_fl, contestantsListFragment as ContestantsListFragment)
         fragmentTransaction.commit()
     }
 }
